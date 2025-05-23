@@ -43,7 +43,6 @@ const Navbar = () => {
           />
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex">
           <NavigationMenu>
             <NavigationMenuList>
@@ -53,10 +52,7 @@ const Navbar = () => {
                   <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
                     <li className="row-span-3">
                       <NavigationMenuLink asChild>
-                        <Link
-                          href="/tentang"
-                          className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md"
-                        >
+                        <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
                           <HomeIcon className="h-6 w-6" />
                           <div className="mb-2 mt-4 text-lg font-medium">
                             Tentang Kami
@@ -65,7 +61,7 @@ const Navbar = () => {
                             Informasi seputar Tax Center, bantuan pengguna, dan
                             FAQ.
                           </p>
-                        </Link>
+                        </div>
                       </NavigationMenuLink>
                     </li>
                     {navLinks.about.map((link) => (
@@ -101,7 +97,12 @@ const Navbar = () => {
                   asChild
                   className="px-4 py-2 text-sm font-medium hover:underline"
                 >
-                  <Link href="/workshop">Workshop</Link>
+                  <Link
+                    href="https://database-pajak.tcugapps.com/"
+                    target="_blank"
+                  >
+                    DB-Tax
+                  </Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
               <NavigationMenuItem>
@@ -115,15 +116,12 @@ const Navbar = () => {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        {/* Desktop Buttons */}
         <div className="hidden md:flex flex-row gap-6">
           <ModeToggle />
           <Button variant="purple" className="px-12 py-4 rounded-full">
             Daftar
           </Button>
         </div>
-
-        {/* Mobile Sheet Navigation */}
         <div className="flex md:hidden">
           <Sheet>
             <SheetTrigger>
@@ -169,9 +167,9 @@ const Navbar = () => {
                       </AccordionContent>
                     </AccordionItem>
                     <AccordionItem value="item-3">
-                      <AccordionTrigger>Workshop</AccordionTrigger>
+                      <AccordionTrigger>DB-Tax</AccordionTrigger>
                       <AccordionContent>
-                        {navLinks.workshop.map((doc) => (
+                        {navLinks.db_tax.map((doc) => (
                           <Link
                             key={doc.href}
                             href={doc.href}

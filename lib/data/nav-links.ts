@@ -1,11 +1,6 @@
 export const navLinks = {
   about: [
     {
-      title: "FAQ",
-      href: "/faq",
-      description: "Pertanyaan yang sering diajukan mengenai layanan kami.",
-    },
-    {
       title: "Kontak",
       href: "/kontak",
       description: "Hubungi kami untuk informasi lebih lanjut atau bantuan.",
@@ -24,16 +19,16 @@ export const navLinks = {
         "Informasi lengkap mengenai jadwal program dan kegiatan Tax Center.",
     },
     {
-      title: "Jadwal Kursus",
-      href: "/jadwal-kursus",
+      title: "Jadwal Workshop",
+      href: "/jadwal-workshop",
       description:
-        "Lihat waktu pelaksanaan kursus yang tersedia untuk pendaftaran.",
+        "Lihat informasi waktu dan topik workshop singkat yang tersedia di Tax Center.",
     },
   ],
-  workshop: [
+  db_tax: [
     {
-      title: "Workshop",
-      href: "/workshop",
+      title: "DB-Tax",
+      href: "https://database-pajak.tcugapps.com",
     },
   ],
   news: [

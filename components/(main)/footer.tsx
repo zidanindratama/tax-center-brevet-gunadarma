@@ -19,8 +19,8 @@ const footerSections = [
     links: navLinks.schedule,
   },
   {
-    title: "Workshop",
-    links: navLinks.workshop,
+    title: "DB-Tax",
+    links: navLinks.db_tax,
   },
   {
     title: "Berita",

@@ -125,7 +125,7 @@
   all: revert;
 }
 
-h1.heading-node,
-h2.heading-node {
-  @apply p-3 bg-orange-500/20  dark:bg-orange-800 text-orange-700 dark:text-blue-100 w-fit text-lg;
+.prose h1,
+.prose h2 {
+  @apply p-3 bg-orange-500/20 dark:bg-orange-800 text-orange-700 dark:text-blue-100 w-fit text-lg;
 }
