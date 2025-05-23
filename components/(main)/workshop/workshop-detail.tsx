@@ -8,23 +8,23 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { courseDetail } from "@/lib/data/course-detail";
 import { Button } from "@/components/ui/button";
 import { formatPeriode } from "../jadwal-program/_libs/format-periode";
-import { CalendarDays, ListTodo, Clock, MapPin, Users } from "lucide-react";
+import { workshopDetail } from "@/lib/data/workshop-detail";
+import { CalendarDays, Clock, MapPin, LayoutGrid, Users } from "lucide-react";
 import Link from "next/link";
 
-const CourseDetail = () => {
+const WorkshopDetail = () => {
   return (
     <section className="w-full py-16 dark:bg-background transition-colors">
       <div className="max-w-screen-xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
-        <div className="pace-y-4">
-          <h1 className="text-2xl font-bold">{courseDetail.namaKursus}</h1>
+        <div className="space-y-4">
+          <h1 className="text-2xl font-bold">{workshopDetail.title}</h1>
 
           <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
             <Image
-              src={courseDetail.image}
-              alt={courseDetail.namaKursus}
+              src={workshopDetail.image}
+              alt={workshopDetail.title}
               fill
               className="object-cover"
             />
@@ -32,9 +32,10 @@ const CourseDetail = () => {
 
           <div
             className="prose dark:prose-invert max-w-none"
-            dangerouslySetInnerHTML={{ __html: courseDetail.content }}
+            dangerouslySetInnerHTML={{ __html: workshopDetail.content }}
           />
         </div>
+
         <div className="md:sticky md:top-20 h-fit p-6 border rounded bg-background shadow-sm">
           <Table>
             <TableHeader>
@@ -49,46 +50,50 @@ const CourseDetail = () => {
             </TableHeader>
             <TableBody>
               <TableRow>
-                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium text-xs">
                   <CalendarDays className="h-4 w-4 text-orange-500" />
                   Tanggal
                 </TableCell>
                 <TableCell>
-                  {formatPeriode(courseDetail.startDate, courseDetail.endDate)}
+                  {formatPeriode(
+                    workshopDetail.startDate,
+                    workshopDetail.endDate
+                  )}
                 </TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
-                  <ListTodo className="h-4 w-4 text-orange-500" />
-                  Hari
-                </TableCell>
-                <TableCell>Sabtu dan Minggu</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium text-xs">
                   <Clock className="h-4 w-4 text-orange-500" />
                   Jam
                 </TableCell>
-                <TableCell>{courseDetail.waktu} WIB</TableCell>
+                <TableCell>{workshopDetail.waktu} WIB</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium text-xs">
                   <MapPin className="h-4 w-4 text-orange-500" />
                   Lokasi/Platform
                 </TableCell>
-                <TableCell>{courseDetail.lokasi}</TableCell>
+                <TableCell>{workshopDetail.lokasi}</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
-                  <Users className="h-4 w-4 text-orange-500" />
-                  Kapasitas
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium text-xs">
+                  <LayoutGrid className="h-4 w-4 text-orange-500" />
+                  Ruangan
                 </TableCell>
-                <TableCell>{courseDetail.kapasitas}</TableCell>
+                <TableCell>{workshopDetail.ruangan}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium text-xs">
+                  <Users className="h-4 w-4 text-orange-500" />
+                  Sisa Kapasitas
+                </TableCell>
+                <TableCell>{workshopDetail.sisaKapasitas}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
-          <Button className="w-full mt-5" variant={"orange"} asChild>
-            <Link href={"/signup"}>Daftar Sekarang</Link>
+
+          <Button className="w-full mt-5" variant="orange" asChild>
+            <Link href="/signup">Daftar Sekarang</Link>
           </Button>
         </div>
       </div>
@@ -96,4 +101,4 @@ const CourseDetail = () => {
   );
 };
 
-export default CourseDetail;
+export default WorkshopDetail;
