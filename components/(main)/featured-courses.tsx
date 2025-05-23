@@ -51,7 +51,7 @@ export default function FeaturedCoursesCarousel() {
             ))}
           </CarouselContent>
 
-          <div className="hidden md:flex justify-center gap-4 mt-6">
+          <div className="hidden xl:flex justify-center gap-4 mt-6">
             <CarouselPrevious />
             <CarouselNext />
           </div>

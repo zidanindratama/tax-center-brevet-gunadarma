@@ -8,9 +8,9 @@ import { CircleCheck } from "lucide-react";
 const Pricing = () => {
   return (
     <div id="pricing" className="max-w-screen-lg mx-auto py-12 xs:py-20 px-6">
-      <h1 className="text-4xl xs:text-5xl font-bold text-center tracking-tight">
+      <h2 className="md:text-center text-3xl xs:text-4xl md:text-5xl !leading-[1.15] font-bold tracking-tighter">
         Biaya Pendaftaran
-      </h1>
+      </h2>
       <div className="mt-8 xs:mt-14 grid grid-cols-1 lg:grid-cols-3 items-center gap-8 lg:gap-0">
         {plans.map((plan) => (
           <div
