@@ -1,0 +1,88 @@
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+} from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
+import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import { PlusIcon } from "lucide-react";
+
+const faq = [
+  {
+    question: "Apa saja program yang ditawarkan oleh Tax Center?",
+    answer:
+      "Tax Center Gunadarma menawarkan berbagai program seperti Kursus Brevet A & B, Brevet C, PPL Workshop, serta pelatihan akuntansi dan persiapan USKP.",
+  },
+  {
+    question: "Siapa saja yang bisa mengikuti program ini?",
+    answer:
+      "Program terbuka untuk mahasiswa Universitas Gunadarma, mahasiswa dari universitas lain, serta masyarakat umum yang tertarik mempelajari perpajakan.",
+  },
+  {
+    question: "Apakah peserta akan mendapatkan sertifikat?",
+    answer:
+      "Ya, setiap peserta yang menyelesaikan program akan mendapatkan sertifikat resmi dari Tax Center Universitas Gunadarma.",
+  },
+  {
+    question: "Bagaimana cara mendaftar?",
+    answer:
+      "Pendaftaran dilakukan secara online melalui website resmi kami. Klik tombol 'Daftar' pada halaman utama untuk memulai proses pendaftaran.",
+  },
+  {
+    question: "Apakah tersedia kelas online?",
+    answer:
+      "Ya, beberapa program tersedia dalam format online maupun hybrid (gabungan online dan tatap muka), sehingga bisa diikuti secara fleksibel.",
+  },
+  {
+    question: "Apa perbedaan biaya untuk peserta umum dan mahasiswa?",
+    answer:
+      "Mahasiswa Gunadarma mendapatkan harga khusus sebesar Rp750.000. Mahasiswa luar dikenakan Rp1.000.000, dan peserta umum sebesar Rp2.500.000.",
+  },
+];
+
+const FAQ = () => {
+  return (
+    <div id="faq" className="w-full max-w-screen-xl mx-auto py-8 xs:py-16 px-6">
+      <h2 className="md:text-center text-3xl xs:text-4xl md:text-5xl !leading-[1.15] font-bold tracking-tighter">
+        Pertanyaan yang Sering Diajukan
+      </h2>
+      <p className="mt-1.5 md:text-center xs:text-lg text-muted-foreground">
+        Temukan jawaban cepat atas pertanyaan umum seputar program dan layanan
+        Tax Center.
+      </p>
+
+      <div className="min-h-[550px] md:min-h-[320px] xl:min-h-[300px]">
+        <Accordion
+          type="single"
+          collapsible
+          className="mt-8 space-y-4 md:columns-2 gap-4"
+        >
+          {faq.map(({ question, answer }, index) => (
+            <AccordionItem
+              key={question}
+              value={`question-${index}`}
+              className="bg-accent py-1 px-4 rounded-xl border-none !mt-0 !mb-4 break-inside-avoid"
+            >
+              <AccordionPrimitive.Header className="flex">
+                <AccordionPrimitive.Trigger
+                  className={cn(
+                    "flex flex-1 items-center justify-between py-4 font-semibold tracking-tight transition-all hover:underline [&[data-state=open]>svg]:rotate-45",
+                    "text-start text-lg"
+                  )}
+                >
+                  {question}
+                  <PlusIcon className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-200" />
+                </AccordionPrimitive.Trigger>
+              </AccordionPrimitive.Header>
+              <AccordionContent className="text-[15px]">
+                {answer}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </div>
+  );
+};
+
+export default FAQ;
