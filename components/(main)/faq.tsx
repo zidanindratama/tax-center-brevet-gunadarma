@@ -10,7 +10,10 @@ import { PlusIcon } from "lucide-react";
 
 const FAQ = () => {
   return (
-    <div id="faq" className="w-full max-w-screen-xl mx-auto py-8 xs:py-16 px-6">
+    <div
+      id="faq"
+      className="w-full max-w-screen-xl mx-auto py-12 xs:py-20 px-6"
+    >
       <h2 className="md:text-center text-3xl xs:text-4xl md:text-5xl !leading-[1.15] font-bold tracking-tighter">
         Pertanyaan yang Sering Diajukan
       </h2>

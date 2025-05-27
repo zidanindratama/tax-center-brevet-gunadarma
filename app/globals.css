@@ -129,3 +129,7 @@
 .prose h2 {
   @apply p-3 bg-orange-500/20 dark:bg-orange-800 text-orange-700 dark:text-blue-100 w-fit text-lg;
 }
+
+.prose blockquote {
+  @apply border-l-4 pl-4 italic text-muted-foreground border-orange-400 dark:border-orange-600;
+}

@@ -1,11 +1,6 @@
 import { Separator } from "@/components/ui/separator";
 import { navLinks } from "@/lib/data/nav-links";
-import {
-  DribbbleIcon,
-  GithubIcon,
-  TwitchIcon,
-  TwitterIcon,
-} from "lucide-react";
+import { Instagram, Linkedin, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -93,17 +88,17 @@ const Footer = () => {
         </span>
 
         <div className="flex items-center gap-5 text-muted-foreground">
-          <Link href="#" target="_blank">
-            <TwitterIcon className="h-5 w-5" />
+          <Link href="https://www.instagram.com/taxcenter.ug" target="_blank">
+            <Instagram className="h-5 w-5" />
           </Link>
-          <Link href="#" target="_blank">
-            <DribbbleIcon className="h-5 w-5" />
+          <Link
+            href="https://www.linkedin.com/company/taxcenter-ug"
+            target="_blank"
+          >
+            <Linkedin className="h-5 w-5" />
           </Link>
-          <Link href="#" target="_blank">
-            <TwitchIcon className="h-5 w-5" />
-          </Link>
-          <Link href="#" target="_blank">
-            <GithubIcon className="h-5 w-5" />
+          <Link href="zidanindratama03@gmail.com" target="_blank">
+            <Mail className="h-5 w-5" />
           </Link>
         </div>
       </div>

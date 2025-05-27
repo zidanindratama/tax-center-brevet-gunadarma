@@ -110,7 +110,7 @@ const Navbar = () => {
                   asChild
                   className="px-4 py-2 text-sm font-medium hover:underline"
                 >
-                  <Link href="/news">Berita</Link>
+                  <Link href="/berita">Berita</Link>
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>

@@ -2,7 +2,7 @@ export const navLinks = {
   about: [
     {
       title: "Kontak",
-      href: "/kontak",
+      href: "https://wa.me/6285141760017",
       description: "Hubungi kami untuk informasi lebih lanjut atau bantuan.",
     },
     {
@@ -34,7 +34,7 @@ export const navLinks = {
   news: [
     {
       title: "Berita",
-      href: "/news",
+      href: "/berita",
     },
   ],
 };
