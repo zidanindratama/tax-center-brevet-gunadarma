@@ -34,6 +34,16 @@ const Footer = () => {
               alt="Logo Tax Center"
               width={150}
               height={50}
+              className="block dark:hidden"
+              priority
+            />
+            <Image
+              src="/logo-dark-tc.png"
+              alt="Logo Tax Center Dark"
+              width={150}
+              height={50}
+              className="hidden dark:block"
+              priority
             />
           </Link>
           <p className="mt-4 text-muted-foreground">

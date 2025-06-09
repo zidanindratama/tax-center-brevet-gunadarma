@@ -1,6 +1,6 @@
 export const plans = [
   {
-    name: "Mahasiswa Luar",
+    name: "Mahasiswa Non-Gunadarma",
     price: "Rp1.000.000",
     description: "Terbuka untuk mahasiswa dari luar Universitas Gunadarma.",
     features: [

@@ -94,14 +94,14 @@ const NewsList = () => {
         />
       </div>
 
-      <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
         {filteredPosts.length === 0 ? (
           <div className="col-span-full flex justify-center items-center py-10">
             <NotFoundContent message="Tidak ada berita yang ditemukan." />
           </div>
         ) : (
           filteredPosts.map((post) => (
-            <div key={post.id} className="block h-full">
+            <div key={post.id} className="h-full">
               <div className="rounded-xl bg-white dark:bg-muted border shadow-sm h-full flex flex-col transition-colors hover:shadow-md">
                 <div className="relative w-full h-48 md:h-56">
                   <Image

@@ -40,6 +40,16 @@ const Navbar = () => {
             alt="Logo Tax Center"
             width={150}
             height={50}
+            className="block dark:hidden"
+            priority
+          />
+          <Image
+            src="/logo-dark-tc.png"
+            alt="Logo Tax Center Dark"
+            width={150}
+            height={50}
+            className="hidden dark:block"
+            priority
           />
         </Link>
 
@@ -118,8 +128,8 @@ const Navbar = () => {
         </div>
         <div className="hidden md:flex flex-row gap-6">
           <ModeToggle />
-          <Button variant="purple" className="px-12 py-4 rounded-full">
-            Daftar
+          <Button variant="purple" className="px-12 py-4 rounded-full" asChild>
+            <Link href={"sign-up"}>Daftar</Link>
           </Button>
         </div>
         <div className="flex md:hidden">
@@ -197,8 +207,8 @@ const Navbar = () => {
                   </Accordion>
                   <div className="pt-6 flex flex-col gap-4">
                     <ModeToggle className="w-full rounded-lg" />
-                    <Button variant="purple" className="w-full">
-                      Daftar
+                    <Button variant="purple" className="w-full" asChild>
+                      <Link href={"sign-up"}>Daftar</Link>
                     </Button>
                   </div>
                 </div>
