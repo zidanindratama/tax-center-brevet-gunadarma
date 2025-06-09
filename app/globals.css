@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
@@ -121,15 +122,63 @@
   }
 }
 
+/* Reset agar semua elemen pakai style default browser */
 .prose * {
   all: revert;
 }
 
-.prose h1,
-.prose h2 {
-  @apply p-3 bg-orange-500/20 dark:bg-orange-800 text-orange-700 dark:text-blue-100 w-fit text-lg;
+.prose *:focus,
+.prose *:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
+/* Heading */
+.prose h1,
+.prose h2,
+.prose h3 {
+  @apply p-3 bg-yellow-500/20 dark:bg-yellow-800 text-yellow-500 w-fit text-lg;
+}
+
+/* Blockquote */
 .prose blockquote {
-  @apply border-l-4 pl-4 italic text-muted-foreground border-orange-400 dark:border-orange-600;
+  @apply border-l-4 pl-4 italic text-muted-foreground border-yellow-400 dark:border-yellow-600;
+}
+
+/* Paragraf */
+.prose p {
+  @apply text-gray-800 dark:text-gray-100;
+}
+
+/* List item */
+.prose ul,
+.prose ol {
+  @apply text-gray-800 dark:text-gray-100 pl-6;
+}
+
+.prose li::marker {
+  @apply text-yellow-500;
+}
+
+/* Bold & italic */
+.prose strong {
+  @apply text-yellow-600 dark:text-yellow-400;
+}
+
+.prose em {
+  @apply text-blue-600 dark:text-blue-400;
+}
+
+/* Link */
+.prose a {
+  @apply text-blue-500 underline hover:text-blue-700;
+}
+
+/* Code block */
+.prose pre {
+  @apply bg-gray-100 dark:bg-gray-800 p-4 rounded text-sm overflow-auto;
+}
+
+.prose code {
+  @apply bg-gray-200 dark:bg-gray-700 px-1 rounded;
 }
