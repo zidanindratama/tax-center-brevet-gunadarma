@@ -22,38 +22,42 @@ import {
 import { useForm, useWatch } from "react-hook-form";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { SignUpSchema } from "./_schema/signup-schema";
 import { DateTimePicker } from "../ui/date-time-picker";
 import { Textarea } from "../ui/textarea";
-
-const ROLE_OPTIONS = [
-  {
-    label: "Mahasiswa Gunadarma",
-    value: "MAHASISWA_GUNADARMA",
-    icon: <HiOutlineUserGroup className="h-6 w-6 mb-2" />,
-  },
-  {
-    label: "Mahasiswa Non-Gunadarma",
-    value: "MAHASISWA_LUAR",
-    icon: <HiOutlineUser className="h-6 w-6 mb-2" />,
-  },
-  {
-    label: "Umum",
-    value: "UMUM",
-    icon: <HiOutlineUserCircle className="h-6 w-6 mb-2" />,
-  },
-];
+import { useGetData } from "@/hooks/use-get-data";
+import { TGroup } from "./_types/group-type";
+import { useFileUploader } from "@/hooks/use-file-uploader";
+import Image from "next/image";
+import axiosInstance from "@/helpers/axios-instance";
 
 export function SignupForm({
   className,
 }: React.ComponentPropsWithoutRef<"form">) {
   const [isPending, setIsPending] = useState(false);
 
-  const router = useRouter();
+  const { uploadFile } = useFileUploader();
+  const { data: groupsData } = useGetData({
+    queryKey: ["groups"],
+    dataProtected: "groups",
+  });
+
+  const groups: TGroup[] = groupsData?.data.data;
+
+  const getGroupIcon = (name: string) => {
+    if (name.toLowerCase().includes("non-gunadarma")) {
+      return <HiOutlineUser className="h-6 w-6 mb-2" />;
+    } else if (name.toLowerCase().includes("gunadarma")) {
+      return <HiOutlineUserGroup className="h-6 w-6 mb-2" />;
+    } else if (name.toLowerCase().includes("umum")) {
+      return <HiOutlineUserCircle className="h-6 w-6 mb-2" />;
+    } else {
+      return null;
+    }
+  };
 
   const form = useForm<z.infer<typeof SignUpSchema>>({
     resolver: zodResolver(SignUpSchema),
@@ -61,7 +65,6 @@ export function SignupForm({
       name: "",
       username: "",
       phone: "",
-      avatar: "https://example.com/avatar.png",
       email: "",
       password: "",
       confirm_password: "",
@@ -73,42 +76,110 @@ export function SignupForm({
       nim: "",
       nim_proof: undefined,
       nik: "",
-      nik_proof: undefined,
-      role: "MAHASISWA_GUNADARMA",
+      role: undefined,
     },
   });
 
+  const selectedGroupId = useWatch({ control: form.control, name: "group_id" });
   const role = useWatch({ control: form.control, name: "role" });
+  const nimProofUrl = form.watch("nim_proof");
+
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "documents" | "images",
+    field: keyof z.infer<typeof SignUpSchema>
+  ) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const url = await uploadFile(file, type);
+    form.setValue(field, url || "", { shouldValidate: true });
+  };
 
   const onSubmit = async (values: z.infer<typeof SignUpSchema>) => {
     setIsPending(true);
-    toast("Menyimpan data mock...", {
-      description: "Ini hanya simulasi, backend belum aktif.",
-    });
 
     try {
-      await new Promise((res) => setTimeout(res, 1500));
-      console.log("📦 Data mock terkirim:", values);
-      toast("Pendaftaran Berhasil (Mock)!", {
-        description: "Data berhasil diproses secara lokal.",
+      const payload: Record<string, any> = { ...values };
+
+      delete payload.role;
+
+      if (values.role === "umum") {
+        delete payload.nim;
+        delete payload.nim_proof;
+      } else {
+        delete payload.nik;
+      }
+
+      const response = await axiosInstance.post("/auth/register", payload);
+
+      console.log("✅ Register sukses:", response.data);
+
+      toast("Pendaftaran Berhasil!", {
+        description: "Silahkan verifikasi email Anda.",
       });
-      router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
+
+      // 🔄 Reset form ke default values
+      form.reset(); // << ini yang kamu butuhkan
+    } catch (error: any) {
+      console.error(
+        "❌ Register gagal:",
+        error.response?.data || error.message
+      );
 
       toast("Terjadi kesalahan!", {
-        description: "Gagal memproses data mock.",
+        description:
+          error.response?.data?.message || "Gagal mendaftarkan akun.",
       });
     } finally {
       setIsPending(false);
     }
   };
 
+  useEffect(() => {
+    if (!groups) return;
+
+    const selectedGroup = groups.find((g) => g.id === selectedGroupId);
+
+    if (selectedGroup) {
+      const name = selectedGroup.name.toLowerCase();
+
+      form.setValue("nim", "");
+      form.setValue("nim_proof", "");
+      form.setValue("nik", "");
+
+      if (name.includes("non-gunadarma")) {
+        form.setValue("role", "mahasiswa non-gunadarma");
+      } else if (name.includes("gunadarma")) {
+        form.setValue("role", "mahasiswa gunadarma");
+      } else if (name.includes("umum")) {
+        form.setValue("role", "umum");
+      }
+    }
+  }, [selectedGroupId, groups]);
+
+  useEffect(() => {
+    if (!groups || form.getValues("group_id")) return;
+
+    const defaultGroup = groups.find((g) =>
+      g.name.toLowerCase().includes("gunadarma")
+    );
+
+    if (defaultGroup) {
+      form.setValue("group_id", defaultGroup.id);
+    }
+  }, [groups]);
+
   return (
     <Form {...form}>
       <form
         className={cn("flex flex-col gap-6", className)}
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={(e) => {
+          e.preventDefault();
+          form.handleSubmit(onSubmit, (errors) => {
+            console.log("❌ Validation errors:", errors);
+            toast.error("Ada isian yang belum benar.");
+          })(e);
+        }}
       >
         <div className="flex flex-col items-center gap-2 text-center">
           <h1 className="text-2xl font-bold">Daftar Akun Baru</h1>
@@ -119,28 +190,29 @@ export function SignupForm({
         <div className="grid gap-6">
           <FormField
             control={form.control}
-            name="role"
+            name="group_id"
             render={({ field }) => (
               <FormItem>
+                <FormLabel>Pilih Kategori Peserta</FormLabel>
                 <FormControl>
                   <RadioGroup
                     onValueChange={field.onChange}
                     value={field.value}
                     className="grid grid-cols-1 md:grid-cols-3 gap-4"
                   >
-                    {ROLE_OPTIONS.map((option) => (
-                      <div key={option.value}>
+                    {groups?.map((group) => (
+                      <div key={group.id}>
                         <RadioGroupItem
-                          value={option.value}
-                          id={option.value}
+                          value={group.id}
+                          id={group.id}
                           className="peer sr-only"
                         />
                         <Label
-                          htmlFor={option.value}
+                          htmlFor={group.id}
                           className="h-full min-h-[120px] flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-4 text-center hover:bg-accent hover:text-accent-foreground peer-data-[state=checked]:border-primary [&:has([data-state=checked])]:border-primary"
                         >
-                          {option.icon}
-                          {option.label}
+                          {getGroupIcon(group.name)}
+                          {group.name}
                         </Label>
                       </div>
                     ))}
@@ -270,7 +342,7 @@ export function SignupForm({
               </FormItem>
             )}
           />
-          {role !== "UMUM" && (
+          {role !== "umum" && (
             <>
               <FormField
                 control={form.control}
@@ -288,28 +360,36 @@ export function SignupForm({
               <FormField
                 control={form.control}
                 name="nim_proof"
-                render={({ field: { onChange, onBlur, name, ref } }) => (
+                render={() => (
                   <FormItem>
                     <FormLabel>Bukti NIM</FormLabel>
                     <FormControl>
                       <Input
                         type="file"
-                        name={name}
-                        ref={ref}
-                        onBlur={onBlur}
-                        onChange={(e) => {
-                          onChange(e.target.files?.[0]);
-                        }}
+                        accept="image/*"
+                        onChange={(e) =>
+                          handleFileChange(e, "images", "nim_proof")
+                        }
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+              {nimProofUrl && (
+                <Link href={nimProofUrl} target="_blank" className="mt-2">
+                  <Image
+                    width={400}
+                    height={400}
+                    src={nimProofUrl}
+                    alt="Preview Bukti NIM"
+                    className="w-full rounded border"
+                  />
+                </Link>
+              )}
             </>
           )}
-
-          {role === "UMUM" && (
+          {role === "umum" && (
             <>
               <FormField
                 control={form.control}
@@ -324,30 +404,8 @@ export function SignupForm({
                   </FormItem>
                 )}
               />
-              <FormField
-                control={form.control}
-                name="nik_proof"
-                render={({ field: { onChange, onBlur, name, ref } }) => (
-                  <FormItem>
-                    <FormLabel>Bukti NIK</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="file"
-                        name={name}
-                        ref={ref}
-                        onBlur={onBlur}
-                        onChange={(e) => {
-                          onChange(e.target.files?.[0]);
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
             </>
           )}
-
           <FormField
             control={form.control}
             name="password"
@@ -392,7 +450,7 @@ export function SignupForm({
         </div>
         <div className="text-center text-sm">
           Sudah punya akun?{" "}
-          <Link href="/sign-in" className="underline underline-offset-4">
+          <Link href="/auth/sign-in" className="underline underline-offset-4">
             Masuk di sini
           </Link>
         </div>

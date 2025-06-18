@@ -129,7 +129,7 @@ const Navbar = () => {
         <div className="hidden md:flex flex-row gap-6">
           <ModeToggle />
           <Button variant="purple" className="px-12 py-4 rounded-full" asChild>
-            <Link href={"sign-up"}>Daftar</Link>
+            <Link href={"/auth/sign-up"}>Daftar</Link>
           </Button>
         </div>
         <div className="flex md:hidden">
@@ -208,7 +208,7 @@ const Navbar = () => {
                   <div className="pt-6 flex flex-col gap-4">
                     <ModeToggle className="w-full rounded-lg" />
                     <Button variant="purple" className="w-full" asChild>
-                      <Link href={"sign-up"}>Daftar</Link>
+                      <Link href={"/auth/sign-up"}>Daftar</Link>
                     </Button>
                   </div>
                 </div>

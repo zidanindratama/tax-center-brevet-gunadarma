@@ -21,8 +21,17 @@ import { routeItems } from "@/lib/data/route-items";
 import { NavSecondary } from "./nav-secondary";
 import Link from "next/link";
 import Image from "next/image";
+import { useGetData } from "@/hooks/use-get-data";
+import { TUser } from "./(dashboard)/profile/_types/user-type";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: myUserData } = useGetData({
+    queryKey: ["me"],
+    dataProtected: "users/me",
+  });
+
+  const myUser: TUser | undefined = myUserData?.data?.data;
+
   const filteredMainNav = routeItems.navMain;
   const filteredManagement = routeItems.managementNav;
 
@@ -53,6 +62,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup className="group-data-[collapsible=icon]:hidden">
           <SidebarGroupLabel>Beranda</SidebarGroupLabel>
@@ -67,18 +77,20 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarGroup>
+
         {filteredManagement.length > 0 && (
           <NavManagement projects={filteredManagement} />
         )}
         {filteredMainNav.length > 0 && <NavMain items={filteredMainNav} />}
         <NavSecondary items={routeItems.navSecondary} className="mt-auto" />
       </SidebarContent>
+
       <SidebarFooter>
         <NavUser
           user={{
-            name: "Zidan Indratama",
-            email: "zidan@gmail.com",
-            avatar: "/avatars/shadcn.jpg",
+            name: myUser?.name || "Memuat...",
+            email: myUser?.email || "-",
+            avatar: myUser?.avatar || "/avatars/shadcn.jpg",
           }}
         />
       </SidebarFooter>

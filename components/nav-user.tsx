@@ -18,6 +18,11 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar";
+import Link from "next/link";
+import axiosInstance from "@/helpers/axios-instance";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Cookies from "js-cookie";
 
 export function NavUser({
   user,
@@ -29,6 +34,23 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.delete("/auth/logout");
+      Cookies.remove("access_token");
+
+      toast.success("Berhasil logout!");
+      router.push("/auth/sign-in");
+    } catch (error: any) {
+      console.error("❌ Gagal logout:", error);
+      toast.error("Gagal logout", {
+        description:
+          error?.response?.data?.message || "Terjadi kesalahan saat logout.",
+      });
+    }
+  };
 
   return (
     <SidebarMenu>
@@ -70,13 +92,15 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Profile
+              <DropdownMenuItem asChild>
+                <Link href={"/dashboard/profile"}>
+                  <BadgeCheck />
+                  Profile
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <LogOut />
               Log out
             </DropdownMenuItem>

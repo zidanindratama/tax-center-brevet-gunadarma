@@ -16,10 +16,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import Link from "next/link";
+import axiosInstance from "@/helpers/axios-instance";
 import { toast } from "sonner";
+import Cookies from "js-cookie";
 
 export function SignInForm({
   className,
@@ -37,15 +39,23 @@ export function SignInForm({
 
   const onSubmit = async (values: z.infer<typeof SignInSchema>) => {
     setIsPending(true);
-    toast("Login mock...");
+    toast("Mencoba login...");
+
     try {
-      await new Promise((res) => setTimeout(res, 1000));
-      console.log("🔑 Login berhasil:", values);
-      toast("Berhasil login (mock)");
+      const res = await axiosInstance.post("/auth/login", values);
+
+      const token = res.data.data.access_token;
+
+      Cookies.set("access_token", token, { expires: 7 });
+
+      toast.success("Berhasil login!");
       router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
-      toast("Gagal login");
+    } catch (error: any) {
+      console.error("❌ Login error:", error?.response?.data || error);
+      toast.error("Gagal login!", {
+        description:
+          error?.response?.data?.message || "Terjadi kesalahan pada server.",
+      });
     } finally {
       setIsPending(false);
     }
@@ -113,7 +123,7 @@ export function SignInForm({
 
         <div className="text-center text-sm">
           Belum punya akun?{" "}
-          <Link href="/sign-up" className="underline underline-offset-4">
+          <Link href="/auth/sign-up" className="underline underline-offset-4">
             Daftar di sini
           </Link>
         </div>

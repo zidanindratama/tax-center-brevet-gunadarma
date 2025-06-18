@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 export const DEV_URL = "http://localhost:3001/api";
-export const PROD_URL = "https://backend-gunakarir.vercel.app/api";
+export const PROD_URL = "https://be-brevet.tcugapps.com/api/v1";
 
 const axiosInstance = axios.create({
   baseURL: PROD_URL,
@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 // Refreshtoken dari cookie server
 const refreshAuthToken = async () => {
   try {
-    const response = await axios.post(`${PROD_URL}/auth/refresh`, null, {
+    const response = await axios.post(`${PROD_URL}/auth/refresh-token`, null, {
       withCredentials: true,
     });
 
