@@ -5,7 +5,11 @@ const uuidRegex =
 
 export const SignUpSchema = z
   .object({
-    role: z.enum(["mahasiswa gunadarma", "mahasiswa non-gunadarma", "umum"]),
+    group_type: z.enum([
+      "mahasiswa_gunadarma",
+      "mahasiswa_non_gunadarma",
+      "umum",
+    ]),
     name: z.string().min(3, "Nama lengkap wajib diisi"),
     username: z.string().min(3, "Username minimal 3 karakter"),
     phone: z.string().min(10, "Nomor telepon tidak valid"),
@@ -14,7 +18,6 @@ export const SignUpSchema = z
     confirm_password: z
       .string()
       .min(6, "Konfirmasi password minimal 6 karakter"),
-    group_id: z.string().regex(uuidRegex, "Group ID tidak valid"),
     institution: z.string().min(2, "Institusi wajib diisi"),
     origin: z.string().min(2, "Asal daerah wajib diisi"),
     birth_date: z.date(),
@@ -28,7 +31,7 @@ export const SignUpSchema = z
     message: "Password dan konfirmasi tidak cocok",
   })
   .superRefine((data, ctx) => {
-    const isUmum = data.role === "umum";
+    const isUmum = data.group_type === "umum";
 
     if (isUmum) {
       if (!data.nik) {

@@ -34,18 +34,18 @@ import { useFileUploader } from "@/hooks/use-file-uploader";
 import Image from "next/image";
 import axiosInstance from "@/helpers/axios-instance";
 
+const groupOptions = [
+  { id: "mahasiswa_gunadarma", name: "Mahasiswa Gunadarma" },
+  { id: "mahasiswa_non_gunadarma", name: "Mahasiswa Non-Gunadarma" },
+  { id: "umum", name: "Umum" },
+];
+
 export function SignupForm({
   className,
 }: React.ComponentPropsWithoutRef<"form">) {
   const [isPending, setIsPending] = useState(false);
 
   const { uploadFile } = useFileUploader();
-  const { data: groupsData } = useGetData({
-    queryKey: ["groups"],
-    dataProtected: "groups",
-  });
-
-  const groups: TGroup[] = groupsData?.data.data;
 
   const getGroupIcon = (name: string) => {
     if (name.toLowerCase().includes("non-gunadarma")) {
@@ -68,7 +68,7 @@ export function SignupForm({
       email: "",
       password: "",
       confirm_password: "",
-      group_id: "",
+      group_type: "mahasiswa_gunadarma",
       institution: "",
       origin: "",
       birth_date: undefined,
@@ -76,12 +76,10 @@ export function SignupForm({
       nim: "",
       nim_proof: undefined,
       nik: "",
-      role: undefined,
     },
   });
 
-  const selectedGroupId = useWatch({ control: form.control, name: "group_id" });
-  const role = useWatch({ control: form.control, name: "role" });
+  const group_type = useWatch({ control: form.control, name: "group_type" });
   const nimProofUrl = form.watch("nim_proof");
 
   const handleFileChange = async (
@@ -101,9 +99,7 @@ export function SignupForm({
     try {
       const payload: Record<string, any> = { ...values };
 
-      delete payload.role;
-
-      if (values.role === "umum") {
+      if (values.group_type === "umum") {
         delete payload.nim;
         delete payload.nim_proof;
       } else {
@@ -118,8 +114,7 @@ export function SignupForm({
         description: "Silahkan verifikasi email Anda.",
       });
 
-      // 🔄 Reset form ke default values
-      form.reset(); // << ini yang kamu butuhkan
+      form.reset();
     } catch (error: any) {
       console.error(
         "❌ Register gagal:",
@@ -136,38 +131,10 @@ export function SignupForm({
   };
 
   useEffect(() => {
-    if (!groups) return;
-
-    const selectedGroup = groups.find((g) => g.id === selectedGroupId);
-
-    if (selectedGroup) {
-      const name = selectedGroup.name.toLowerCase();
-
-      form.setValue("nim", "");
-      form.setValue("nim_proof", "");
-      form.setValue("nik", "");
-
-      if (name.includes("non-gunadarma")) {
-        form.setValue("role", "mahasiswa non-gunadarma");
-      } else if (name.includes("gunadarma")) {
-        form.setValue("role", "mahasiswa gunadarma");
-      } else if (name.includes("umum")) {
-        form.setValue("role", "umum");
-      }
-    }
-  }, [selectedGroupId, groups]);
-
-  useEffect(() => {
-    if (!groups || form.getValues("group_id")) return;
-
-    const defaultGroup = groups.find((g) =>
-      g.name.toLowerCase().includes("gunadarma")
-    );
-
-    if (defaultGroup) {
-      form.setValue("group_id", defaultGroup.id);
-    }
-  }, [groups]);
+    form.setValue("nim", "");
+    form.setValue("nim_proof", "");
+    form.setValue("nik", "");
+  }, [group_type]);
 
   return (
     <Form {...form}>
@@ -190,7 +157,7 @@ export function SignupForm({
         <div className="grid gap-6">
           <FormField
             control={form.control}
-            name="group_id"
+            name="group_type"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Pilih Kategori Peserta</FormLabel>
@@ -200,7 +167,7 @@ export function SignupForm({
                     value={field.value}
                     className="grid grid-cols-1 md:grid-cols-3 gap-4"
                   >
-                    {groups?.map((group) => (
+                    {groupOptions.map((group) => (
                       <div key={group.id}>
                         <RadioGroupItem
                           value={group.id}
@@ -342,7 +309,7 @@ export function SignupForm({
               </FormItem>
             )}
           />
-          {role !== "umum" && (
+          {group_type !== "umum" && (
             <>
               <FormField
                 control={form.control}
@@ -389,7 +356,7 @@ export function SignupForm({
               )}
             </>
           )}
-          {role === "umum" && (
+          {group_type === "umum" && (
             <>
               <FormField
                 control={form.control}
