@@ -28,11 +28,10 @@ import { toast } from "sonner";
 import { SignUpSchema } from "./_schema/signup-schema";
 import { DateTimePicker } from "../ui/date-time-picker";
 import { Textarea } from "../ui/textarea";
-import { useGetData } from "@/hooks/use-get-data";
-import { TGroup } from "./_types/group-type";
 import { useFileUploader } from "@/hooks/use-file-uploader";
 import Image from "next/image";
 import axiosInstance from "@/helpers/axios-instance";
+import { AxiosError } from "axios";
 
 const groupOptions = [
   { id: "mahasiswa_gunadarma", name: "Mahasiswa Gunadarma" },
@@ -97,7 +96,7 @@ export function SignupForm({
     setIsPending(true);
 
     try {
-      const payload: Record<string, any> = { ...values };
+      const payload: Record<string, unknown> = { ...values };
 
       if (values.group_type === "umum") {
         delete payload.nim;
@@ -115,7 +114,9 @@ export function SignupForm({
       });
 
       form.reset();
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+
       console.error(
         "❌ Register gagal:",
         error.response?.data || error.message

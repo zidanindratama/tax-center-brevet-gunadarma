@@ -23,6 +23,7 @@ import axiosInstance from "@/helpers/axios-instance";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
+import { AxiosError } from "axios";
 
 export function NavUser({
   user,
@@ -43,11 +44,13 @@ export function NavUser({
 
       toast.success("Berhasil logout!");
       router.push("/auth/sign-in");
-    } catch (error: any) {
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
       console.error("❌ Gagal logout:", error);
+
       toast.error("Gagal logout", {
         description:
-          error?.response?.data?.message || "Terjadi kesalahan saat logout.",
+          error.response?.data?.message || "Terjadi kesalahan saat logout.",
       });
     }
   };

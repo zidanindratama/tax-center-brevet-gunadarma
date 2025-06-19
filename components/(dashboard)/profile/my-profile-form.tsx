@@ -9,6 +9,8 @@ const MyProfileForm = () => {
     dataProtected: "users/me",
   });
 
+  console.log(myProfileData?.data);
+
   return <div>my profile form</div>;
 };
 

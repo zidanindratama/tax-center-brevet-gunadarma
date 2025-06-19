@@ -22,6 +22,7 @@ import { useState } from "react";
 import axiosInstance from "@/helpers/axios-instance";
 import { toast } from "sonner";
 import Cookies from "js-cookie";
+import { AxiosError } from "axios";
 
 export function SignInForm({
   className,
@@ -45,16 +46,17 @@ export function SignInForm({
       const res = await axiosInstance.post("/auth/login", values);
 
       const token = res.data.data.access_token;
-
       Cookies.set("access_token", token, { expires: 7 });
 
       toast.success("Berhasil login!");
       router.push("/dashboard");
-    } catch (error: any) {
-      console.error("❌ Login error:", error?.response?.data || error);
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+      console.error("❌ Login error:", error.response?.data || error.message);
+
       toast.error("Gagal login!", {
         description:
-          error?.response?.data?.message || "Terjadi kesalahan pada server.",
+          error.response?.data?.message || "Terjadi kesalahan pada server.",
       });
     } finally {
       setIsPending(false);

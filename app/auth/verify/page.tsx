@@ -1,7 +1,7 @@
 import VerifyCodeForm from "@/components/auth/verify-code-form";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { Suspense } from "react";
 
 const VerifyCodePage = () => {
   return (
@@ -33,7 +33,9 @@ const VerifyCodePage = () => {
           </div>
           <div className="flex flex-1 items-center justify-center">
             <div className="w-full max-w-xs md:max-w-lg">
-              <VerifyCodeForm />
+              <Suspense>
+                <VerifyCodeForm />
+              </Suspense>
             </div>
           </div>
         </div>
