@@ -17,6 +17,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
   Accordion,
   AccordionContent,
   AccordionItem,
@@ -28,9 +36,67 @@ import { HamburgerMenuIcon, HomeIcon } from "@radix-ui/react-icons";
 import { navLinks } from "@/lib/data/nav-links";
 import Link from "next/link";
 import Image from "next/image";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { useDecodedToken } from "@/hooks/use-decoded-token";
+import { TUser } from "../(dashboard)/profile/_types/user-type";
+import axiosInstance from "@/helpers/axios-instance";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { toast } from "sonner";
+import { AxiosError } from "axios";
 
 const Navbar = () => {
+  const decodedToken = useDecodedToken();
+
+  const [user, setUser] = useState<TUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const accessToken = Cookies.get("access_token");
+
+  const handleLogout = async () => {
+    const toastId = toast.loading("Sedang logout...");
+
+    try {
+      await axiosInstance.delete("/auth/logout");
+      Cookies.remove("access_token");
+      setUser(null);
+
+      toast.success("Berhasil logout!");
+    } catch (err) {
+      const error = err as AxiosError<{ message?: string }>;
+      console.error("❌ Gagal logout:", error);
+
+      toast.error("Gagal logout", {
+        description:
+          error.response?.data?.message || "Terjadi kesalahan saat logout.",
+      });
+    } finally {
+      toast.dismiss(toastId);
+    }
+  };
+
+  useEffect(() => {
+    if (!accessToken) {
+      setUser(null);
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchUser = async () => {
+      try {
+        const res = await axiosInstance.get("/users/me");
+        setUser(res.data.data);
+      } catch (err) {
+        console.error("❌ Gagal mengambil data user:", err);
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [accessToken]);
+
   return (
     <div className="sticky top-0 z-50 bg-background/70 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-6 py-4 border-b transition-colors">
       <div className="flex flex-row justify-between items-center max-w-7xl w-full mx-auto">
@@ -128,9 +194,46 @@ const Navbar = () => {
         </div>
         <div className="hidden md:flex flex-row gap-6">
           <ModeToggle />
-          <Button variant="purple" className="px-12 py-4 rounded-full" asChild>
-            <Link href={"/auth/sign-up"}>Daftar</Link>
-          </Button>
+          {isLoading ? (
+            <Button variant="outline" disabled>
+              Memuat...
+            </Button>
+          ) : user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src={user.avatar} />
+                  <AvatarFallback>
+                    {user.name?.charAt(0).toUpperCase() || "UG"}
+                  </AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/profile">Profil</Link>
+                </DropdownMenuItem>
+                {decodedToken?.role !== "siswa" && (
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout}>
+                  Signout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button
+              variant="purple"
+              className="px-12 py-4 rounded-full"
+              asChild
+            >
+              <Link href="/auth/sign-up">Daftar</Link>
+            </Button>
+          )}
         </div>
         <div className="flex md:hidden">
           <Sheet>
@@ -206,10 +309,45 @@ const Navbar = () => {
                     </AccordionItem>
                   </Accordion>
                   <div className="pt-6 flex flex-col gap-4">
+                    {isLoading ? (
+                      <Button variant="outline" disabled>
+                        Memuat...
+                      </Button>
+                    ) : user ? (
+                      <div className="flex justify-center">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Avatar className="cursor-pointer">
+                              <AvatarImage src={user.avatar} />
+                              <AvatarFallback>
+                                {user.name?.charAt(0).toUpperCase() || "UG"}
+                              </AvatarFallback>
+                            </Avatar>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="center">
+                            <DropdownMenuLabel>{user?.name}</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem asChild>
+                              <Link href="/dashboard/profile">Profil</Link>
+                            </DropdownMenuItem>
+                            {decodedToken?.role !== "siswa" && (
+                              <DropdownMenuItem asChild>
+                                <Link href="/dashboard">Dashboard</Link>
+                              </DropdownMenuItem>
+                            )}
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={handleLogout}>
+                              Signout
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ) : (
+                      <Button variant="purple" className="w-full" asChild>
+                        <Link href={"/auth/sign-up"}>Daftar</Link>
+                      </Button>
+                    )}
                     <ModeToggle className="w-full rounded-lg" />
-                    <Button variant="purple" className="w-full" asChild>
-                      <Link href={"/auth/sign-up"}>Daftar</Link>
-                    </Button>
                   </div>
                 </div>
               </SheetHeader>

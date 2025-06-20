@@ -50,7 +50,7 @@ export function GuruAction({ memberId }: Props) {
             <Link href={`/dashboard/guru/${memberId}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/guru/${memberId}/edit`}>Ubah Data</Link>
+            <Link href={`/dashboard/guru/${memberId}/update`}>Ubah Data</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>

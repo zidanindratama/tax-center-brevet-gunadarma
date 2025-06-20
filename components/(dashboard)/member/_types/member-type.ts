@@ -6,10 +6,12 @@ export type TMember = {
   avatar: string;
   created_at: string;
   updated_at: string;
-  role_type: string;
+  role_type: "admin" | "siswa" | "guru";
   profile: {
+    nik?: string;
     nim?: string;
     nim_proof?: string;
+    group_type: "mahasiswa_gunadarma" | "mahasiswa_non_gunadarma" | "umum";
     institution: string;
     origin: string;
     birth_date: string;

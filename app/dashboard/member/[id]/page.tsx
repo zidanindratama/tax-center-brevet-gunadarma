@@ -1,6 +1,6 @@
 "use client";
 
-import MemberDataTable from "@/components/(dashboard)/member/member-data-table";
+import MemberDetail from "@/components/(dashboard)/member/member-detail";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,9 +11,12 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { Suspense } from "react";
+import { useParams } from "next/navigation";
 
-export default function DashboardMemberDatatablePage() {
+const DashboardDetailMemberPage = () => {
+  const params = useParams();
+  const memberId = params.id as string;
+
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -29,18 +32,22 @@ export default function DashboardMemberDatatablePage() {
                 <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/dashboard/member">Member</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Member</BreadcrumbPage>
+                <BreadcrumbPage>Detail</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <Suspense>
-          <MemberDataTable />
-        </Suspense>
+        <MemberDetail memberId={memberId} />
       </div>
     </section>
   );
-}
+};
+
+export default DashboardDetailMemberPage;

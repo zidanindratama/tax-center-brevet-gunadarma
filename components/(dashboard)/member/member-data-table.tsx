@@ -31,7 +31,7 @@ const MemberDataTable = () => {
   const queryString = queryParams.toString();
 
   const { data, isLoading } = useGetData({
-    queryKey: ["users", queryString],
+    queryKey: ["members", queryString],
     dataProtected: `users?${queryString}`,
   });
 

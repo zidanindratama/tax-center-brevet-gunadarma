@@ -50,7 +50,7 @@ export function MemberAction({ memberId }: Props) {
             <Link href={`/dashboard/member/${memberId}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/member/${memberId}/edit`}>Ubah Data</Link>
+            <Link href={`/dashboard/member/${memberId}/update`}>Ubah Data</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
