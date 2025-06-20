@@ -35,7 +35,7 @@ export type DataTableProps<TData, TValue> = {
     page: number;
     limit: number;
     total: number;
-    totalPages: number;
+    total_pages: number;
   };
   filterOptions?: Record<
     string,
@@ -65,9 +65,9 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
-    pageCount: meta.totalPages,
+    pageCount: meta.total_pages,
   });
-  const isLastPage = page === meta.totalPages || data.length === 0;
+  const isLastPage = page === meta.total_pages || data.length === 0;
   const isFirstPage = page === 1;
 
   return (
@@ -166,7 +166,7 @@ export function DataTable<TData, TValue>({
 
       <div className="flex flex-row justify-between items-center mt-5">
         <h1 className="text-sm">
-          Halaman {page} dari {meta.totalPages}
+          Halaman {page} dari {meta.total_pages}
         </h1>
         <div className="flex items-center gap-2">
           <Button

@@ -38,7 +38,7 @@ export const useInfiniteFetcher = ({
     initialPageParam: 1,
     getNextPageParam: (lastPage) => {
       const meta = lastPage.meta;
-      return meta.page < meta.totalPages ? meta.page + 1 : undefined;
+      return meta.page < meta.total_pages ? meta.page + 1 : undefined;
     },
   });
 

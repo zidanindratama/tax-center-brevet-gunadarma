@@ -42,7 +42,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenuItem className="flex flex-row items-center justify-between gap-14">
             <Link href="/">
               <Image
-                src="/logo-tc.png"
+                src="/logo-dark-tc.png"
                 alt="Logo Tax Center"
                 width={150}
                 height={50}

@@ -42,7 +42,7 @@ const NewsDataTable = () => {
     page: 1,
     limit: 10,
     total: 0,
-    totalPages: 1,
+    total_pages: 1,
   };
 
   return (

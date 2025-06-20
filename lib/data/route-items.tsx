@@ -1,4 +1,4 @@
-import { Building2, LifeBuoy, Send, SquareTerminal, User } from "lucide-react";
+import { LifeBuoy, Send, SquareTerminal, User, Users } from "lucide-react";
 
 export const routeItems = {
   navMain: [
@@ -33,14 +33,14 @@ export const routeItems = {
   ],
   managementNav: [
     {
-      name: "Umum",
-      url: "/dashboard/member-umum",
-      icon: Building2,
+      name: "Member",
+      url: "/dashboard/member",
+      icon: User,
     },
     {
-      name: "Mahasiswa",
-      url: "/dashboard/member-mahasiswa",
-      icon: User,
+      name: "Guru",
+      url: "/dashboard/guru",
+      icon: Users,
     },
   ],
 };
