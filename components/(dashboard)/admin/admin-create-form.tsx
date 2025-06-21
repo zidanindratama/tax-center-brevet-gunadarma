@@ -2,10 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
-import { useGetData } from "@/hooks/use-get-data";
-import { usePutData } from "@/hooks/use-put-data";
 import { toast } from "sonner";
+import { usePostData } from "@/hooks/use-post-data";
+import { useFileUploader } from "@/hooks/use-file-uploader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -25,34 +24,20 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { Loader2 } from "lucide-react";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
-import { useFileUploader } from "@/hooks/use-file-uploader";
-import Link from "next/link";
-import Image from "next/image";
-import { TMember } from "./_types/member-type";
+import { Loader2 } from "lucide-react";
 import {
-  TUpdateMember,
-  updateMemberSchema,
-} from "./_schemas/update-member-schema";
+  createAdminSchema,
+  TCreateAdmin,
+} from "./_schemas/create-admin-schema";
 
-type Props = {
-  memberId: string;
-};
-
-const MemberUpdateForm = ({ memberId }: Props) => {
+const AdminCreateForm = () => {
   const { uploadFile } = useFileUploader();
 
-  const { data: memberData, isLoading } = useGetData({
-    queryKey: ["member-detail", memberId],
-    dataProtected: `users/${memberId}`,
-  });
-
-  const member: TMember = memberData?.data?.data;
-
-  const form = useForm<TUpdateMember>({
-    resolver: zodResolver(updateMemberSchema),
+  const form = useForm<TCreateAdmin>({
+    resolver: zodResolver(createAdminSchema),
     defaultValues: {
+      email: "",
       name: "",
       phone: "",
       avatar: "",
@@ -60,22 +45,24 @@ const MemberUpdateForm = ({ memberId }: Props) => {
       origin: "",
       birth_date: undefined,
       address: "",
+      role_type: "admin",
       group_type: "umum",
-      role_type: "siswa",
-      nim: "",
-      nim_proof: "",
-      nik: "",
+      password: "",
+      confirm_password: "",
     },
   });
 
-  const roleType = form.watch("role_type");
-  const groupType = form.watch("group_type");
-  const nimProofUrl = form.watch("nim_proof");
+  const mutation = usePostData({
+    queryKey: "admin-create",
+    dataProtected: "users",
+    successMessage: "Admin berhasil ditambahkan!",
+    backUrl: "/dashboard/admin",
+  });
 
   const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     type: "documents" | "images",
-    field: keyof TUpdateMember
+    field: keyof TCreateAdmin
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -83,43 +70,9 @@ const MemberUpdateForm = ({ memberId }: Props) => {
     form.setValue(field, url || "", { shouldValidate: true });
   };
 
-  const mutation = usePutData({
-    queryKey: "member",
-    dataProtected: `users/${memberId}`,
-    successMessage: "Data member berhasil diperbarui!",
-  });
-
-  const onSubmit = (values: TUpdateMember) => {
+  const onSubmit = (values: TCreateAdmin) => {
     mutation.mutate(values);
   };
-
-  useEffect(() => {
-    if (member) {
-      form.reset({
-        name: member.name,
-        phone: member.phone,
-        avatar: member.avatar,
-        institution: member.profile.institution,
-        origin: member.profile.origin,
-        birth_date: new Date(member.profile.birth_date),
-        address: member.profile.address,
-        group_type: member.profile.group_type || "umum",
-        role_type: member.role_type || "siswa",
-        nim: member.profile.nim || "",
-        nim_proof: member.profile.nim_proof || "",
-        nik: member.profile.nik || "",
-      });
-    }
-  }, [member, form]);
-
-  if (isLoading) return <p>Loading...</p>;
-
-  const showNimAndProof =
-    roleType === "siswa" &&
-    (groupType === "mahasiswa_gunadarma" ||
-      groupType === "mahasiswa_non_gunadarma");
-
-  const showNik = roleType === "siswa" && groupType === "umum";
 
   return (
     <Form {...form}>
@@ -134,12 +87,30 @@ const MemberUpdateForm = ({ memberId }: Props) => {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Update Member</CardTitle>
+            <CardTitle>Tambah Admin</CardTitle>
             <CardDescription>
-              Admin dapat memperbarui data profil member berikut.
+              Silakan isi data admin dengan lengkap.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Contoh: budi@email.com"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="name"
@@ -252,80 +223,43 @@ const MemberUpdateForm = ({ memberId }: Props) => {
               )}
             />
 
-            {/* NIM & Bukti NIM */}
-            {showNimAndProof && (
-              <>
-                <FormField
-                  control={form.control}
-                  name="nim"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>NIM</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Contoh: 123456789" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="nim_proof"
-                  render={() => (
-                    <FormItem>
-                      <FormLabel>Bukti NIM</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) =>
-                            handleFileChange(e, "images", "nim_proof")
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                {nimProofUrl && (
-                  <Link
-                    href={nimProofUrl}
-                    target="_blank"
-                    className="mt-2 block"
-                  >
-                    <Image
-                      src={nimProofUrl}
-                      alt="Bukti NIM"
-                      width={1800}
-                      height={1800}
-                      className="w-full object-cover rounded border"
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Kata Sandi</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Minimal 6 karakter"
+                      {...field}
                     />
-                  </Link>
-                )}
-              </>
-            )}
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            {/* NIK */}
-            {showNik && (
-              <FormField
-                control={form.control}
-                name="nik"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NIK</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Contoh: 3201234567890001"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            <FormField
+              control={form.control}
+              name="confirm_password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Konfirmasi Kata Sandi</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="password"
+                      placeholder="Ulangi kata sandi"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </CardContent>
+
           <CardFooter>
             <Button
               type="submit"
@@ -339,7 +273,7 @@ const MemberUpdateForm = ({ memberId }: Props) => {
                   Menyimpan...
                 </>
               ) : (
-                "Simpan Perubahan"
+                "Simpan Data"
               )}
             </Button>
           </CardFooter>
@@ -349,4 +283,4 @@ const MemberUpdateForm = ({ memberId }: Props) => {
   );
 };
 
-export default MemberUpdateForm;
+export default AdminCreateForm;

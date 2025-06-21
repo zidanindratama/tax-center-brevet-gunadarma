@@ -1,6 +1,6 @@
 "use client";
 
-import GuruDataTable from "@/components/(dashboard)/guru/guru-data-table";
+import AdminDataTable from "@/components/(dashboard)/admin/admin-data-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -15,7 +15,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { Suspense } from "react";
 
-export default function DashboardGuruDatatablePage() {
+export default function DashboardAdminDatatablePage() {
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -32,7 +32,7 @@ export default function DashboardGuruDatatablePage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Guru</BreadcrumbPage>
+                <BreadcrumbPage>Admin</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -41,11 +41,11 @@ export default function DashboardGuruDatatablePage() {
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="flex flex-row justify-end">
           <Button variant={"orange"} className="w-fit" asChild>
-            <Link href={"/dashboard/guru/create"}>Tambah Guru</Link>
+            <Link href={"/dashboard/admin/create"}>Tambah Admin</Link>
           </Button>
         </div>
         <Suspense>
-          <GuruDataTable />
+          <AdminDataTable />
         </Suspense>
       </div>
     </section>

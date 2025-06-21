@@ -170,7 +170,7 @@ const MyProfileForm = () => {
                   <FormItem>
                     <FormLabel>Nama Lengkap</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nama lengkap" {...field} />
+                      <Input placeholder="Contoh: Budi Santoso" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -184,7 +184,7 @@ const MyProfileForm = () => {
                   <FormItem>
                     <FormLabel>No. Telepon</FormLabel>
                     <FormControl>
-                      <Input placeholder="08xxxxxxxx" {...field} />
+                      <Input placeholder="Contoh: 081234567890" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -218,7 +218,10 @@ const MyProfileForm = () => {
                   <FormItem>
                     <FormLabel>Asal Institusi</FormLabel>
                     <FormControl>
-                      <Input placeholder="Nama institusi" {...field} />
+                      <Input
+                        placeholder="Contoh: SMA Negeri 1 Depok"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -232,7 +235,7 @@ const MyProfileForm = () => {
                   <FormItem>
                     <FormLabel>Asal Daerah</FormLabel>
                     <FormControl>
-                      <Input placeholder="Kota asal" {...field} />
+                      <Input placeholder="Contoh: Depok" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -249,7 +252,7 @@ const MyProfileForm = () => {
                       <DateTimePicker
                         value={field.value}
                         onChange={field.onChange}
-                        placeholder="dd/mm/yyyy"
+                        placeholder="Pilih tanggal lahir"
                       />
                     </FormControl>
                     <FormMessage />
@@ -264,7 +267,10 @@ const MyProfileForm = () => {
                   <FormItem>
                     <FormLabel>Alamat</FormLabel>
                     <FormControl>
-                      <Textarea placeholder="Alamat lengkap" {...field} />
+                      <Textarea
+                        placeholder="Contoh: Jl. Mawar No. 10, Depok"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -280,7 +286,7 @@ const MyProfileForm = () => {
                       <FormItem>
                         <FormLabel>NIM</FormLabel>
                         <FormControl>
-                          <Input placeholder="NIM" {...field} />
+                          <Input placeholder="Contoh: 123456789" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -306,6 +312,7 @@ const MyProfileForm = () => {
                       </FormItem>
                     )}
                   />
+
                   {nimProofUrl && (
                     <Link
                       href={nimProofUrl}
@@ -332,7 +339,10 @@ const MyProfileForm = () => {
                     <FormItem>
                       <FormLabel>NIK</FormLabel>
                       <FormControl>
-                        <Input placeholder="NIK" {...field} />
+                        <Input
+                          placeholder="Contoh: 3201234567890001"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

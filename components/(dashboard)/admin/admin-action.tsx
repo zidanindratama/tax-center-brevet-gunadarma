@@ -27,13 +27,13 @@ type Props = {
   memberId: string;
 };
 
-export function MemberAction({ memberId }: Props) {
+export function AdminAction({ memberId }: Props) {
   const [open, setOpen] = useState(false);
 
-  const deleteMember = useDeleteData({
-    queryKey: "member",
+  const deleteAdmin = useDeleteData({
+    queryKey: "admin",
     dataProtected: `users/${memberId}`,
-    successMessage: "Member berhasil dihapus!",
+    successMessage: "Admin berhasil dihapus!",
   });
 
   return (
@@ -47,10 +47,10 @@ export function MemberAction({ memberId }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/member/${memberId}`}>Lihat Detail</Link>
+            <Link href={`/dashboard/admin/${memberId}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/member/${memberId}/update`}>Ubah Data</Link>
+            <Link href={`/dashboard/admin/${memberId}/update`}>Ubah Data</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
@@ -65,7 +65,7 @@ export function MemberAction({ memberId }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus member ini?
+            Apakah kamu yakin ingin menghapus admin ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -76,7 +76,7 @@ export function MemberAction({ memberId }: Props) {
             variant="destructive"
             className="text-white"
             onClick={() => {
-              deleteMember.mutate();
+              deleteAdmin.mutate();
               setOpen(false);
             }}
           >

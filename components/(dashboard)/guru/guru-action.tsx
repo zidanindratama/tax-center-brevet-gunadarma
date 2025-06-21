@@ -74,6 +74,7 @@ export function GuruAction({ memberId }: Props) {
           </Button>
           <Button
             variant="destructive"
+            className="text-white"
             onClick={() => {
               deleteGuru.mutate();
               setOpen(false);

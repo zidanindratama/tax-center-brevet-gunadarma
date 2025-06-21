@@ -125,7 +125,7 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                 <FormItem>
                   <FormLabel>Nama Lengkap</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nama lengkap" {...field} />
+                    <Input placeholder="Contoh: Budi Santoso" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,7 +139,7 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                 <FormItem>
                   <FormLabel>No. Telepon</FormLabel>
                   <FormControl>
-                    <Input placeholder="08xxxxxxxx" {...field} />
+                    <Input placeholder="Contoh: 081234567890" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,7 +171,10 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                 <FormItem>
                   <FormLabel>Asal Institusi</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nama institusi" {...field} />
+                    <Input
+                      placeholder="Contoh: SMA Negeri 1 Depok"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -185,7 +188,7 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                 <FormItem>
                   <FormLabel>Asal Daerah</FormLabel>
                   <FormControl>
-                    <Input placeholder="Kota asal" {...field} />
+                    <Input placeholder="Contoh: Depok" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -202,7 +205,7 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                     <DateTimePicker
                       value={field.value}
                       onChange={field.onChange}
-                      placeholder="dd/mm/yyyy"
+                      placeholder="Pilih tanggal lahir"
                     />
                   </FormControl>
                   <FormMessage />
@@ -217,7 +220,10 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                 <FormItem>
                   <FormLabel>Alamat</FormLabel>
                   <FormControl>
-                    <Textarea placeholder="Alamat lengkap" {...field} />
+                    <Textarea
+                      placeholder="Contoh: Jl. Mawar No. 10, Depok"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

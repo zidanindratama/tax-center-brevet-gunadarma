@@ -1,4 +1,11 @@
-import { LifeBuoy, Send, SquareTerminal, User, Users } from "lucide-react";
+import {
+  LifeBuoy,
+  Send,
+  ShieldUser,
+  SquareTerminal,
+  User,
+  Users,
+} from "lucide-react";
 
 export const routeItems = {
   navMain: [
@@ -41,6 +48,11 @@ export const routeItems = {
       name: "Guru",
       url: "/dashboard/guru",
       icon: Users,
+    },
+    {
+      name: "Administrator",
+      url: "/dashboard/admin",
+      icon: ShieldUser,
     },
   ],
 };

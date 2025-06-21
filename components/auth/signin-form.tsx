@@ -84,8 +84,8 @@ export function SignInForm({
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="email@example.com"
                   type="email"
+                  placeholder="Contoh: budi@email.com"
                   {...field}
                 />
               </FormControl>
@@ -101,7 +101,11 @@ export function SignInForm({
             <FormItem>
               <FormLabel>Kata Sandi</FormLabel>
               <FormControl>
-                <Input placeholder="••••••••" type="password" {...field} />
+                <Input
+                  type="password"
+                  placeholder="Minimal 6 karakter"
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

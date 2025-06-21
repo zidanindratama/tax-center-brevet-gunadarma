@@ -198,7 +198,7 @@ export function SignupForm({
                 <FormItem>
                   <FormLabel>Nama Lengkap</FormLabel>
                   <FormControl>
-                    <Input placeholder="Budi Santoso" {...field} />
+                    <Input placeholder="Contoh: Budi Santoso" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -211,7 +211,7 @@ export function SignupForm({
                 <FormItem>
                   <FormLabel>Username</FormLabel>
                   <FormControl>
-                    <Input placeholder="budisantoso" {...field} />
+                    <Input placeholder="Contoh: budisantoso" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -226,8 +226,8 @@ export function SignupForm({
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="email@example.com"
                     type="email"
+                    placeholder="Contoh: budi@email.com"
                     {...field}
                   />
                 </FormControl>
@@ -242,7 +242,7 @@ export function SignupForm({
               <FormItem>
                 <FormLabel>No. Telepon</FormLabel>
                 <FormControl>
-                  <Input placeholder="08123456789" {...field} />
+                  <Input placeholder="Contoh: 08123456789" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -256,7 +256,10 @@ export function SignupForm({
                 <FormItem>
                   <FormLabel>Asal Institusi</FormLabel>
                   <FormControl>
-                    <Input placeholder="Universitas Gunadarma" {...field} />
+                    <Input
+                      placeholder="Contoh: Universitas Gunadarma"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -269,7 +272,7 @@ export function SignupForm({
                 <FormItem>
                   <FormLabel>Asal Daerah</FormLabel>
                   <FormControl>
-                    <Input placeholder="Jakarta" {...field} />
+                    <Input placeholder="Contoh: Jakarta" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -284,7 +287,7 @@ export function SignupForm({
                 <FormLabel htmlFor="datetime">Tanggal Lahir</FormLabel>
                 <FormControl>
                   <DateTimePicker
-                    placeholder="31/03/2003"
+                    placeholder="Contoh: 31/03/2003"
                     value={field.value}
                     onChange={field.onChange}
                   />
@@ -301,7 +304,7 @@ export function SignupForm({
                 <FormLabel>Alamat</FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder="Jl. Merdeka No. 10, Jakarta"
+                    placeholder="Contoh: Jl. Merdeka No. 10, Jakarta"
                     className="resize-none"
                     {...field}
                   />
@@ -319,7 +322,7 @@ export function SignupForm({
                   <FormItem>
                     <FormLabel>NIM</FormLabel>
                     <FormControl>
-                      <Input placeholder="123456789" {...field} />
+                      <Input placeholder="Contoh: 123456789" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -358,21 +361,19 @@ export function SignupForm({
             </>
           )}
           {group_type === "umum" && (
-            <>
-              <FormField
-                control={form.control}
-                name="nik"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>NIK</FormLabel>
-                    <FormControl>
-                      <Input placeholder="3201234567890001" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </>
+            <FormField
+              control={form.control}
+              name="nik"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>NIK</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Contoh: 3201234567890001" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           )}
           <FormField
             control={form.control}
@@ -381,7 +382,11 @@ export function SignupForm({
               <FormItem>
                 <FormLabel>Kata Sandi</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Minimal 6 karakter"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -394,7 +399,11 @@ export function SignupForm({
               <FormItem>
                 <FormLabel>Konfirmasi Kata Sandi</FormLabel>
                 <FormControl>
-                  <Input type="password" placeholder="••••••••" {...field} />
+                  <Input
+                    type="password"
+                    placeholder="Ulangi kata sandi"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -416,6 +425,7 @@ export function SignupForm({
             )}
           </Button>
         </div>
+
         <div className="text-center text-sm">
           Sudah punya akun?{" "}
           <Link href="/auth/sign-in" className="underline underline-offset-4">
