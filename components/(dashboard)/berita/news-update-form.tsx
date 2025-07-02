@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePostData } from "@/hooks/use-post-data";
+import { usePutData } from "@/hooks/use-put-data";
 import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import { useForm } from "react-hook-form";
 import { useFileUploader } from "@/hooks/use-file-uploader";
@@ -28,10 +28,25 @@ import {
   CreateNewsFormData,
   CreateNewsSchema,
 } from "./_schemas/news-create-schema";
+import { useGetData } from "@/hooks/use-get-data";
 import { Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 
-const NewsFormCreate = () => {
+type Props = {
+  newsSlug: string;
+};
+
+const NewsUpdateForm = ({ newsSlug }: Props) => {
+  const [isReady, setIsReady] = useState(false);
+
   const { uploadFile } = useFileUploader();
+
+  const { data, isLoading: isFetching } = useGetData({
+    queryKey: ["news", newsSlug],
+    dataProtected: `blogs/${newsSlug}`,
+  });
+
+  console.log(data?.data?.data);
 
   const form = useForm<CreateNewsFormData>({
     resolver: zodResolver(CreateNewsSchema),
@@ -43,10 +58,10 @@ const NewsFormCreate = () => {
     },
   });
 
-  const { mutate: submitNews, isPending } = usePostData({
+  const { mutate: updateNews, isPending } = usePutData({
     queryKey: "news",
-    dataProtected: `blogs`,
-    successMessage: "Berita berhasil ditambahkan!",
+    dataProtected: `blogs/${data?.data?.data?.id}`,
+    successMessage: "Berita berhasil diperbarui!",
     backUrl: "/dashboard/berita",
   });
 
@@ -64,16 +79,32 @@ const NewsFormCreate = () => {
       content: values.full_description,
       image: values.image,
     };
-    submitNews(payload);
+    updateNews(payload);
   };
+
+  useEffect(() => {
+    if (data?.data) {
+      form.reset({
+        title: data.data.data.title || "",
+        short_description: data.data.data.description || "",
+        full_description: data.data.data.content || "",
+        image: data.data.data.image || "",
+      });
+      setIsReady(true);
+    }
+  }, [data, form]);
+
+  if (!isReady) return null;
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card>
           <CardHeader>
-            <CardTitle>Tambah Berita</CardTitle>
-            <CardDescription>Isi informasi berita terbaru.</CardDescription>
+            <CardTitle>Update Berita</CardTitle>
+            <CardDescription>
+              Perbarui informasi berita di sini.
+            </CardDescription>
           </CardHeader>
 
           <CardContent className="grid grid-cols-1 gap-6">
@@ -84,7 +115,11 @@ const NewsFormCreate = () => {
                 <FormItem>
                   <FormLabel>Judul</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Judul berita" />
+                    <Input
+                      {...field}
+                      placeholder="Judul berita"
+                      disabled={isFetching}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -98,7 +133,11 @@ const NewsFormCreate = () => {
                 <FormItem>
                   <FormLabel>Deskripsi Singkat</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder="Deskripsi singkat" />
+                    <Textarea
+                      {...field}
+                      placeholder="Deskripsi singkat"
+                      disabled={isFetching}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -113,15 +152,28 @@ const NewsFormCreate = () => {
                   <FormLabel>Isi Berita</FormLabel>
                   <FormControl>
                     <MinimalTiptapEditor
+                      key={newsSlug}
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Masukkan isi lengkap berita..."
-                      autofocus={true}
-                      editable={true}
+                      autofocus={false}
+                      editable={!isFetching}
                       output="html"
                       className="w-full"
                       editorContentClassName="p-4 prose"
                     />
+                    {/* <MinimalTiptapEditor
+                      key={newsSlug}
+                      value={field.value}
+                      onChange={field.onChange}
+                      className="w-full"
+                      editorContentClassName="p-5"
+                      output="html"
+                      placeholder="Masukkan deskripsi lengkap pekerjaan..."
+                      autofocus={true}
+                      editable={true}
+                      editorClassName="focus:outline-none"
+                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -139,6 +191,7 @@ const NewsFormCreate = () => {
                       type="file"
                       accept="image/*"
                       onChange={handleFileChange}
+                      disabled={isFetching}
                     />
                   </FormControl>
                   <FormMessage />
@@ -150,7 +203,7 @@ const NewsFormCreate = () => {
           <CardFooter>
             <Button
               type="submit"
-              disabled={isPending}
+              disabled={isPending || isFetching}
               className="w-full md:w-fit"
               variant={"orange"}
             >
@@ -160,7 +213,7 @@ const NewsFormCreate = () => {
                   Menyimpan...
                 </>
               ) : (
-                "Simpan Data"
+                "Perbarui Data"
               )}
             </Button>
           </CardFooter>
@@ -170,4 +223,4 @@ const NewsFormCreate = () => {
   );
 };
 
-export default NewsFormCreate;
+export default NewsUpdateForm;

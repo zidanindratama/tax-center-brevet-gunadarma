@@ -1,7 +1,8 @@
 export type TNews = {
   id: string;
+  slug: string;
   title: string;
-  category: string;
-  created_at: string;
-  status: "PUBLISH" | "DRAFT";
+  description: string;
+  content: string;
+  image: string;
 };

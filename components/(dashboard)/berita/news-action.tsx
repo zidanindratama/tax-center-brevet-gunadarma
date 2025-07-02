@@ -24,14 +24,15 @@ import { Trash2, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
-  newsId: string;
+  newsSlug: string;
 };
 
-export function NewsAction({ newsId }: Props) {
+export function NewsAction({ newsSlug }: Props) {
   const [open, setOpen] = useState(false);
-  const deleteJob = useDeleteData({
+
+  const deleteNews = useDeleteData({
     queryKey: "news",
-    dataProtected: `news/${newsId}`,
+    dataProtected: `blogs/${newsSlug}`,
     successMessage: "Berita berhasil dihapus!",
   });
 
@@ -46,17 +47,10 @@ export function NewsAction({ newsId }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/berita/${newsId}`} target="_blank">
-              Lihat Detail
-            </Link>
+            <Link href={`/dashboard/berita/${newsSlug}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/berita/${newsId}`}>
-              Lihat Tahapan Rekrutmen
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href={`/dashboard/berita/${newsId}/ubah`}>Ubah Berita</Link>
+            <Link href={`/dashboard/berita/${newsSlug}/update`}>Ubah Data</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
@@ -71,7 +65,7 @@ export function NewsAction({ newsId }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus data berita ini?
+            Apakah kamu yakin ingin menghapus berita ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -80,8 +74,9 @@ export function NewsAction({ newsId }: Props) {
           </Button>
           <Button
             variant="destructive"
+            className="text-white"
             onClick={() => {
-              deleteJob.mutate();
+              deleteNews.mutate();
               setOpen(false);
             }}
           >
