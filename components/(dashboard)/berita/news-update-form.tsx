@@ -44,6 +44,9 @@ const NewsUpdateForm = ({ newsSlug }: Props) => {
   const { data, isLoading: isFetching } = useGetData({
     queryKey: ["news", newsSlug],
     dataProtected: `blogs/${newsSlug}`,
+    options: {
+      refetchOnWindowFocus: false,
+    },
   });
 
   const form = useForm<CreateNewsFormData>({
@@ -81,7 +84,7 @@ const NewsUpdateForm = ({ newsSlug }: Props) => {
   };
 
   useEffect(() => {
-    if (data?.data) {
+    if (data?.data?.data && !form.formState.isDirty) {
       form.reset({
         title: data.data.data.title || "",
         short_description: data.data.data.description || "",

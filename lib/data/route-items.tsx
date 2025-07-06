@@ -1,4 +1,5 @@
 import {
+  BookCopy,
   LifeBuoy,
   Send,
   ShieldUser,
@@ -9,6 +10,22 @@ import {
 
 export const routeItems = {
   navMain: [
+    {
+      title: "Kursus",
+      url: "/dashboard/kursus",
+      icon: BookCopy,
+      isActive: false,
+      items: [
+        {
+          title: "List Kursus",
+          url: "/dashboard/kursus",
+        },
+        {
+          title: "Tambah Kursus",
+          url: "/dashboard/kursus/tambah",
+        },
+      ],
+    },
     {
       title: "Berita",
       url: "/dashboard/berita",

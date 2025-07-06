@@ -1,13 +1,28 @@
 import axiosInstance from "@/helpers/axios-instance";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useQuery,
+  UseQueryOptions,
+} from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
 type fetchProps = {
   queryKey: [string, string] | [string];
   dataProtected: string;
+  options?: Partial<
+    UseQueryOptions<
+      AxiosResponse<any>, // TQueryFnData
+      Error, // TError
+      any // TData
+    >
+  >;
 };
 
-export const useGetData = ({ queryKey, dataProtected }: fetchProps) => {
+export const useGetData = ({
+  queryKey,
+  dataProtected,
+  options,
+}: fetchProps) => {
   const {
     data,
     isLoading,
@@ -21,6 +36,7 @@ export const useGetData = ({ queryKey, dataProtected }: fetchProps) => {
     queryFn: async () => await axiosInstance.get(`/${dataProtected}`),
     placeholderData: keepPreviousData,
     refetchIntervalInBackground: true,
+    ...options, // ← merge opsi tambahan
   });
 
   return {

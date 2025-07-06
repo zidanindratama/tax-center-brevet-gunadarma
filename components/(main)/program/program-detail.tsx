@@ -3,33 +3,120 @@
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { programDetail } from "@/lib/data/program-detail";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import { useGetData } from "@/hooks/use-get-data";
+import { Loader2 } from "lucide-react";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from "@/components/ui/carousel";
+import { useState, useEffect } from "react";
+import { TCourseImage } from "@/components/(dashboard)/kursus/_types/couurse-type";
+import NotFoundContent from "../not-found-content";
 
-export default function ProgramDetailPage() {
+type Props = {
+  courseSlug: string;
+};
+
+export default function CourseDetailPage({ courseSlug }: Props) {
+  const { data, isLoading } = useGetData({
+    queryKey: ["courses", courseSlug],
+    dataProtected: `courses/${courseSlug}`,
+  });
+
+  const course = data?.data?.data;
+
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    if (!api) return;
+    setCurrent(api.selectedScrollSnap() + 1);
+    api.on("select", () => setCurrent(api.selectedScrollSnap() + 1));
+  }, [api]);
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-96">
+        <Loader2 className="h-6 w-6 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  if (!course) {
+    return (
+      <div className="max-w-screen-md mx-auto py-16 px-6">
+        <NotFoundContent message="Kursus tidak ditemukan." />
+      </div>
+    );
+  }
+
+  const images = course.course_images?.length
+    ? course.course_images
+    : [{ image_url: "/placeholder-course.png" }];
+
   return (
     <section className="w-full py-16 dark:bg-background transition-colors">
       <div className="max-w-screen-xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
           <div className="space-y-4">
-            <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
-              <Image
-                src={programDetail.image}
-                alt={programDetail.title}
-                fill
-                className="object-cover"
-              />
-            </div>
+            <Carousel
+              setApi={setApi}
+              className="w-full rounded-xl overflow-hidden"
+            >
+              <CarouselContent>
+                {images.map((img: TCourseImage, index: number) => (
+                  <CarouselItem key={index}>
+                    <div className="relative w-full aspect-[4/3]">
+                      <Image
+                        src={img.image_url}
+                        alt={`${course.title} ${index + 1}`}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+
+            {images.length > 1 && (
+              <Carousel className="mt-4 w-full">
+                <CarouselContent className="flex my-1">
+                  {images.map((img: TCourseImage, index: number) => (
+                    <CarouselItem
+                      key={index}
+                      className={`basis-1/5 cursor-pointer ${
+                        current === index + 1 ? "opacity-100" : "opacity-50"
+                      }`}
+                      onClick={() => api?.scrollTo(index)}
+                    >
+                      <div className="relative aspect-square rounded overflow-hidden">
+                        <Image
+                          src={img.image_url}
+                          alt={`Thumbnail ${index + 1}`}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            )}
+
             <div className="space-y-1">
-              <h1 className="text-2xl font-bold">{programDetail.title}</h1>
+              <h1 className="text-2xl font-bold">{course.title}</h1>
               <p className="text-muted-foreground">
-                {programDetail.description}
+                {course.short_description}
               </p>
             </div>
-            <Button variant={"orange"} className="w-full" asChild>
-              <Link href="/jadwal-program">Lihat Jadwal Program</Link>
+
+            <Button variant="orange" className="w-full" asChild>
+              <Link href="/jadwal-program">Lihat Jadwal Kursus</Link>
             </Button>
           </div>
 
@@ -40,75 +127,40 @@ export default function ProgramDetailPage() {
                   value="tentang"
                   className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
                 >
-                  Tentang Program
+                  Tentang Kursus
                 </TabsTrigger>
                 <TabsTrigger
-                  value="manfaat"
+                  value="learning"
                   className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
                 >
-                  Manfaat
+                  Hasil Pembelajaran
                 </TabsTrigger>
                 <TabsTrigger
-                  value="keunggulan"
+                  value="achievements"
                   className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
                 >
-                  Keunggulan
-                </TabsTrigger>
-                <TabsTrigger
-                  value="fasilitas"
-                  className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
-                >
-                  Fasilitas
-                </TabsTrigger>
-                <TabsTrigger
-                  value="materi"
-                  className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
-                >
-                  Materi
-                </TabsTrigger>
-                <TabsTrigger
-                  value="peserta"
-                  className="rounded-none bg-background h-full data-[state=active]:shadow-none border border-b-[3px] border-transparent data-[state=active]:border-primary px-4 py-2 text-sm"
-                >
-                  Peserta
+                  Pencapaian
                 </TabsTrigger>
               </TabsList>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
+
             <TabsContent value="tentang">
               <div
                 className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.tentang }}
+                dangerouslySetInnerHTML={{ __html: course.description }}
               />
             </TabsContent>
-            <TabsContent value="manfaat">
+            <TabsContent value="learning">
               <div
                 className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.manfaat }}
+                dangerouslySetInnerHTML={{ __html: course.learning_outcomes }}
               />
             </TabsContent>
-            <TabsContent value="keunggulan">
+            <TabsContent value="achievements">
               <div
                 className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.keunggulan }}
-              />
-            </TabsContent>
-            <TabsContent value="fasilitas">
-              <div
-                className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.fasilitas }}
-              />
-            </TabsContent>
-            <TabsContent value="materi">
-              <div
-                className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.materi }}
-              />
-            </TabsContent>
-            <TabsContent value="peserta">
-              <div
-                className="prose dark:prose-invert max-w-none"
-                dangerouslySetInnerHTML={{ __html: programDetail.peserta }}
+                dangerouslySetInnerHTML={{ __html: course.achievements }}
               />
             </TabsContent>
           </Tabs>

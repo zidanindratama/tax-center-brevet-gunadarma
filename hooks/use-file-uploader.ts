@@ -8,7 +8,6 @@ export const useFileUploader = () => {
     file: File,
     type: UploadType
   ): Promise<string | null> => {
-    // Validasi berdasarkan tipe dan ukuran
     if (type === "documents" && file.size > 5 * 1024 * 1024) {
       toast.error("Ukuran file dokumen maksimal 5MB");
       return null;
@@ -34,7 +33,10 @@ export const useFileUploader = () => {
 
       toast.success("File berhasil diunggah!", { id: toastId });
 
-      return `https://be-brevet.tcugapps.com${res?.data.data}` || null;
+      if (res?.data?.data) {
+        return `https://be-brevet.tcugapps.com${res.data.data}`;
+      }
+      return null;
     } catch (error) {
       toast.error("Gagal mengunggah file", { id: toastId });
       return null;
