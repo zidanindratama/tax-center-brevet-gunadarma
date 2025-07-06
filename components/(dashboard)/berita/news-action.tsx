@@ -24,15 +24,16 @@ import { Trash2, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
+  newsId: string;
   newsSlug: string;
 };
 
-export function NewsAction({ newsSlug }: Props) {
+export function NewsAction({ newsId, newsSlug }: Props) {
   const [open, setOpen] = useState(false);
 
   const deleteNews = useDeleteData({
     queryKey: "news",
-    dataProtected: `blogs/${newsSlug}`,
+    dataProtected: `blogs/${newsId}`,
     successMessage: "Berita berhasil dihapus!",
   });
 
@@ -47,7 +48,7 @@ export function NewsAction({ newsSlug }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/berita/${newsSlug}`}>Lihat Detail</Link>
+            <Link href={`/berita/${newsSlug}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link href={`/dashboard/berita/${newsSlug}/update`}>Ubah Data</Link>

@@ -27,7 +27,7 @@ export const newsColumns: ColumnDef<TNews>[] = [
     header: "Deskripsi Singkat",
     cell: ({ row }) => (
       <div className="line-clamp-2">
-        {trimWords(row.original.description, 15)}
+        {trimWords(row.original.description, 8)}
       </div>
     ),
   },
@@ -35,12 +35,16 @@ export const newsColumns: ColumnDef<TNews>[] = [
     accessorKey: "slug",
     header: "Slug",
     cell: ({ row }) => (
-      <span className="text-gray-500">{row.original.slug}</span>
+      <span className="text-gray-500 max-w-[200px] truncate block">
+        {row.original.slug}
+      </span>
     ),
   },
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => <NewsAction newsSlug={row.original.slug} />,
+    cell: ({ row }) => (
+      <NewsAction newsId={row.original.id} newsSlug={row.original.slug} />
+    ),
   },
 ];

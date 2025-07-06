@@ -1,46 +1,31 @@
 "use client";
 
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { newsData } from "@/lib/data/news";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import NotFoundContent from "../not-found-content";
 import { Button } from "@/components/ui/button";
+import { useGetData } from "@/hooks/use-get-data";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TNews } from "@/components/(dashboard)/berita/_types/news-type";
 
 const NewsList = () => {
-  const [sort, setSort] = useState("latest");
-  const [categoryFilter, setCategoryFilter] = useState("semua");
   const [search, setSearch] = useState("");
 
-  const filteredPosts = newsData
-    .filter((post) => {
-      const matchCategory =
-        categoryFilter === "semua" ||
-        post.category.toLowerCase() === categoryFilter;
+  const queryParams = new URLSearchParams({
+    ...(search && { q: search }),
+  });
 
-      const matchSearch = post.title
-        .toLowerCase()
-        .includes(search.toLowerCase());
+  const queryString = queryParams.toString();
 
-      return matchCategory && matchSearch;
-    })
-    .sort((a, b) => {
-      if (sort === "latest")
-        return new Date(b.date).getTime() - new Date(a.date).getTime();
-      if (sort === "popular") return b.views - a.views;
-      return 0;
-    });
+  const { data, isLoading } = useGetData({
+    queryKey: ["blogs", queryString],
+    dataProtected: `blogs?${queryString}`,
+  });
+
+  const posts: TNews[] = data?.data?.data ?? [];
 
   return (
     <div className="max-w-screen-xl mx-auto py-16 px-6">
@@ -54,76 +39,57 @@ const NewsList = () => {
             dari Tax Center.
           </p>
         </div>
-
-        <Select defaultValue={sort} onValueChange={setSort}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Urutkan" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="latest">Terbaru</SelectItem>
-            <SelectItem value="popular">Paling Populer</SelectItem>
-          </SelectContent>
-        </Select>
       </div>
 
       <div className="mt-6 flex flex-col md:flex-row gap-4">
-        <Select defaultValue="semua" onValueChange={setCategoryFilter}>
-          <SelectTrigger className="w-full md:w-1/4">
-            <SelectValue placeholder="Filter Kategori" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem value="semua">Semua Kategori</SelectItem>
-              <SelectItem value="perpajakan">Perpajakan</SelectItem>
-              <SelectItem value="regulasi">Regulasi</SelectItem>
-              <SelectItem value="edukasi">Edukasi</SelectItem>
-              <SelectItem value="psak">PSAK</SelectItem>
-              <SelectItem value="audit">Audit</SelectItem>
-              <SelectItem value="teknologi">Teknologi</SelectItem>
-              <SelectItem value="tutorial">Tutorial</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
-
         <Input
           type="text"
           placeholder="Cari judul berita..."
-          className="w-full md:w-3/4"
+          className="w-full"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {filteredPosts.length === 0 ? (
+      <div className="mt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {isLoading ? (
+          [...Array(6)].map((_, idx) => (
+            <div
+              key={`skeleton-${idx}`}
+              className="rounded-xl bg-white dark:bg-muted border shadow-sm h-[400px] flex flex-col p-6"
+            >
+              <Skeleton className="w-full h-40 rounded-md mb-4" />
+              <Skeleton className="w-1/2 h-4 rounded mb-2" />
+              <Skeleton className="w-full h-4 rounded mb-2" />
+              <Skeleton className="w-full h-4 rounded" />
+            </div>
+          ))
+        ) : posts.length === 0 ? (
           <div className="col-span-full flex justify-center items-center py-10">
             <NotFoundContent message="Tidak ada berita yang ditemukan." />
           </div>
         ) : (
-          filteredPosts.map((post) => (
-            <div key={post.id} className="h-full">
-              <div className="rounded-xl bg-white dark:bg-muted border shadow-sm h-full flex flex-col transition-colors hover:shadow-md">
+          posts.map((post) => (
+            <div key={post.id} className="flex flex-col h-full">
+              <div className="rounded-xl bg-white dark:bg-muted border shadow-sm flex flex-col h-full transition hover:shadow-md">
                 <div className="relative w-full h-48 md:h-56">
                   <Image
-                    src={post.thumbnail}
+                    src={post.image}
                     alt={post.title}
                     fill
                     className="object-cover rounded-t-xl"
                   />
                 </div>
-                <div className="p-6 flex flex-col flex-1 text-muted-foreground dark:text-muted">
-                  <Badge variant="outline" className="w-fit mb-3 capitalize">
-                    {post.category}
-                  </Badge>
-                  <h4 className="text-lg font-semibold truncate text-foreground dark:text-white mb-2">
+                <div className="flex flex-col flex-1 p-6 text-muted-foreground dark:text-muted">
+                  <h4 className="text-lg font-semibold mb-2 text-foreground dark:text-white line-clamp-2">
                     {post.title}
                   </h4>
                   <p className="text-sm text-muted-foreground line-clamp-3">
-                    {post.excerpt}
+                    {post.description}
                   </p>
-                  <Button variant={"purple"} className="mt-6 w-fit" asChild>
+                  <Button variant="purple" className="mt-6 w-fit" asChild>
                     <Link href={`/berita/${post.slug}`}>
-                      Baca Selengkapnya{" "}
+                      Baca Selengkapnya
                       <ChevronRight className="ml-1 h-4 w-4" />
                     </Link>
                   </Button>

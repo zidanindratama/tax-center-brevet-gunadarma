@@ -46,8 +46,6 @@ const NewsUpdateForm = ({ newsSlug }: Props) => {
     dataProtected: `blogs/${newsSlug}`,
   });
 
-  console.log(data?.data?.data);
-
   const form = useForm<CreateNewsFormData>({
     resolver: zodResolver(CreateNewsSchema),
     defaultValues: {
