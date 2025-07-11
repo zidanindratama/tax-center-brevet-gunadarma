@@ -22,19 +22,23 @@ import {
 import { useState } from "react";
 import { Trash2, MoreHorizontal } from "lucide-react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 type Props = {
-  courseId: string;
-  courseSlug: string;
+  batchId: string;
+  batchSlug: string;
 };
 
-export function CourseAction({ courseId, courseSlug }: Props) {
+export function BatchAction({ batchId, batchSlug }: Props) {
+  const params = useParams();
+  const courseSlug = params.slug as string;
+
   const [open, setOpen] = useState(false);
 
-  const deleteCourse = useDeleteData({
-    queryKey: "courses",
-    dataProtected: `courses/${courseId}`,
-    successMessage: "Kursus berhasil dihapus!",
+  const deleteBatch = useDeleteData({
+    queryKey: "batches",
+    dataProtected: `batches/${batchId}`,
+    successMessage: "Batch berhasil dihapus!",
   });
 
   return (
@@ -48,15 +52,12 @@ export function CourseAction({ courseId, courseSlug }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/program/${courseSlug}`}>Lihat Detail</Link>
+            <Link href={`/dashboard/batch/${batchSlug}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/kursus/${courseSlug}/gelombang`}>
-              Lihat Gelombang
-            </Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <Link href={`/dashboard/kursus/${courseSlug}/update`}>
+            <Link
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/update`}
+            >
               Ubah Data
             </Link>
           </DropdownMenuItem>
@@ -73,7 +74,7 @@ export function CourseAction({ courseId, courseSlug }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus kursus ini?
+            Apakah kamu yakin ingin menghapus batch ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -84,7 +85,7 @@ export function CourseAction({ courseId, courseSlug }: Props) {
             variant="destructive"
             className="text-white"
             onClick={() => {
-              deleteCourse.mutate();
+              deleteBatch.mutate();
               setOpen(false);
             }}
           >

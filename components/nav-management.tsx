@@ -20,7 +20,7 @@ export function NavManagement({
 }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Manajemen</SidebarGroupLabel>
+      <SidebarGroupLabel>Manajemen Pengguna</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>

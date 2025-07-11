@@ -4,13 +4,16 @@ import { ColumnDef } from "@tanstack/react-table";
 import { TNews } from "./_types/news-type";
 import { NewsAction } from "./news-action";
 import { trimWords } from "@/lib/utils";
+import Image from "next/image";
 
 export const newsColumns: ColumnDef<TNews>[] = [
   {
     accessorKey: "image",
     header: "Gambar",
     cell: ({ row }) => (
-      <img
+      <Image
+        width={900}
+        height={900}
         src={row.original.image}
         alt={row.original.title}
         className="h-16 w-24 object-cover rounded-md border"
