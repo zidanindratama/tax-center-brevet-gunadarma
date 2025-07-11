@@ -74,7 +74,7 @@ export function BatchAction({ batchId, batchSlug }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus batch ini?
+            Apakah kamu yakin ingin menghapus gelombang ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

@@ -1,12 +1,19 @@
-"use client";
-
 import { ColumnDef } from "@tanstack/react-table";
 import { TCourseBatch } from "./_types/course-batch-type";
-import { trimWords } from "@/lib/utils";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
 import { BatchAction } from "./batch-action";
+
+const dayLabels: Record<string, string> = {
+  monday: "Senin",
+  tuesday: "Selasa",
+  wednesday: "Rabu",
+  thursday: "Kamis",
+  friday: "Jumat",
+  saturday: "Sabtu",
+  sunday: "Minggu",
+};
 
 export const batchColumns: ColumnDef<TCourseBatch>[] = [
   {
@@ -33,15 +40,6 @@ export const batchColumns: ColumnDef<TCourseBatch>[] = [
     cell: ({ row }) => <div className="font-medium">{row.original.title}</div>,
   },
   {
-    accessorKey: "description",
-    header: "Deskripsi",
-    cell: ({ row }) => (
-      <div className="line-clamp-2">
-        {trimWords(row.original.description, 10)}
-      </div>
-    ),
-  },
-  {
     accessorKey: "room",
     header: "Ruangan",
     cell: ({ row }) => <span>{row.original.room}</span>,
@@ -59,6 +57,24 @@ export const batchColumns: ColumnDef<TCourseBatch>[] = [
       return (
         <div className="text-sm text-muted-foreground">
           {start} - {end}
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "days",
+    header: "Hari",
+    cell: ({ row }) => {
+      const days = row.original.days || [];
+      if (days.length === 0) {
+        return <span className="text-muted-foreground">-</span>;
+      }
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {days.map((d) => (
+            <Badge key={d.id}>{dayLabels[d.day] || d.day}</Badge>
+          ))}
         </div>
       );
     },

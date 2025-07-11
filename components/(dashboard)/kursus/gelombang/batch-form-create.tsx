@@ -39,11 +39,20 @@ import {
 import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
+import { useGetData } from "@/hooks/use-get-data";
 
 const BatchFormCreate = () => {
   const { uploadFile } = useFileUploader();
   const params = useParams();
   const courseSlug = params.slug as string;
+
+  const { data } = useGetData({
+    queryKey: ["courses", courseSlug],
+    dataProtected: `courses/${courseSlug}`,
+    options: {
+      refetchOnWindowFocus: false,
+    },
+  });
 
   const form = useForm<CreateBatchFormData>({
     resolver: zodResolver(CreateBatchSchema),
@@ -62,7 +71,7 @@ const BatchFormCreate = () => {
 
   const { mutate: submitBatch, isPending } = usePostData({
     queryKey: "batches",
-    dataProtected: `courses/${courseSlug}/batches`,
+    dataProtected: `courses/${data?.data?.data.id}/batches`,
     successMessage: "Gelombang berhasil ditambahkan!",
     backUrl: `/dashboard/kursus/${courseSlug}/gelombang`,
   });

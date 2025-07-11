@@ -41,6 +41,7 @@ import {
 } from "@/components/ui/select";
 import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
+import { TCourseBatch } from "./_types/course-batch-type";
 
 const BatchFormUpdate = () => {
   const { uploadFile } = useFileUploader();
@@ -70,16 +71,19 @@ const BatchFormUpdate = () => {
     dataProtected: `batches/${batchSlug}`,
   });
 
+  console.log(data?.data?.data);
+
   const { mutate: updateBatch, isPending } = usePutData({
     queryKey: "batches",
-    dataProtected: `batches/${batchSlug}`,
+    dataProtected: `batches/${data?.data?.data?.id}`,
     successMessage: "Gelombang berhasil diperbarui!",
     backUrl: `/dashboard/kursus/${courseSlug}/gelombang`,
   });
 
   useEffect(() => {
     if (data?.data?.data && !form.formState.isDirty) {
-      const batch = data.data.data;
+      const batch: TCourseBatch = data.data.data;
+
       form.reset({
         title: batch.title || "",
         description: batch.description || "",
@@ -88,9 +92,10 @@ const BatchFormUpdate = () => {
         room: batch.room || "",
         quota: batch.quota || 50,
         batch_thumbnail: batch.batch_thumbnail || "",
-        days: batch.days || [],
+        days: batch.days.map((d) => d.day) || [],
         course_type: batch.course_type || "offline",
       });
+
       setIsReady(true);
     }
   }, [data, form]);

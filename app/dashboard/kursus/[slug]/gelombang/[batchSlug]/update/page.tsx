@@ -37,8 +37,10 @@ const DashboardGelombangKursusTambahPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href={`/dashboard/kursus/${courseSlug}`}>
-                  Kursus
+                <BreadcrumbLink
+                  href={`/dashboard/kursus/${courseSlug}/gelombang`}
+                >
+                  Gelombang
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
