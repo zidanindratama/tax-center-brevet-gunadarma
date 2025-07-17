@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useGetData } from "@/hooks/use-get-data";
 import { TCourse } from "@/components/(dashboard)/kursus/_types/couurse-type";
+import { Skeleton } from "../ui/skeleton";
 
 const FeaturedPrograms = () => {
   const { data, isLoading, isError } = useGetData({
@@ -30,8 +31,23 @@ const FeaturedPrograms = () => {
         </h2>
 
         {isLoading && (
-          <div className="flex justify-center items-center h-40">
-            <p className="text-muted-foreground">Memuat program unggulan...</p>
+          <div className="mt-8 xs:mt-14 w-full mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <Card
+                key={i}
+                className="flex flex-col border rounded-xl overflow-hidden shadow-none"
+              >
+                <div className="p-4 space-y-3">
+                  <Skeleton className="h-5 w-2/3" />
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-5/6" />
+                  <Skeleton className="h-4 w-4/6" />
+                </div>
+                <div className="mt-auto px-0 pb-0">
+                  <Skeleton className="w-full h-48 rounded-tl-xl" />
+                </div>
+              </Card>
+            ))}
           </div>
         )}
 

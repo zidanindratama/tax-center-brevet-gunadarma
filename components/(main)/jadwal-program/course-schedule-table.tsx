@@ -1,5 +1,8 @@
 "use client";
 
+import * as React from "react";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
 import {
   Table,
   TableBody,
@@ -8,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -26,163 +28,165 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { Button } from "@/components/ui/button";
-import { courseSchedules } from "@/lib/data/course-schedules";
-import { formatPeriode } from "./_libs/format-periode";
-import Link from "next/link";
-import * as React from "react";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { useGetData } from "@/hooks/use-get-data";
+import { Skeleton } from "@/components/ui/skeleton";
+import { TCourseBatch } from "@/components/(dashboard)/kursus/gelombang/_types/course-batch-type";
+import { formatPeriode } from "../kursus/_libs/format-periode";
+import { useSearchParams } from "next/navigation";
 
 export default function CourseScheduleTable() {
-  const [programFilter, setProgramFilter] = React.useState("");
-  const [kategoriFilter, setKategoriFilter] = React.useState("");
-  const [monthFilter, setMonthFilter] = React.useState("");
+  const searchParams = useSearchParams();
+  const slug = searchParams.get("slug");
+
   const [search, setSearch] = React.useState("");
+  const [courseType, setCourseType] = React.useState("");
+  const [page, setPage] = React.useState(1);
+  const limit = 10;
 
-  const filteredData = courseSchedules.filter((item) => {
-    const matchesProgram =
-      programFilter === "" ||
-      programFilter === "semua" ||
-      item.program === programFilter;
-
-    const matchesKategori =
-      kategoriFilter === "" ||
-      kategoriFilter === "semua" ||
-      item.kategori === kategoriFilter;
-
-    const matchesMonth =
-      monthFilter === "" ||
-      monthFilter === "semua" ||
-      new Date(item.startDate).getMonth().toString() === monthFilter;
-
-    const matchesSearch = item.jenisKelas
-      .toLowerCase()
-      .includes(search.toLowerCase());
-
-    return (
-      matchesProgram &&
-      matchesKategori &&
-      matchesMonth &&
-      matchesSearch &&
-      item.program !== "workshop"
-    );
+  const queryParams = new URLSearchParams({
+    ...(courseType && courseType !== "semua" && { course_type: courseType }),
+    ...(search && { q: search }),
+    page: page.toString(),
+    limit: limit.toString(),
   });
+
+  const queryString = queryParams.toString();
+
+  const { data, isLoading, isError } = useGetData({
+    queryKey: ["batches", slug ?? ""],
+    dataProtected: slug
+      ? `courses/${slug}/batches?${queryString}`
+      : `batches?${queryString}`,
+    options: {
+      enabled: true,
+    },
+  });
+
+  const result = data?.data;
+  const batches: TCourseBatch[] = result?.data ?? [];
+  const totalPages: number = result?.meta?.total_pages ?? 1;
+
+  const handleReset = () => {
+    setSearch("");
+    setCourseType("");
+    setPage(1);
+  };
 
   return (
     <section className="min-h-[calc(80vh-4rem)]">
       <div className="w-full max-w-screen-xl mx-auto px-6 py-12">
-        <h2 className="text-2xl font-bold mb-2">Daftar Jadwal Program</h2>
+        <h2 className="text-2xl font-bold mb-2">Jadwal Program</h2>
         <p className="text-muted-foreground md:max-w-2xl mb-6">
-          Temukan informasi lengkap mengenai jadwal program yang tersedia
-          seperti Brevet, BFA, dan pelatihan lainnya. Gunakan filter untuk
-          mempermudah pencarian.
+          Telusuri jadwal kursus berdasarkan kategori kelas atau judul kursus.
         </p>
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
-          <Select onValueChange={setMonthFilter}>
-            <SelectTrigger className="w-full md:w-1/4">
-              <SelectValue placeholder="Filter Bulan" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="semua">Semua Bulan</SelectItem>
-                <SelectItem value="0">Januari</SelectItem>
-                <SelectItem value="1">Februari</SelectItem>
-                <SelectItem value="2">Maret</SelectItem>
-                <SelectItem value="3">April</SelectItem>
-                <SelectItem value="4">Mei</SelectItem>
-                <SelectItem value="5">Juni</SelectItem>
-                <SelectItem value="6">Juli</SelectItem>
-                <SelectItem value="7">Agustus</SelectItem>
-                <SelectItem value="8">September</SelectItem>
-                <SelectItem value="9">Oktober</SelectItem>
-                <SelectItem value="10">November</SelectItem>
-                <SelectItem value="11">Desember</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
 
-          <Select onValueChange={setProgramFilter}>
-            <SelectTrigger className="w-full md:w-1/4">
-              <SelectValue placeholder="Filter Program" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="semua">Semua Program</SelectItem>
-                <SelectItem value="brevet-a-b">Kursus Brevet A & B</SelectItem>
-                <SelectItem value="brevet-c">Kursus Brevet C</SelectItem>
-                <SelectItem value="basic-accounting">
-                  Basic Financial Accounting
-                </SelectItem>
-                <SelectItem value="psak">PSAK for Professional</SelectItem>
-                <SelectItem value="uskp">Kelas Persiapan USKP</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Select onValueChange={setKategoriFilter}>
-            <SelectTrigger className="w-full md:w-1/4">
-              <SelectValue placeholder="Filter Kategori" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectGroup>
-                <SelectItem value="semua">Semua Kategori</SelectItem>
-                <SelectItem value="offline">Offline</SelectItem>
-                <SelectItem value="online">Online</SelectItem>
-              </SelectGroup>
-            </SelectContent>
-          </Select>
+        <div className="flex flex-col md:flex-row gap-4 mb-6 items-start md:items-end">
+          <div className="flex-1">
+            <Select
+              value={courseType || "semua"}
+              onValueChange={(val) => {
+                setCourseType(val);
+                setPage(1);
+              }}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Filter Kategori" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="semua">Semua Kategori</SelectItem>
+                  <SelectItem value="offline">Offline</SelectItem>
+                  <SelectItem value="online">Online</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          </div>
 
           <Input
             type="text"
-            placeholder="Cari jenis kelas..."
-            className="w-full md:w-1/2"
+            placeholder="Cari nama kursus..."
+            className="flex-1"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              setPage(1);
+            }}
           />
+
+          <Button variant="outline" onClick={handleReset}>
+            Reset
+          </Button>
         </div>
+
         <div className="grid w-full [&>div]:border [&>div]:rounded">
           <Table>
             <TableHeader>
               <TableRow className="sticky top-0 bg-background">
                 <TableHead className="pl-4">Nama Kursus</TableHead>
-                <TableHead>Program</TableHead>
                 <TableHead>Periode</TableHead>
-                <TableHead>Jenis Kelas</TableHead>
-                <TableHead>Waktu</TableHead>
+                <TableHead>Hari</TableHead>
                 <TableHead>Kategori</TableHead>
                 <TableHead>Lokasi / Platform</TableHead>
                 <TableHead>Info</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredData.length === 0 ? (
+              {isLoading ? (
+                Array.from({ length: 5 }).map((_, i) => (
+                  <TableRow key={i}>
+                    {Array.from({ length: 6 }).map((__, j) => (
+                      <TableCell key={j}>
+                        <Skeleton className="h-4 w-full" />
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : isError ? (
                 <TableRow>
                   <TableCell
-                    colSpan={7}
+                    colSpan={6}
+                    className="text-center py-6 text-destructive"
+                  >
+                    Gagal memuat data. Silakan coba lagi.
+                  </TableCell>
+                </TableRow>
+              ) : batches.length === 0 ? (
+                <TableRow>
+                  <TableCell
+                    colSpan={6}
                     className="text-center py-6 text-muted-foreground"
                   >
                     Tidak ada data yang ditemukan.
                   </TableCell>
                 </TableRow>
               ) : (
-                filteredData.map((item) => (
+                batches.map((item) => (
                   <TableRow key={item.id} className="odd:bg-muted/50">
-                    <TableCell className="pl-4">{item.namaKursus}</TableCell>
+                    <TableCell className="pl-4 font-medium">
+                      {item.title}
+                    </TableCell>
+                    <TableCell>
+                      {formatPeriode(item.start_at, item.end_at)}
+                    </TableCell>
+                    <TableCell>
+                      {item.days.map((d) => d.day).join(" & ")}
+                    </TableCell>
                     <TableCell>
                       <Badge
-                        variant={"outline"}
-                        className="text-xs font-medium capitalize"
+                        variant="outline"
+                        className="capitalize text-xs font-medium"
                       >
-                        {item.program.replace(/-/g, " ")}
+                        {item.course_type}
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      {formatPeriode(item.startDate, item.endDate)}
+                      {item.course_type === "online"
+                        ? "Online (Zoom/Google Meet)"
+                        : item.room}
                     </TableCell>
-                    <TableCell>{item.jenisKelas}</TableCell>
-                    <TableCell>{item.waktu}</TableCell>
-                    <TableCell>{item.kategori}</TableCell>
-                    <TableCell>{item.lokasi}</TableCell>
                     <TableCell>
                       <Button
                         variant="purple"
@@ -199,22 +203,72 @@ export default function CourseScheduleTable() {
             </TableBody>
           </Table>
         </div>
-        <Pagination className="mt-10">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+        {totalPages > 1 && (
+          <Pagination className="mt-8 justify-center">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPage((p) => Math.max(p - 1, 1));
+                  }}
+                  className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+                />
+              </PaginationItem>
+
+              {Array.from({ length: totalPages }).map((_, i) => {
+                const pageNumber = i + 1;
+                const isActive = pageNumber === page;
+                if (
+                  pageNumber !== 1 &&
+                  pageNumber !== totalPages &&
+                  Math.abs(pageNumber - page) > 1
+                ) {
+                  if (
+                    (pageNumber === page - 2 && page > 3) ||
+                    (pageNumber === page + 2 && page < totalPages - 2)
+                  ) {
+                    return (
+                      <PaginationItem key={pageNumber}>
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    );
+                  }
+                  return null;
+                }
+
+                return (
+                  <PaginationItem key={pageNumber}>
+                    <PaginationLink
+                      href="#"
+                      isActive={isActive}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setPage(pageNumber);
+                      }}
+                    >
+                      {pageNumber}
+                    </PaginationLink>
+                  </PaginationItem>
+                );
+              })}
+
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setPage((p) => Math.min(p + 1, totalPages));
+                  }}
+                  className={
+                    page >= totalPages ? "pointer-events-none opacity-50" : ""
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </section>
   );

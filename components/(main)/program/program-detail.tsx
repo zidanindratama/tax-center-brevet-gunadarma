@@ -16,6 +16,7 @@ import {
 import { useState, useEffect } from "react";
 import { TCourseImage } from "@/components/(dashboard)/kursus/_types/couurse-type";
 import NotFoundContent from "../not-found-content";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   courseSlug: string;
@@ -40,9 +41,39 @@ export default function CourseDetailPage({ courseSlug }: Props) {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-96">
-        <Loader2 className="h-6 w-6 animate-spin text-primary" />
-      </div>
+      <section className="w-full py-16 dark:bg-background transition-colors">
+        <div className="max-w-screen-xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-start">
+            <div className="space-y-4">
+              <Skeleton className="w-full aspect-[4/3] rounded-xl" />
+              <div className="flex gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} className="h-16 w-16 rounded" />
+                ))}
+              </div>
+              <Skeleton className="h-8 w-3/4 rounded" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-2/3" />
+              <Skeleton className="h-10 w-full rounded" />
+            </div>
+
+            {/* Kanan: Tabs Skeleton */}
+            <div className="space-y-4">
+              <div className="flex gap-4 border-b">
+                {[...Array(3)].map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-32 rounded-none" />
+                ))}
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-4/5" />
+                <Skeleton className="h-4 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-4 w-2/3" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
     );
   }
 
@@ -116,7 +147,9 @@ export default function CourseDetailPage({ courseSlug }: Props) {
             </div>
 
             <Button variant="orange" className="w-full" asChild>
-              <Link href="/jadwal-program">Lihat Jadwal Kursus</Link>
+              <Link href={`/jadwal-program?slug=${courseSlug}`}>
+                Lihat Jadwal Kursus
+              </Link>
             </Button>
           </div>
 

@@ -10,12 +10,25 @@ import { Button } from "@/components/ui/button";
 import { useGetData } from "@/hooks/use-get-data";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TNews } from "@/components/(dashboard)/berita/_types/news-type";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 const NewsList = () => {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const limit = 6;
 
   const queryParams = new URLSearchParams({
     ...(search && { q: search }),
+    page: page.toString(),
+    limit: limit.toString(),
   });
 
   const queryString = queryParams.toString();
@@ -26,6 +39,7 @@ const NewsList = () => {
   });
 
   const posts: TNews[] = data?.data?.data ?? [];
+  const totalPages: number = data?.data?.meta?.total_pages ?? 1;
 
   return (
     <div className="max-w-screen-xl mx-auto py-16 px-6">
@@ -47,7 +61,10 @@ const NewsList = () => {
           placeholder="Cari judul berita..."
           className="w-full"
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
         />
       </div>
 
@@ -99,6 +116,74 @@ const NewsList = () => {
           ))
         )}
       </div>
+
+      {totalPages > 1 && (
+        <Pagination className="mt-12 justify-center">
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage((p) => Math.max(p - 1, 1));
+                }}
+                className={page <= 1 ? "pointer-events-none opacity-50" : ""}
+              />
+            </PaginationItem>
+
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const pageNumber = i + 1;
+              const isActive = pageNumber === page;
+
+              if (
+                pageNumber !== 1 &&
+                pageNumber !== totalPages &&
+                Math.abs(pageNumber - page) > 1
+              ) {
+                if (
+                  (pageNumber === page - 2 && page > 3) ||
+                  (pageNumber === page + 2 && page < totalPages - 2)
+                ) {
+                  return (
+                    <PaginationItem key={pageNumber}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  );
+                }
+                return null;
+              }
+
+              return (
+                <PaginationItem key={pageNumber}>
+                  <PaginationLink
+                    href="#"
+                    isActive={isActive}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setPage(pageNumber);
+                    }}
+                  >
+                    {pageNumber}
+                  </PaginationLink>
+                </PaginationItem>
+              );
+            })}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setPage((p) => Math.min(p + 1, totalPages));
+                }}
+                className={
+                  page >= totalPages ? "pointer-events-none opacity-50" : ""
+                }
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 };

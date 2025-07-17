@@ -34,7 +34,7 @@ export const useFileUploader = () => {
       toast.success("File berhasil diunggah!", { id: toastId });
 
       if (res?.data?.data) {
-        return `https://be-brevet.tcugapps.com${res.data.data}`;
+        return `${res.data.data}`;
       }
       return null;
     } catch (error) {
