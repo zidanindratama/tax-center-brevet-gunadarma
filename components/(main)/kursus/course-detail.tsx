@@ -160,7 +160,7 @@ export default function CourseDetail() {
           </Table>
 
           <Button className="w-full mt-5" variant="orange" asChild>
-            <Link href={`/not-found`}>Daftar Sekarang</Link>
+            <Link href={`/pembayaran/${batch.slug}`}>Daftar Sekarang</Link>
           </Button>
         </div>
       </div>

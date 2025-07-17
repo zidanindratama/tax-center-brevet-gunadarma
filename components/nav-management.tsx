@@ -11,16 +11,18 @@ import { type LucideIcon } from "lucide-react";
 
 export function NavManagement({
   projects,
+  title,
 }: {
   projects: {
     name: string;
     url: string;
     icon: LucideIcon;
   }[];
+  title: string;
 }) {
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
-      <SidebarGroupLabel>Manajemen Pengguna</SidebarGroupLabel>
+      <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>

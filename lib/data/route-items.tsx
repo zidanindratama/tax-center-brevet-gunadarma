@@ -1,6 +1,7 @@
 import {
   BookCopy,
   LifeBuoy,
+  ScanText,
   Send,
   ShieldUser,
   SquareTerminal,
@@ -9,6 +10,7 @@ import {
 } from "lucide-react";
 
 export const routeItems = {
+  // ADMIN
   navMain: [
     {
       title: "Kursus",
@@ -70,6 +72,22 @@ export const routeItems = {
       name: "Administrator",
       url: "/dashboard/admin",
       icon: ShieldUser,
+    },
+  ],
+  managementTransaction: [
+    {
+      name: "Transaksi",
+      url: "/dashboard/transaksi",
+      icon: ScanText,
+    },
+  ],
+
+  // MAHASISWA
+  managementPurchasing: [
+    {
+      name: "Pembayaran",
+      url: "/dashboard/pembayaran",
+      icon: ScanText,
     },
   ],
 };

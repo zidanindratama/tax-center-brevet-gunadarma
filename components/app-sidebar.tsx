@@ -23,6 +23,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useGetData } from "@/hooks/use-get-data";
 import { TUser } from "./(dashboard)/profile/_types/user-type";
+import { useFilteredNavMain } from "@/hooks/use-filter-nav-main";
+import { useFilteredManagement } from "@/hooks/use-filter-nav-management";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { data: myUserData } = useGetData({
@@ -32,8 +34,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const myUser: TUser | undefined = myUserData?.data?.data;
 
-  const filteredMainNav = routeItems.navMain;
-  const filteredManagement = routeItems.managementNav;
+  const filteredMainNav = useFilteredNavMain(routeItems.navMain);
+  const filteredManagement = useFilteredManagement(routeItems.managementNav);
+  const filteredManagementPurchasing = useFilteredManagement(
+    routeItems.managementPurchasing
+  );
+  const filteredManagementTransaction = useFilteredManagement(
+    routeItems.managementTransaction
+  );
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -69,7 +77,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
-                <a href={"/dashboard"}>
+                <a href="/dashboard">
                   <LayoutDashboard />
                   <span>Dashboard</span>
                 </a>
@@ -79,9 +87,27 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarGroup>
 
         {filteredManagement.length > 0 && (
-          <NavManagement projects={filteredManagement} />
+          <NavManagement
+            projects={filteredManagement}
+            title="Manajemen Pengguna"
+          />
         )}
+
         {filteredMainNav.length > 0 && <NavMain items={filteredMainNav} />}
+
+        {filteredManagementPurchasing.length > 0 && (
+          <NavManagement
+            projects={filteredManagementPurchasing}
+            title="Manajemen Pembayaran"
+          />
+        )}
+        {filteredManagementTransaction.length > 0 && (
+          <NavManagement
+            projects={filteredManagementTransaction}
+            title="Manajemen Transaksi"
+          />
+        )}
+
         <NavSecondary items={routeItems.navSecondary} className="mt-auto" />
       </SidebarContent>
 

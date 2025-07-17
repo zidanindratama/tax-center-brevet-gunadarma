@@ -6,7 +6,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import Link from "next/link";
 import { useGetData } from "@/hooks/use-get-data";
-import { Loader2 } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
