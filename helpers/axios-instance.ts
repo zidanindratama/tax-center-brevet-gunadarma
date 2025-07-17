@@ -9,7 +9,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Refreshtoken dari cookie server
 const refreshAuthToken = async () => {
   try {
     const response = await axios.post(`${PROD_URL}/auth/refresh-token`, null, {
@@ -17,7 +16,6 @@ const refreshAuthToken = async () => {
     });
 
     const newAccessToken = response.data.accessToken;
-
     Cookies.set("access_token", newAccessToken);
     return newAccessToken;
   } catch (error) {
@@ -25,14 +23,25 @@ const refreshAuthToken = async () => {
   }
 };
 
-// Intercept request dan set Authorization header dengan bearer token
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const accessToken = Cookies.get("access_token");
+    let accessToken = Cookies.get("access_token");
+
+    if (accessToken === "undefined") {
+      await new Promise((resolve) => setTimeout(resolve, 5000));
+      Cookies.remove("access_token");
+
+      if (typeof window !== "undefined") {
+        window.location.href = "/auth/sign-in";
+      }
+
+      return config;
+    }
 
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
+
     return config;
   },
   (error) => {
@@ -40,7 +49,6 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-// Intercept response dan coba refresh token jika diperlukan
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
