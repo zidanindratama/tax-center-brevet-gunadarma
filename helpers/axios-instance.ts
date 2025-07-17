@@ -9,7 +9,6 @@ const axiosInstance = axios.create({
   withCredentials: true,
 });
 
-// Fungsi untuk me-refresh token
 const refreshAuthToken = async () => {
   try {
     const response = await axios.post(`${PROD_URL}/auth/refresh-token`, null, {
@@ -17,54 +16,77 @@ const refreshAuthToken = async () => {
     });
 
     const newAccessToken = response.data.accessToken;
-    Cookies.set("access_token", newAccessToken);
-    return newAccessToken;
+
+    if (newAccessToken) {
+      Cookies.set("access_token", newAccessToken);
+      console.log("✅ New access token set:", newAccessToken);
+      return newAccessToken;
+    } else {
+      console.warn("⚠️ Access token not found in response:", response.data);
+      Cookies.remove("access_token");
+      return null;
+    }
   } catch (error) {
+    Cookies.remove("access_token");
+    console.error("❌ Failed to refresh token:", error);
     throw error;
   }
 };
 
-// Interceptor request: set Authorization header
 axiosInstance.interceptors.request.use(
   async (config) => {
     const accessToken = Cookies.get("access_token");
 
+    console.log("🔒 Access Token from cookie:", accessToken);
+
     if (!accessToken || accessToken === "undefined") {
       Cookies.remove("access_token");
-      if (typeof window !== "undefined") {
+
+      if (
+        typeof window !== "undefined" &&
+        window.location.pathname.startsWith("/dashboard")
+      ) {
         window.location.href = "/auth/sign-in";
       }
+
       return config;
     }
 
     config.headers.Authorization = `Bearer ${accessToken}`;
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
-// Interceptor response: refresh token jika 401
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
         const newAccessToken = await refreshAuthToken();
-        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return axiosInstance(originalRequest);
-      } catch (refreshError) {
-        // Jika refresh token juga gagal, tunggu 5 detik dan hapus access_token
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-        Cookies.remove("access_token");
 
+        if (newAccessToken) {
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+          return axiosInstance(originalRequest);
+        }
+
+        // Token refresh gagal, redirect
         if (typeof window !== "undefined") {
           window.location.href = "/auth/sign-in";
         }
 
+        return Promise.reject(error);
+      } catch (refreshError) {
         return Promise.reject(refreshError);
       }
     }
