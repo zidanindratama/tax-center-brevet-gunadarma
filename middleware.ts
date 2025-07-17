@@ -6,8 +6,8 @@ export const routePermissions = {
   authRoutes: ["/auth/sign-in", "/auth/sign-up"],
   baseRoutes: ["/dashboard"],
   adminRoutes: [
-    "/dashboard/guru",
-    "/dashboard/member",
+    "/dashboard/pengajar",
+    "/dashboard/peserta",
     "/dashboard/admin",
     "/dashboard/berita",
     "/dashboard/kursus",

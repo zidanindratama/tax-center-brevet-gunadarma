@@ -47,7 +47,7 @@ export const useFilteredNavMain = (menu: NavItem[]) => {
   return menu
     .map((nav) => {
       const filteredItems = nav.items?.filter((item) =>
-        allowedRoutes.includes(item.url)
+        allowedRoutes.some((allowed) => item.url.startsWith(allowed))
       );
       if (filteredItems && filteredItems.length > 0) {
         return { ...nav, items: filteredItems };

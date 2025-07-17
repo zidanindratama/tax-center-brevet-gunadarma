@@ -30,7 +30,7 @@ export default function DashboardCoursesPage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Berita</BreadcrumbPage>
+                <BreadcrumbPage>Kursus</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

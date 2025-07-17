@@ -49,7 +49,7 @@ const MemberDataTable = () => {
       data={members}
       meta={meta}
       isLoading={isLoading}
-      searchPlaceholder="Cari Nama Member"
+      searchPlaceholder="Cari Nama Peserta"
       filterOptions={filterOptions}
     />
   );

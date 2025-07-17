@@ -112,9 +112,9 @@ const GuruUpdateForm = ({ guruId }: Props) => {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Update Guru</CardTitle>
+            <CardTitle>Update Pengajar</CardTitle>
             <CardDescription>
-              Admin dapat memperbarui data guru berikut.
+              Admin dapat memperbarui data pengajar berikut.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

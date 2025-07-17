@@ -38,7 +38,7 @@ const GuruDataTable = () => {
       data={teachers}
       meta={meta}
       isLoading={isLoading}
-      searchPlaceholder="Cari Nama Guru"
+      searchPlaceholder="Cari Nama Pengajar"
     />
   );
 };

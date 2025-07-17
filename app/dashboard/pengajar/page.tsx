@@ -1,6 +1,6 @@
 "use client";
 
-import MemberDetail from "@/components/(dashboard)/member/member-detail";
+import GuruDataTable from "@/components/(dashboard)/guru/guru-data-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -9,14 +9,13 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useParams } from "next/navigation";
+import Link from "next/link";
+import { Suspense } from "react";
 
-const DashboardDetailMemberPage = () => {
-  const params = useParams();
-  const memberId = params.id as string;
-
+export default function DashboardGuruDatatablePage() {
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -32,22 +31,23 @@ const DashboardDetailMemberPage = () => {
                 <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/member">Member</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Detail</BreadcrumbPage>
+                <BreadcrumbPage>Pengajar</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <MemberDetail memberId={memberId} />
+        <div className="flex flex-row justify-end">
+          <Button variant={"orange"} className="w-fit" asChild>
+            <Link href={"/dashboard/guru/create"}>Tambah Pengajar</Link>
+          </Button>
+        </div>
+        <Suspense>
+          <GuruDataTable />
+        </Suspense>
       </div>
     </section>
   );
-};
-
-export default DashboardDetailMemberPage;
+}

@@ -33,7 +33,7 @@ export function GuruAction({ memberId }: Props) {
   const deleteGuru = useDeleteData({
     queryKey: "guru",
     dataProtected: `users/${memberId}`,
-    successMessage: "Guru berhasil dihapus!",
+    successMessage: "Pengajar berhasil dihapus!",
   });
 
   return (
@@ -47,10 +47,12 @@ export function GuruAction({ memberId }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/guru/${memberId}`}>Lihat Detail</Link>
+            <Link href={`/dashboard/pengajar/${memberId}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/guru/${memberId}/update`}>Ubah Data</Link>
+            <Link href={`/dashboard/pengajar/${memberId}/update`}>
+              Ubah Data
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
@@ -65,7 +67,7 @@ export function GuruAction({ memberId }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus guru ini?
+            Apakah kamu yakin ingin menghapus pengajar ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

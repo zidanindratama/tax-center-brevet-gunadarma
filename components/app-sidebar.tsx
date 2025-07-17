@@ -43,6 +43,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     routeItems.managementTransaction
   );
 
+  console.log(filteredMainNav);
+
   return (
     <Sidebar variant="inset" {...props}>
       <SidebarHeader>

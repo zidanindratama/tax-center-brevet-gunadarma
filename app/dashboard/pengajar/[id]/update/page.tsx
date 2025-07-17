@@ -33,7 +33,9 @@ const DashboardDetailGuruPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/guru">Guru</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard/pengajar">
+                  pengajar
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>

@@ -1,6 +1,6 @@
 "use client";
 
-import GuruDetail from "@/components/(dashboard)/guru/guru-detail";
+import GuruCreateForm from "@/components/(dashboard)/guru/guru-create-form";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,12 +11,8 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
-import { useParams } from "next/navigation";
 
 const DashboardDetailGuruPage = () => {
-  const params = useParams();
-  const guruId = params.id as string;
-
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -33,18 +29,20 @@ const DashboardDetailGuruPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/guru">Guru</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard/pengajar">
+                  Pengajar
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Detail</BreadcrumbPage>
+                <BreadcrumbPage>Tambah</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <GuruDetail guruId={guruId} />
+        <GuruCreateForm />
       </div>
     </section>
   );

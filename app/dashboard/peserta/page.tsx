@@ -1,6 +1,6 @@
 "use client";
 
-import GuruCreateForm from "@/components/(dashboard)/guru/guru-create-form";
+import MemberDataTable from "@/components/(dashboard)/member/member-data-table";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,8 +11,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { Suspense } from "react";
 
-const DashboardDetailGuruPage = () => {
+export default function DashboardPesertaDatatablePage() {
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -28,22 +29,18 @@ const DashboardDetailGuruPage = () => {
                 <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/guru">Guru</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Tambah</BreadcrumbPage>
+                <BreadcrumbPage>Peserta</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <GuruCreateForm />
+        <Suspense>
+          <MemberDataTable />
+        </Suspense>
       </div>
     </section>
   );
-};
-
-export default DashboardDetailGuruPage;
+}

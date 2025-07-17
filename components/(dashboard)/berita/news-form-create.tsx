@@ -119,8 +119,8 @@ const NewsFormCreate = () => {
                       autofocus={true}
                       editable={true}
                       output="html"
-                      className="w-full"
-                      editorContentClassName="p-4 prose"
+                      className="w-full max-w-full overflow-hidden"
+                      editorContentClassName="prose max-w-none p-4"
                     />
                   </FormControl>
                   <FormMessage />

@@ -29,8 +29,8 @@ const MemberDetail = ({ memberId }: Props) => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle>Informasi Member</CardTitle>
-        <CardDescription>Detail terkait member yang terdaftar</CardDescription>
+        <CardTitle>Informasi Peserta</CardTitle>
+        <CardDescription>Detail terkait peserta yang terdaftar</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">

@@ -33,7 +33,7 @@ export function MemberAction({ memberId }: Props) {
   const deleteMember = useDeleteData({
     queryKey: "member",
     dataProtected: `users/${memberId}`,
-    successMessage: "Member berhasil dihapus!",
+    successMessage: "Peserta berhasil dihapus!",
   });
 
   return (
@@ -47,10 +47,12 @@ export function MemberAction({ memberId }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/member/${memberId}`}>Lihat Detail</Link>
+            <Link href={`/dashboard/peserta/${memberId}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/member/${memberId}/update`}>Ubah Data</Link>
+            <Link href={`/dashboard/peserta/${memberId}/update`}>
+              Ubah Data
+            </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
@@ -65,7 +67,7 @@ export function MemberAction({ memberId }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus member ini?
+            Apakah kamu yakin ingin menghapus peserta ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>

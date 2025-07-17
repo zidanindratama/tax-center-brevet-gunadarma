@@ -52,8 +52,8 @@ const GuruCreateForm = () => {
   const mutation = usePostData({
     queryKey: "guru-create",
     dataProtected: "users",
-    successMessage: "Guru berhasil ditambahkan!",
-    backUrl: "/dashboard/guru",
+    successMessage: "Pengajar berhasil ditambahkan!",
+    backUrl: "/dashboard/pengajar",
   });
 
   const handleFileChange = async (
@@ -84,9 +84,9 @@ const GuruCreateForm = () => {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Tambah Guru</CardTitle>
+            <CardTitle>Tambah Pengajar</CardTitle>
             <CardDescription>
-              Silakan isi data guru dengan lengkap.
+              Silakan isi data pengajar dengan lengkap.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

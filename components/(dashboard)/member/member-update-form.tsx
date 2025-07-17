@@ -86,7 +86,7 @@ const MemberUpdateForm = ({ memberId }: Props) => {
   const mutation = usePutData({
     queryKey: "member",
     dataProtected: `users/${memberId}`,
-    successMessage: "Data member berhasil diperbarui!",
+    successMessage: "Data peserta berhasil diperbarui!",
   });
 
   const onSubmit = (values: TUpdateMember) => {
@@ -134,9 +134,9 @@ const MemberUpdateForm = ({ memberId }: Props) => {
       >
         <Card>
           <CardHeader>
-            <CardTitle>Update Member</CardTitle>
+            <CardTitle>Update Peserta</CardTitle>
             <CardDescription>
-              Admin dapat memperbarui data profil member berikut.
+              Admin dapat memperbarui data profil peserta berikut.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">

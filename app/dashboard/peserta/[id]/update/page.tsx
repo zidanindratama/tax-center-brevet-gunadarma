@@ -33,7 +33,9 @@ const DashboardUpdateMemberPage = () => {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="/dashboard/member">Member</BreadcrumbLink>
+                <BreadcrumbLink href="/dashboard/peserta">
+                  Peserta
+                </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>

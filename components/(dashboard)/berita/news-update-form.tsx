@@ -160,21 +160,9 @@ const NewsUpdateForm = ({ newsSlug }: Props) => {
                       autofocus={false}
                       editable={!isFetching}
                       output="html"
-                      className="w-full"
-                      editorContentClassName="p-4 prose"
+                      className="w-full max-w-full overflow-hidden"
+                      editorContentClassName="prose max-w-none p-4"
                     />
-                    {/* <MinimalTiptapEditor
-                      key={newsSlug}
-                      value={field.value}
-                      onChange={field.onChange}
-                      className="w-full"
-                      editorContentClassName="p-5"
-                      output="html"
-                      placeholder="Masukkan deskripsi lengkap pekerjaan..."
-                      autofocus={true}
-                      editable={true}
-                      editorClassName="focus:outline-none"
-                    /> */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -28,8 +28,8 @@ const GuruDetail = ({ guruId }: Props) => {
   return (
     <Card className="mb-6">
       <CardHeader>
-        <CardTitle>Informasi Guru</CardTitle>
-        <CardDescription>Detail profil guru yang terdaftar</CardDescription>
+        <CardTitle>Informasi Pengajar</CardTitle>
+        <CardDescription>Detail profil pengajar yang terdaftar</CardDescription>
       </CardHeader>
       <CardContent>
         <div className="mb-10 flex flex-col md:flex-row items-center gap-6 md:gap-10">

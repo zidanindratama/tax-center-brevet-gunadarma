@@ -59,13 +59,13 @@ export const routeItems = {
   ],
   managementNav: [
     {
-      name: "Member",
-      url: "/dashboard/member",
+      name: "Peserta",
+      url: "/dashboard/peserta",
       icon: User,
     },
     {
-      name: "Guru",
-      url: "/dashboard/guru",
+      name: "Pengajar",
+      url: "/dashboard/pengajar",
       icon: Users,
     },
     {
