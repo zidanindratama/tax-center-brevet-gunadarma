@@ -38,7 +38,7 @@ const SignInPage = () => {
       </div>
       <div className="relative hidden bg-muted lg:block">
         <img
-          src="/placeholder.svg"
+          src="/brevet/brevet-3.jpg"
           alt="Image"
           className="absolute inset-0 h-full w-full object-cover"
         />

@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -24,16 +25,19 @@ const Hero = () => {
               variant={"purple"}
               size="lg"
               className="w-full sm:w-auto rounded-full text-base"
+              asChild
             >
-              Daftar Sekarang <ArrowUpRight className="!h-5 !w-5" />
+              <Link href={"/auth/sign-up"}>
+                Daftar Sekarang <ArrowUpRight className="!h-5 !w-5" />
+              </Link>
             </Button>
           </div>
         </div>
         <div className="relative lg:max-w-lg xl:max-w-xl w-full bg-accent rounded-xl aspect-square">
           <Image
-            src="/placeholder.svg"
+            src="/brevet/brevet-1.jpg"
             fill
-            alt=""
+            alt="Hero Image"
             className="object-cover rounded-xl"
           />
         </div>
