@@ -71,8 +71,6 @@ const BatchFormUpdate = () => {
     dataProtected: `batches/${batchSlug}`,
   });
 
-  console.log(data?.data?.data);
-
   const { mutate: updateBatch, isPending } = usePutData({
     queryKey: "batches",
     dataProtected: `batches/${data?.data?.data?.id}`,

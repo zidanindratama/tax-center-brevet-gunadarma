@@ -24,7 +24,6 @@ const MemberDetail = ({ memberId }: Props) => {
   });
 
   const member: TMember = memberDetailData?.data?.data;
-  console.log(member);
 
   return (
     <Card className="mb-6">

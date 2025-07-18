@@ -48,11 +48,12 @@ export default function FeaturedCoursesCarousel() {
                     className="block h-full"
                   >
                     <div className="rounded-xl bg-white dark:bg-muted border shadow-xs h-full flex flex-col transition-colors hover:shadow-md">
-                      <div className="relative w-full h-48 md:h-64">
+                      <div className="relative w-full h-full">
                         <Image
                           src={course.batch_thumbnail}
                           alt={course.title}
-                          fill
+                          width={3000}
+                          height={3000}
                           className="object-cover rounded-t-xl"
                         />
                       </div>

@@ -18,8 +18,6 @@ const FeaturedPrograms = () => {
 
   const courses: TCourse[] = data?.data?.data ?? [];
 
-  console.log(courses);
-
   return (
     <div className="w-full bg-muted">
       <div

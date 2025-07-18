@@ -11,7 +11,14 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { CalendarDays, ListTodo, Clock, MapPin, Users } from "lucide-react";
+import {
+  CalendarDays,
+  ListTodo,
+  Clock,
+  MapPin,
+  Users,
+  AlertCircle,
+} from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -78,11 +85,12 @@ export default function CourseDetail() {
         <div className="space-y-4">
           <h1 className="text-2xl font-bold">{batch.title}</h1>
 
-          <div className="relative w-full aspect-[4/3] rounded-xl overflow-hidden">
+          <div className="relative w-full h-full rounded-xl overflow-hidden">
             <Image
               src={batch.batch_thumbnail}
               alt={batch.title}
-              fill
+              width={3000}
+              height={3000}
               className="object-cover"
             />
           </div>
@@ -162,6 +170,18 @@ export default function CourseDetail() {
           <Button className="w-full mt-5" variant="orange" asChild>
             <Link href={`/pembayaran/${batch.slug}`}>Daftar Sekarang</Link>
           </Button>
+
+          <div className="mt-4 flex items-start gap-3 rounded-md border border-orange-200 bg-orange-50 p-4 text-sm text-muted-foreground">
+            <AlertCircle className="h-5 w-5 text-orange-600 mt-1 flex-shrink-0" />
+            <p className="leading-relaxed">
+              <strong className="text-orange-600">
+                Tanggal mulai bersifat tentatif.
+              </strong>{" "}
+              Jadwal dapat berubah tergantung pada jumlah peserta yang mendaftar
+              pada gelombang ini. Silakan daftar lebih awal untuk mengamankan
+              tempat Anda.
+            </p>
+          </div>
         </div>
       </div>
     </section>

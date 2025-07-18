@@ -28,7 +28,6 @@ const BatchDatatable = ({ courseSlug }: Props) => {
   });
 
   const batches: TCourseBatch[] = data?.data?.data ?? [];
-  console.log(batches);
 
   const meta = data?.data?.meta ?? {
     page: 1,

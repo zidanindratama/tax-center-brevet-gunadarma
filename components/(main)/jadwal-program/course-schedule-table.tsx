@@ -36,6 +36,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { TCourseBatch } from "@/components/(dashboard)/kursus/gelombang/_types/course-batch-type";
 import { formatPeriode } from "../kursus/_libs/format-periode";
 import { useSearchParams } from "next/navigation";
+import { AlertCircle } from "lucide-react";
+import { DAY_OPTIONS } from "@/components/(dashboard)/kursus/gelombang/_constants/day-options";
 
 export default function CourseScheduleTable() {
   const searchParams = useSearchParams();
@@ -79,9 +81,21 @@ export default function CourseScheduleTable() {
     <section className="min-h-[calc(80vh-4rem)]">
       <div className="w-full max-w-screen-xl mx-auto px-6 py-12">
         <h2 className="text-2xl font-bold mb-2">Jadwal Program</h2>
-        <p className="text-muted-foreground md:max-w-2xl mb-6">
+        <p className="text-muted-foreground md:max-w-2xl">
           Telusuri jadwal kursus berdasarkan kategori kelas atau judul kursus.
         </p>
+
+        <div className="my-4 flex items-start gap-3 rounded-md border border-orange-200 bg-orange-50 p-4 text-sm text-muted-foreground">
+          <AlertCircle className="h-5 w-5 text-orange-600 mt-0.5" />
+          <p className="leading-relaxed">
+            <strong className="text-orange-600">
+              Tanggal mulai bersifat tentatif.
+            </strong>{" "}
+            Jadwal dapat berubah tergantung pada jumlah peserta yang mendaftar
+            pada gelombang ini. Silakan daftar lebih awal untuk mengamankan
+            tempat Anda.
+          </p>
+        </div>
 
         <div className="flex flex-col md:flex-row gap-4 mb-6 items-start md:items-end">
           <div className="flex-1">
@@ -172,7 +186,14 @@ export default function CourseScheduleTable() {
                       {formatPeriode(item.start_at, item.end_at)}
                     </TableCell>
                     <TableCell>
-                      {item.days.map((d) => d.day).join(" & ")}
+                      {item.days
+                        .map((d) => {
+                          const indo = DAY_OPTIONS.find(
+                            (opt) => opt.value === d.day
+                          );
+                          return indo?.label || d.day;
+                        })
+                        .join(" & ")}
                     </TableCell>
                     <TableCell>
                       <Badge
