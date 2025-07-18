@@ -184,3 +184,29 @@
 .prose code {
   @apply bg-gray-200 dark:bg-gray-700 px-1 rounded;
 }
+/* Custom Scrollbar: warna ungu tua #2a176f */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #2a176f; /* warna ungu tua */
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #23125d; /* lebih gelap saat hover */
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #2a176f transparent;
+}
