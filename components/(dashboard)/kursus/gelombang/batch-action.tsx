@@ -52,7 +52,7 @@ export function BatchAction({ batchId, batchSlug }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/dashboard/batch/${batchSlug}`}>Lihat Detail</Link>
+            <Link href={`/kursus/${batchSlug}`}>Lihat Detail</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link

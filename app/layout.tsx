@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { AccessTokenDialog } from "@/components/access-token-dialog";
 import { Toaster } from "@/components/ui/sonner";
 import TanStackProvider from "@/providers/tanstack-query-provider";
 
@@ -40,6 +41,7 @@ export default function RootLayout({
         >
           <TooltipProvider>
             <TanStackProvider>{children}</TanStackProvider>
+            <AccessTokenDialog />
           </TooltipProvider>
           <Toaster position="top-center" />
         </ThemeProvider>
