@@ -27,6 +27,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { Loader2 } from "lucide-react";
 import { createGuruSchema, TCreateGuru } from "./_schemas/create-guru-schema";
+import { normalizeToUTCDateOnly } from "../profile/_libs/normalize-to-utc-date";
 
 const GuruCreateForm = () => {
   const { uploadFile } = useFileUploader();
@@ -68,7 +69,10 @@ const GuruCreateForm = () => {
   };
 
   const onSubmit = (values: TCreateGuru) => {
-    mutation.mutate(values);
+    const { birth_date, ...rest } = values;
+    const birthDate = normalizeToUTCDateOnly(birth_date);
+
+    mutation.mutate({ ...rest, birth_date: birthDate });
   };
 
   return (
@@ -196,6 +200,8 @@ const GuruCreateForm = () => {
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Pilih tanggal lahir"
+                      granularity="day"
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                   <FormMessage />

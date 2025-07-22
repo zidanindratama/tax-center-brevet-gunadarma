@@ -177,7 +177,9 @@ export default function TransactionUpdateForm({ transactionId }: Props) {
                   Total Harga
                 </p>
                 <p className="text-lg font-bold text-primary">
-                  {formatRupiah(transaction.price.price)}
+                  {formatRupiah(
+                    transaction.price.price + transaction.unique_code
+                  )}
                 </p>
               </div>
             </div>

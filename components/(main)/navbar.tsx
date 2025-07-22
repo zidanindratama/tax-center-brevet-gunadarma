@@ -201,8 +201,8 @@ const Navbar = () => {
           ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Avatar className="cursor-pointer">
-                  <AvatarImage src={user.avatar} />
+                <Avatar className="size-8 cursor-pointer">
+                  <AvatarImage src={user.avatar} className="object-cover" />
                   <AvatarFallback>
                     {user.name?.charAt(0).toUpperCase() || "UG"}
                   </AvatarFallback>
@@ -317,8 +317,11 @@ const Navbar = () => {
                       <div className="flex justify-center">
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <Avatar className="cursor-pointer">
-                              <AvatarImage src={user.avatar} />
+                            <Avatar className="size-8 cursor-pointer">
+                              <AvatarImage
+                                src={user.avatar}
+                                className="object-cover"
+                              />
                               <AvatarFallback>
                                 {user.name?.charAt(0).toUpperCase() || "UG"}
                               </AvatarFallback>

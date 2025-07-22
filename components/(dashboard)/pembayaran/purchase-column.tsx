@@ -29,7 +29,11 @@ export const purchaseColumns: ColumnDef<TPurchase>[] = [
   {
     accessorKey: "price.price",
     header: "Harga",
-    cell: ({ row }) => <span>{formatRupiah(row.original.price.price)}</span>,
+    cell: ({ row }) => (
+      <span>
+        {formatRupiah(row.original.price.price + row.original.unique_code)}
+      </span>
+    ),
   },
   {
     accessorKey: "payment_status",

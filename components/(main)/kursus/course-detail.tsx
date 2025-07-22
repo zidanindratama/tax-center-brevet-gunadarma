@@ -144,7 +144,10 @@ export default function CourseDetail() {
                   <Clock className="h-4 w-4 text-orange-500" />
                   Jam
                 </TableCell>
-                <TableCell>09.00 - 15.00 WIB</TableCell>
+                <TableCell>
+                  {batch.start_time.slice(0, 5).replace(":", ".")} -{" "}
+                  {batch.end_time.slice(0, 5).replace(":", ".")} WIB
+                </TableCell>
               </TableRow>
               <TableRow>
                 <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">

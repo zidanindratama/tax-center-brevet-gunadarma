@@ -1,7 +1,6 @@
 "use client";
 
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
-
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
@@ -64,10 +63,14 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg text-black dark:text-muted-foreground">
-                  UG
+              <Avatar className="size-8">
+                <AvatarImage
+                  src={user.avatar}
+                  alt={user.name}
+                  className="object-cover"
+                />
+                <AvatarFallback className="text-black dark:text-muted-foreground">
+                  {user.name?.charAt(0).toUpperCase() || "UG"}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -85,9 +88,15 @@ export function NavUser({
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">UG</AvatarFallback>
+                <Avatar className="size-8">
+                  <AvatarImage
+                    src={user.avatar}
+                    alt={user.name}
+                    className="object-cover"
+                  />
+                  <AvatarFallback className="">
+                    {user.name?.charAt(0).toUpperCase() || "UG"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user.name}</span>
@@ -99,14 +108,14 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem asChild>
                 <Link href={"/dashboard/profile"}>
-                  <BadgeCheck />
+                  <BadgeCheck className="mr-2 h-4 w-4" />
                   Profile
                 </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
-              <LogOut />
+              <LogOut className="mr-2 h-4 w-4" />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>

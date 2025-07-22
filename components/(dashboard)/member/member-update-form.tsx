@@ -35,6 +35,7 @@ import {
   TUpdateMember,
   updateMemberSchema,
 } from "./_schemas/update-member-schema";
+import { normalizeToUTCDateOnly } from "../profile/_libs/normalize-to-utc-date";
 
 type Props = {
   memberId: string;
@@ -90,7 +91,10 @@ const MemberUpdateForm = ({ memberId }: Props) => {
   });
 
   const onSubmit = (values: TUpdateMember) => {
-    mutation.mutate(values);
+    const { birth_date, ...rest } = values;
+    const birthDate = normalizeToUTCDateOnly(birth_date);
+
+    mutation.mutate({ ...rest, birth_date: birthDate });
   };
 
   useEffect(() => {
@@ -228,6 +232,8 @@ const MemberUpdateForm = ({ memberId }: Props) => {
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Pilih tanggal lahir"
+                      granularity="day"
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                   <FormMessage />

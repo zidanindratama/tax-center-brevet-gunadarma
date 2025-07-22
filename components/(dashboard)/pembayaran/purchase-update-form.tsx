@@ -49,6 +49,8 @@ export default function PurchaseUpdateForm({ purchaseId }: Props) {
     resolver: zodResolver(UploadPaymentSchema),
     defaultValues: {
       payment_proof_url: "",
+      buyer_bank_account_name: "",
+      buyer_bank_account_number: "",
     },
   });
 
@@ -67,13 +69,16 @@ export default function PurchaseUpdateForm({ purchaseId }: Props) {
   };
 
   const onSubmit = (values: UploadPaymentFormData) => {
-    uploadPaymentProof({ payment_proof_url: values.payment_proof_url });
+    uploadPaymentProof(values);
   };
 
   useEffect(() => {
     if (data?.data?.data && !form.formState.isDirty) {
       form.reset({
         payment_proof_url: data.data.data.payment_proof_url || "",
+        buyer_bank_account_name: data.data.data.buyer_bank_account_name || "",
+        buyer_bank_account_number:
+          data.data.data.buyer_bank_account_number || "",
       });
       setIsReady(true);
     }
@@ -120,7 +125,10 @@ export default function PurchaseUpdateForm({ purchaseId }: Props) {
                   <p>
                     Nominal yang harus ditransfer:{" "}
                     <span className="font-semibold text-primary">
-                      {formatRupiah(data?.data?.data?.price?.price || 0)}
+                      {formatRupiah(
+                        (data?.data?.data?.price?.price || 0) +
+                          (data?.data?.data?.unique_code || 0)
+                      )}
                     </span>
                   </p>
                 </div>
@@ -133,6 +141,43 @@ export default function PurchaseUpdateForm({ purchaseId }: Props) {
                 </p>
               </div>
             </div>
+
+            <FormField
+              control={form.control}
+              name="buyer_bank_account_name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama Pemilik Rekening</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Contoh: Zidan Indratama"
+                      disabled={isFetching}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="buyer_bank_account_number"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nomor Rekening</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      placeholder="Contoh: 1234567890"
+                      disabled={isFetching}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="payment_proof_url"

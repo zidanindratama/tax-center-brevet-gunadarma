@@ -31,13 +31,14 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { useFileUploader } from "@/hooks/use-file-uploader";
 import Link from "next/link";
 import Image from "next/image";
-import { usePutData } from "@/hooks/use-put-data";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   TUpdateProfile,
   updateProfileSchema,
 } from "./_schemas/update-profile-schema";
 import { TUpdateProfilePayload } from "./_types/update-profile-payload-type";
+import { usePatchData } from "@/hooks/use-patch-data";
+import { normalizeToUTCDateOnly } from "./_libs/normalize-to-utc-date";
 
 const MyProfileForm = () => {
   const { uploadFile } = useFileUploader();
@@ -82,20 +83,22 @@ const MyProfileForm = () => {
     form.setValue(field, url || "", { shouldValidate: true });
   };
 
-  const mutation = usePutData({
+  const mutation = usePatchData({
     queryKey: "me",
-    dataProtected: "users/me",
+    dataProtected: "me",
     successMessage: "Profil berhasil diperbarui!",
   });
 
   const onSubmit = (values: TUpdateProfile) => {
+    const birthDate = normalizeToUTCDateOnly(values.birth_date);
+
     const payload: TUpdateProfilePayload = {
       name: values.name,
       phone: values.phone,
       avatar: values.avatar,
       institution: values.institution,
       origin: values.origin,
-      birth_date: values.birth_date,
+      birth_date: birthDate!,
       address: values.address,
       group_type: values.group_type,
     };
@@ -110,7 +113,6 @@ const MyProfileForm = () => {
       payload.nim_proof = values.nim_proof;
     }
 
-    // Kirim ke server
     mutation.mutate(payload);
   };
 
@@ -253,6 +255,8 @@ const MyProfileForm = () => {
                         value={field.value}
                         onChange={field.onChange}
                         placeholder="Pilih tanggal lahir"
+                        granularity="day"
+                        displayFormat={{ hour24: "PPP" }}
                       />
                     </FormControl>
                     <FormMessage />

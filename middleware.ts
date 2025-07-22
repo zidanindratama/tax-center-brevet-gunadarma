@@ -20,22 +20,24 @@ export const routePermissions = {
 
 type UserRole = "admin" | "guru" | "siswa";
 
-const rolePermissions: Record<UserRole, { routes: string[]; deny: boolean }[]> =
-  {
-    siswa: [
-      { routes: routePermissions.commonAdminAndTeacherRoutes, deny: true },
-      { routes: routePermissions.adminRoutes, deny: true },
-      { routes: routePermissions.teacherRoutes, deny: true },
-    ],
-    guru: [
-      { routes: routePermissions.adminRoutes, deny: true },
-      { routes: routePermissions.studentRoutes, deny: true },
-    ],
-    admin: [
-      { routes: routePermissions.studentRoutes, deny: true },
-      { routes: routePermissions.teacherRoutes, deny: true },
-    ],
-  };
+export const rolePermissions: Record<
+  UserRole,
+  { routes: string[]; deny: boolean }[]
+> = {
+  siswa: [
+    { routes: routePermissions.commonAdminAndTeacherRoutes, deny: true },
+    { routes: routePermissions.adminRoutes, deny: true },
+    { routes: routePermissions.teacherRoutes, deny: true },
+  ],
+  guru: [
+    { routes: routePermissions.adminRoutes, deny: true },
+    { routes: routePermissions.studentRoutes, deny: true },
+  ],
+  admin: [
+    { routes: routePermissions.studentRoutes, deny: true },
+    { routes: routePermissions.teacherRoutes, deny: true },
+  ],
+};
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;

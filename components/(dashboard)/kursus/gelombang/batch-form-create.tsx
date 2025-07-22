@@ -40,6 +40,7 @@ import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
 import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
 import { useGetData } from "@/hooks/use-get-data";
+import { normalizeToUTCDateOnly } from "../../profile/_libs/normalize-to-utc-date";
 
 const BatchFormCreate = () => {
   const { uploadFile } = useFileUploader();
@@ -66,6 +67,8 @@ const BatchFormCreate = () => {
       batch_thumbnail: "",
       days: [],
       course_type: "offline",
+      start_time: "",
+      end_time: "",
     },
   });
 
@@ -84,7 +87,13 @@ const BatchFormCreate = () => {
   };
 
   const onSubmit = (values: CreateBatchFormData) => {
-    submitBatch(values);
+    const { start_at, end_at, ...rest } = values;
+    const startAt = normalizeToUTCDateOnly(start_at);
+    const endAt = normalizeToUTCDateOnly(end_at);
+
+    console.log({ ...rest, start_at: startAt, end_at: endAt });
+
+    submitBatch({ ...rest, start_at: startAt, end_at: endAt });
   };
 
   return (
@@ -146,13 +155,14 @@ const BatchFormCreate = () => {
                         placeholder="Pilih tanggal mulai"
                         value={field.value}
                         onChange={field.onChange}
+                        granularity="day"
+                        displayFormat={{ hour24: "PPP" }}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name="end_at"
@@ -164,6 +174,8 @@ const BatchFormCreate = () => {
                         placeholder="Pilih tanggal selesai"
                         value={field.value}
                         onChange={field.onChange}
+                        granularity="day"
+                        displayFormat={{ hour24: "PPP" }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -171,6 +183,7 @@ const BatchFormCreate = () => {
                 )}
               />
             </div>
+
             <FormField
               control={form.control}
               name="room"
@@ -184,6 +197,46 @@ const BatchFormCreate = () => {
                 </FormItem>
               )}
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="start_time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Jam Mulai</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        placeholder="08:00"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="end_time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Jam Selesai</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        placeholder="10:00"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="quota"
@@ -254,6 +307,7 @@ const BatchFormCreate = () => {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="batch_thumbnail"

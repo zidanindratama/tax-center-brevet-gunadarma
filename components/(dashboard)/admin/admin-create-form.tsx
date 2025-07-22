@@ -30,6 +30,7 @@ import {
   createAdminSchema,
   TCreateAdmin,
 } from "./_schemas/create-admin-schema";
+import { normalizeToUTCDateOnly } from "../profile/_libs/normalize-to-utc-date";
 
 const AdminCreateForm = () => {
   const { uploadFile } = useFileUploader();
@@ -71,7 +72,10 @@ const AdminCreateForm = () => {
   };
 
   const onSubmit = (values: TCreateAdmin) => {
-    mutation.mutate(values);
+    const { birth_date, ...rest } = values;
+    const birthDate = normalizeToUTCDateOnly(birth_date);
+
+    mutation.mutate({ ...rest, birth_date: birthDate });
   };
 
   return (
@@ -199,6 +203,8 @@ const AdminCreateForm = () => {
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Pilih tanggal lahir"
+                      granularity="day"
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                   <FormMessage />

@@ -30,6 +30,7 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { useFileUploader } from "@/hooks/use-file-uploader";
 import { TGuru } from "./_types/guru-type";
 import { TUpdateGuru, updateGuruSchema } from "./_schemas/update-guru-schema";
+import { normalizeToUTCDateOnly } from "../profile/_libs/normalize-to-utc-date";
 
 type Props = {
   guruId: string;
@@ -78,7 +79,10 @@ const GuruUpdateForm = ({ guruId }: Props) => {
   });
 
   const onSubmit = (values: TUpdateGuru) => {
-    mutation.mutate(values);
+    const { birth_date, ...rest } = values;
+    const birthDate = normalizeToUTCDateOnly(birth_date);
+
+    mutation.mutate({ ...rest, birth_date: birthDate });
   };
 
   useEffect(() => {
@@ -206,6 +210,8 @@ const GuruUpdateForm = ({ guruId }: Props) => {
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Pilih tanggal lahir"
+                      granularity="day"
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                   <FormMessage />

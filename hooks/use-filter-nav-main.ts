@@ -1,11 +1,11 @@
 import { LucideIcon } from "lucide-react";
-import { routePermissions } from "@/middleware";
+import { rolePermissions } from "@/middleware";
 import { useDecodedToken } from "./use-decoded-token";
 
 export type NavItem = {
   title: string;
   url: string;
-  icon?: LucideIcon; // ⬅️ Ganti dari React.ElementType ke LucideIcon
+  icon?: LucideIcon;
   isActive?: boolean;
   items?: {
     title: string;
@@ -15,43 +15,28 @@ export type NavItem = {
 
 export const useFilteredNavMain = (menu: NavItem[]) => {
   const decodedToken = useDecodedToken();
-
   if (!decodedToken) return [];
 
-  const role = decodedToken.role?.toLowerCase();
-  let allowedRoutes: string[] = [];
-
-  switch (role) {
-    case "admin":
-      allowedRoutes = [
-        ...routePermissions.baseRoutes,
-        ...routePermissions.adminRoutes,
-        ...routePermissions.commonAdminAndTeacherRoutes,
-      ];
-      break;
-    case "guru":
-      allowedRoutes = [
-        ...routePermissions.baseRoutes,
-        ...routePermissions.teacherRoutes,
-        ...routePermissions.commonAdminAndTeacherRoutes,
-      ];
-      break;
-    case "siswa":
-      allowedRoutes = [
-        ...routePermissions.baseRoutes,
-        ...routePermissions.studentRoutes,
-      ];
-      break;
-  }
+  const role = decodedToken.role?.toLowerCase() as keyof typeof rolePermissions;
+  const denyRoutes = rolePermissions[role]
+    .filter((perm) => perm.deny)
+    .flatMap((perm) => perm.routes);
 
   return menu
     .map((nav) => {
-      const filteredItems = nav.items?.filter((item) =>
-        allowedRoutes.some((allowed) => item.url.startsWith(allowed))
+      const isDenied = denyRoutes.some((route) => nav.url.startsWith(route));
+      const filteredItems = nav.items?.filter(
+        (item) => !denyRoutes.some((route) => item.url.startsWith(route))
       );
-      if (filteredItems && filteredItems.length > 0) {
-        return { ...nav, items: filteredItems };
+
+      if (!isDenied || (filteredItems && filteredItems.length > 0)) {
+        return {
+          ...nav,
+          url: isDenied ? "" : nav.url,
+          items: filteredItems ?? [],
+        };
       }
+
       return null;
     })
     .filter(Boolean) as NavItem[];

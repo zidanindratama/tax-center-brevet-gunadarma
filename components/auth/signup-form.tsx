@@ -32,6 +32,7 @@ import { useFileUploader } from "@/hooks/use-file-uploader";
 import Image from "next/image";
 import axiosInstance from "@/helpers/axios-instance";
 import { AxiosError } from "axios";
+import { normalizeToUTCDateOnly } from "../(dashboard)/profile/_libs/normalize-to-utc-date";
 
 const groupOptions = [
   { id: "mahasiswa_gunadarma", name: "Mahasiswa Gunadarma" },
@@ -96,7 +97,10 @@ export function SignupForm({
     setIsPending(true);
 
     try {
-      const payload: Record<string, unknown> = { ...values };
+      const payload: Record<string, unknown> = {
+        ...values,
+        birth_date: normalizeToUTCDateOnly(values.birth_date),
+      };
 
       if (values.group_type === "umum") {
         delete payload.nim;
@@ -290,6 +294,8 @@ export function SignupForm({
                     placeholder="Contoh: 31/03/2003"
                     value={field.value}
                     onChange={field.onChange}
+                    granularity="day"
+                    displayFormat={{ hour24: "PPP" }}
                   />
                 </FormControl>
                 <FormMessage />

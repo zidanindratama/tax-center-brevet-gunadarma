@@ -9,6 +9,8 @@ export type TCourseBatch = {
   end_at: string;
   room: string;
   quota: number;
+  start_time: string;
+  end_time: string;
   created_at: string;
   updated_at: string;
   course_type: "online" | "offline";

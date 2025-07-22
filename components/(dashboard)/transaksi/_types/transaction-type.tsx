@@ -10,10 +10,16 @@ export type TTransaction = {
   user_id: string;
   batch_id: string;
   price_id: string;
-  payment_proof: string;
   expired_at: string;
   created_at: string;
   updated_at: string;
+  payment_proof: string | null;
+  unique_code: number;
+  transfer_amount: number;
+  buyer_bank_account_name: string | null;
+  buyer_bank_account_number: string | null;
+  buyer_bank_name: string | null;
+
   user: {
     id: string;
     name: string;
@@ -24,6 +30,7 @@ export type TTransaction = {
     updated_at: string;
     role_type: string;
   };
+
   batch: {
     id: string;
     course_id: string;
@@ -33,17 +40,22 @@ export type TTransaction = {
     batch_thumbnail: string;
     start_at: string;
     end_at: string;
+    start_time: string;
+    end_time: string;
     room: string;
     quota: number;
-    days: {
-      id: string;
-      batch_id: string;
-      day: string;
-    }[];
+    days:
+      | {
+          id: string;
+          batch_id: string;
+          day: string;
+        }[]
+      | null;
     created_at: string;
     updated_at: string;
     course_type: "online" | "offline";
   };
+
   price: {
     id: string;
     group_type: string;

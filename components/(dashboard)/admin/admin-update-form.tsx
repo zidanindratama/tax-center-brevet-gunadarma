@@ -33,6 +33,7 @@ import {
   TUpdateAdmin,
   updateAdminSchema,
 } from "./_schemas/update-admin-schema";
+import { normalizeToUTCDateOnly } from "../profile/_libs/normalize-to-utc-date";
 
 type Props = {
   adminId: string;
@@ -81,7 +82,10 @@ const AdminUpdateForm = ({ adminId }: Props) => {
   });
 
   const onSubmit = (values: TUpdateAdmin) => {
-    mutation.mutate(values);
+    const { birth_date, ...rest } = values;
+    const birthDate = normalizeToUTCDateOnly(birth_date);
+
+    mutation.mutate({ ...rest, birth_date: birthDate });
   };
 
   useEffect(() => {
@@ -209,6 +213,8 @@ const AdminUpdateForm = ({ adminId }: Props) => {
                       value={field.value}
                       onChange={field.onChange}
                       placeholder="Pilih tanggal lahir"
+                      granularity="day"
+                      displayFormat={{ hour24: "PPP" }}
                     />
                   </FormControl>
                   <FormMessage />

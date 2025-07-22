@@ -42,6 +42,7 @@ import {
 import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
 import { TCourseBatch } from "./_types/course-batch-type";
+import { normalizeToUTCDateOnly } from "../../profile/_libs/normalize-to-utc-date";
 
 const BatchFormUpdate = () => {
   const { uploadFile } = useFileUploader();
@@ -63,6 +64,8 @@ const BatchFormUpdate = () => {
       batch_thumbnail: "",
       days: [],
       course_type: "offline",
+      start_time: undefined,
+      end_time: undefined,
     },
   });
 
@@ -70,6 +73,8 @@ const BatchFormUpdate = () => {
     queryKey: ["batches", batchSlug],
     dataProtected: `batches/${batchSlug}`,
   });
+
+  console.log(data);
 
   const { mutate: updateBatch, isPending } = usePutData({
     queryKey: "batches",
@@ -92,6 +97,8 @@ const BatchFormUpdate = () => {
         batch_thumbnail: batch.batch_thumbnail || "",
         days: batch.days.map((d) => d.day) || [],
         course_type: batch.course_type || "offline",
+        start_time: batch.start_time.slice(0, 5),
+        end_time: batch.end_time.slice(0, 5),
       });
 
       setIsReady(true);
@@ -106,7 +113,11 @@ const BatchFormUpdate = () => {
   };
 
   const onSubmit = (values: CreateBatchFormData) => {
-    updateBatch(values);
+    const { start_at, end_at, ...rest } = values;
+    const startAt = normalizeToUTCDateOnly(start_at);
+    const endAt = normalizeToUTCDateOnly(end_at);
+
+    updateBatch({ ...rest, start_at: startAt, end_at: endAt });
   };
 
   if (!isReady) return null;
@@ -162,13 +173,15 @@ const BatchFormUpdate = () => {
                 control={form.control}
                 name="start_at"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2">
+                  <FormItem>
                     <FormLabel htmlFor="start_at">Tanggal Mulai</FormLabel>
                     <FormControl>
                       <DateTimePicker
                         placeholder="Pilih tanggal mulai"
                         value={field.value}
                         onChange={field.onChange}
+                        granularity="day"
+                        displayFormat={{ hour24: "PPP" }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -179,13 +192,54 @@ const BatchFormUpdate = () => {
                 control={form.control}
                 name="end_at"
                 render={({ field }) => (
-                  <FormItem className="flex flex-col gap-2">
+                  <FormItem>
                     <FormLabel htmlFor="end_at">Tanggal Selesai</FormLabel>
                     <FormControl>
                       <DateTimePicker
                         placeholder="Pilih tanggal selesai"
                         value={field.value}
                         onChange={field.onChange}
+                        granularity="day"
+                        displayFormat={{ hour24: "PPP" }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="start_time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Jam Mulai</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        placeholder="08:00"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="end_time"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Jam Selesai</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="time"
+                        placeholder="10:00"
+                        value={field.value}
+                        onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
                     <FormMessage />
@@ -307,7 +361,8 @@ const BatchFormUpdate = () => {
             >
               {isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Menyimpan...
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Menyimpan...
                 </>
               ) : (
                 "Perbarui Data"
