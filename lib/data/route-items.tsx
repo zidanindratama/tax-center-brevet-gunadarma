@@ -83,6 +83,13 @@ export const routeItems = {
   ],
 
   // MAHASISWA
+  managementMyCourses: [
+    {
+      name: "Kelas Saya",
+      url: "/dashboard/kelas-saya",
+      icon: BookCopy,
+    },
+  ],
   managementPurchasing: [
     {
       name: "Pembayaran",
