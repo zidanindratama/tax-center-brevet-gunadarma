@@ -25,20 +25,20 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 
 type Props = {
-  batchId: string;
-  batchSlug: string;
+  meetingId: string;
 };
 
-export function BatchAction({ batchId, batchSlug }: Props) {
+export function MeetingAction({ meetingId }: Props) {
   const params = useParams();
   const courseSlug = params.slug as string;
+  const batchSlug = params.batchSlug as string;
 
   const [open, setOpen] = useState(false);
 
-  const deleteBatch = useDeleteData({
-    queryKey: "batches",
-    dataProtected: `batches/${batchId}`,
-    successMessage: "Batch berhasil dihapus!",
+  const deleteMeeting = useDeleteData({
+    queryKey: "meetings",
+    dataProtected: `meetings/${meetingId}`,
+    successMessage: "Pertemuan berhasil dihapus!",
   });
 
   return (
@@ -52,18 +52,15 @@ export function BatchAction({ batchId, batchSlug }: Props) {
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
           <DropdownMenuItem asChild>
-            <Link href={`/kursus/${batchSlug}`}>Lihat Detail</Link>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
             <Link
-              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan`}
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}`}
             >
-              Lihat Pertemuan
+              Lihat Detail
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
-              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/update`}
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}/update`}
             >
               Ubah Data
             </Link>
@@ -81,7 +78,7 @@ export function BatchAction({ batchId, batchSlug }: Props) {
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>
           <DialogDescription>
-            Apakah kamu yakin ingin menghapus gelombang ini?
+            Apakah kamu yakin ingin menghapus pertemuan ini?
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
@@ -92,7 +89,7 @@ export function BatchAction({ batchId, batchSlug }: Props) {
             variant="destructive"
             className="text-white"
             onClick={() => {
-              deleteBatch.mutate();
+              deleteMeeting.mutate();
               setOpen(false);
             }}
           >

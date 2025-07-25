@@ -37,8 +37,6 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     const accessToken = Cookies.get("access_token");
 
-    console.log("🔒 Access Token from cookie:", accessToken);
-
     if (!accessToken || accessToken === "undefined") {
       Cookies.remove("access_token");
 
