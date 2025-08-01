@@ -13,7 +13,7 @@ export const routePermissions = {
     "/dashboard/kursus",
     "/dashboard/transaksi",
   ],
-  teacherRoutes: ["/dashboard/ini-buat-guru"],
+  teacherRoutes: ["/dashboard/kelas"],
   studentRoutes: ["/dashboard/pembayaran", "/dashboard/kelas-saya"],
   commonAdminAndTeacherRoutes: ["/dashboard/ini-buat-admin-sama-guru"],
 };

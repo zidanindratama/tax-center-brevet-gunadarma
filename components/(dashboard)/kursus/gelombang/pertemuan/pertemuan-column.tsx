@@ -2,6 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { TMeeting } from "./_types/meeting-type";
 import { Badge } from "@/components/ui/badge";
 import { MeetingAction } from "./pertemuan-action";
+import { trimWords } from "@/lib/utils";
 
 export const meetingColumns: ColumnDef<TMeeting>[] = [
   {
@@ -14,7 +15,7 @@ export const meetingColumns: ColumnDef<TMeeting>[] = [
     header: "Deskripsi",
     cell: ({ row }) => (
       <div className="text-sm text-muted-foreground line-clamp-2">
-        {row.original.description || "-"}
+        {trimWords(row.original.description, 8) || "-"}
       </div>
     ),
   },

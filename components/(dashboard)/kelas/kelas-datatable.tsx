@@ -2,8 +2,6 @@
 
 import { useGetData } from "@/hooks/use-get-data";
 import { useDataTableQueryParams } from "@/hooks/use-data-table-query-params";
-import { TMyCourse } from "./_types/my-course-type";
-import { MyCourseCard } from "./kelas-card";
 import {
   Pagination,
   PaginationContent,
@@ -13,6 +11,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
+import { TMyCourse } from "../kelas-saya/_types/my-course-type";
+import { MyCourseCard } from "./kelas-card";
 import { Skeleton } from "@/components/ui/skeleton";
 
 const KelasSayaDatatable = () => {

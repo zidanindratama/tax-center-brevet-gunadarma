@@ -41,6 +41,8 @@ import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
 import { useGetData } from "@/hooks/use-get-data";
 import { normalizeToUTCDateOnly } from "../../profile/_libs/normalize-to-utc-date";
+import { GROUP_TYPE_OPTIONS } from "./_constants/group-type-options";
+import { TGroupType } from "./_types/group-type";
 
 const BatchFormCreate = () => {
   const { uploadFile } = useFileUploader();
@@ -66,6 +68,7 @@ const BatchFormCreate = () => {
       quota: 50,
       batch_thumbnail: "",
       days: [],
+      group_type: [],
       course_type: "offline",
       start_time: "",
       end_time: "",
@@ -90,8 +93,6 @@ const BatchFormCreate = () => {
     const { start_at, end_at, ...rest } = values;
     const startAt = normalizeToUTCDateOnly(start_at);
     const endAt = normalizeToUTCDateOnly(end_at);
-
-    console.log({ ...rest, start_at: startAt, end_at: endAt });
 
     submitBatch({ ...rest, start_at: startAt, end_at: endAt });
   };
@@ -272,6 +273,36 @@ const BatchFormCreate = () => {
                       defaultOptions={DAY_OPTIONS}
                       value={DAY_OPTIONS.filter((opt) =>
                         field.value.includes(opt.value)
+                      )}
+                      onChange={(selected) =>
+                        field.onChange(selected.map((item) => item.value))
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="group_type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Jenis Peserta</FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      placeholder="Pilih jenis peserta"
+                      emptyIndicator={
+                        <p className="text-center text-sm text-gray-500">
+                          Tidak ada opsi ditemukan.
+                        </p>
+                      }
+                      defaultOptions={GROUP_TYPE_OPTIONS}
+                      value={GROUP_TYPE_OPTIONS.filter((opt) =>
+                        (field.value as TGroupType[]).includes(
+                          opt.value as TGroupType
+                        )
                       )}
                       onChange={(selected) =>
                         field.onChange(selected.map((item) => item.value))

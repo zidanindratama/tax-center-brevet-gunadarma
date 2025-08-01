@@ -82,6 +82,15 @@ export const routeItems = {
     },
   ],
 
+  // GURU
+  managementCourses: [
+    {
+      name: "Kelas",
+      url: "/dashboard/kelas",
+      icon: BookCopy,
+    },
+  ],
+
   // MAHASISWA
   managementMyCourses: [
     {

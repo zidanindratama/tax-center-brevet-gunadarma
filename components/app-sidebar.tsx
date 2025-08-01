@@ -45,6 +45,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const filteredManagementMyCourses = useFilteredManagement(
     routeItems.managementMyCourses
   );
+  const filteredManagementCourses = useFilteredManagement(
+    routeItems.managementCourses
+  );
 
   return (
     <Sidebar variant="inset" {...props}>
@@ -116,6 +119,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <NavManagement
             projects={filteredManagementTransaction}
             title="Manajemen Transaksi"
+          />
+        )}
+
+        {filteredManagementCourses.length > 0 && (
+          <NavManagement
+            projects={filteredManagementCourses}
+            title="Manajemen Kursus"
           />
         )}
 

@@ -61,27 +61,37 @@ export default function FileInput({
   return (
     <div className="w-full max-w-2xl">
       <div className="mt-2 w-full flex flex-wrap gap-4">
-        {initialUrls.map((url, idx) => (
-          <div
-            key={`initial-${idx}`}
-            className="relative w-32 aspect-video border rounded-md overflow-hidden"
-          >
-            <img
-              src={url}
-              alt={`Gambar ${idx + 1}`}
-              className="object-cover w-full h-full"
-            />
-            {onRemoveInitial && (
+        {initialUrls.map((url, idx) => {
+          const isImageUrl = url.match(/\.(jpeg|jpg|png|gif|webp)$/i);
+
+          return (
+            <div
+              key={`initial-${idx}`}
+              className="relative w-32 aspect-video border rounded-md overflow-hidden"
+            >
               <button
                 type="button"
-                onClick={() => onRemoveInitial(idx)}
+                onClick={() => onRemoveInitial?.(idx)}
                 className="absolute top-2 right-2 z-10 bg-white rounded-full shadow hover:bg-red-100 transition p-1"
               >
                 <XCircleIcon className="h-6 w-6 text-red-500" />
               </button>
-            )}
-          </div>
-        ))}
+
+              {isImageUrl ? (
+                <img
+                  src={url}
+                  alt={`Gambar ${idx + 1}`}
+                  className="object-cover w-full h-full"
+                />
+              ) : (
+                <div className="flex flex-col justify-center items-center w-full h-full text-center p-2">
+                  <FileIcon className="h-8 w-8 mb-2 text-muted-foreground" />
+                  <p className="text-xs truncate">{`File ${idx + 1}`}</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
 
         {files.map((file, idx) => (
           <FilePreview
