@@ -19,4 +19,11 @@ export type TCourseBatch = {
     batch_id: string;
     day: string;
   }[];
+  batch_groups: {
+    id: string;
+    batch_id: string;
+    group_type: "mahasiswa_gunadarma" | "mahasiswa_non_gunadarma" | "umum";
+    created_at: string;
+    updated_at: string;
+  }[];
 };

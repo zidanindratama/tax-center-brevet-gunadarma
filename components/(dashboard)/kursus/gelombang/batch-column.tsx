@@ -80,6 +80,31 @@ export const batchColumns: ColumnDef<TCourseBatch>[] = [
     },
   },
   {
+    accessorKey: "group_types",
+    header: "Jenis Peserta",
+    cell: ({ row }) => {
+      const groups = row.original.batch_groups || [];
+
+      if (groups.length === 0) {
+        return <span className="text-muted-foreground">-</span>;
+      }
+
+      return (
+        <div className="flex flex-wrap gap-1">
+          {groups.map((g) => (
+            <Badge key={g.id} variant="secondary">
+              {g.group_type === "mahasiswa_gunadarma"
+                ? "Mahasiswa Gunadarma"
+                : g.group_type === "mahasiswa_non_gunadarma"
+                  ? "Mahasiswa Non-Gunadarma"
+                  : "Umum"}
+            </Badge>
+          ))}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "course_type",
     header: "Tipe",
     cell: ({ row }) => (

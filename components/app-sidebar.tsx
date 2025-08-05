@@ -125,7 +125,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {filteredManagementCourses.length > 0 && (
           <NavManagement
             projects={filteredManagementCourses}
-            title="Manajemen Kursus"
+            title="Manajemen Kelas"
           />
         )}
 

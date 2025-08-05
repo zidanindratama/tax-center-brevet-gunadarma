@@ -68,7 +68,7 @@ const BatchFormCreate = () => {
       quota: 50,
       batch_thumbnail: "",
       days: [],
-      group_type: [],
+      group_types: [],
       course_type: "offline",
       start_time: "",
       end_time: "",
@@ -286,7 +286,7 @@ const BatchFormCreate = () => {
 
             <FormField
               control={form.control}
-              name="group_type"
+              name="group_types"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jenis Peserta</FormLabel>

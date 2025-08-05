@@ -24,7 +24,7 @@ const TugasDataTable = ({ meetingId }: Props) => {
   const queryString = queryParams.toString();
 
   const { data, isLoading } = useGetData({
-    queryKey: ["assignments"],
+    queryKey: ["assignments", queryString],
     dataProtected: `meetings/${meetingId}/assignments?${queryString}`,
   });
 

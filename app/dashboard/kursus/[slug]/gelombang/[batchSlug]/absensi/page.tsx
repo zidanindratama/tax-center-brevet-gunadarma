@@ -1,6 +1,5 @@
 "use client";
 
-import KelasSayaDatatable from "@/components/(dashboard)/kelas-saya/kelas-datatable";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,9 +10,15 @@ import {
 } from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import { useParams } from "next/navigation";
 import { Suspense } from "react";
+import { AbsensiDatatable } from "@/components/(dashboard)/kursus/gelombang/absensi/absensi-datatable";
 
-export default function DashboardNewsage() {
+const DashboardPertemuanPage = () => {
+  const params = useParams();
+  const courseSlug = params.slug as string;
+  const batchSlug = params.batchSlug as string;
+
   return (
     <section>
       <header className="flex h-16 shrink-0 items-center gap-2">
@@ -29,8 +34,20 @@ export default function DashboardNewsage() {
                 <BreadcrumbLink href="/dashboard">Dashboard</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href="/dashboard/kursus">Kursus</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink
+                  href={`/dashboard/kursus/${courseSlug}/gelombang`}
+                >
+                  Gelombang
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Kelas Saya</BreadcrumbPage>
+                <BreadcrumbPage>Absensi</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
@@ -38,9 +55,11 @@ export default function DashboardNewsage() {
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <Suspense>
-          <KelasSayaDatatable />
+          <AbsensiDatatable batchSlug={batchSlug} />
         </Suspense>
       </div>
     </section>
   );
-}
+};
+
+export default DashboardPertemuanPage;

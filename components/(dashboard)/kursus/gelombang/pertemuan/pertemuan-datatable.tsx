@@ -17,6 +17,8 @@ const PertemuanDatatable = ({ batchSlug }: Props) => {
     ...(search && { q: search }),
     page: String(page),
     limit: String(limit),
+    sor: "created_at",
+    order: "asc",
     ...filters,
   });
 

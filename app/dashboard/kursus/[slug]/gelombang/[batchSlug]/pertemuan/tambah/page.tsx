@@ -49,7 +49,7 @@ const DashboardTambahPertemuanPage = () => {
                 <BreadcrumbLink
                   href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan`}
                 >
-                  Gelombang
+                  Pertemuan
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />

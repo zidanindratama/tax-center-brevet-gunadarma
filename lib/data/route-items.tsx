@@ -94,8 +94,8 @@ export const routeItems = {
   // MAHASISWA
   managementMyCourses: [
     {
-      name: "Kelas Saya",
-      url: "/dashboard/kelas-saya",
+      name: "Program Saya",
+      url: "/dashboard/program-saya",
       icon: BookCopy,
     },
   ],

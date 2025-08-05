@@ -41,6 +41,8 @@ import {
 } from "@/components/ui/select";
 import MultipleSelector from "@/components/ui/multiple-selector";
 import { DAY_OPTIONS } from "./_constants/day-options";
+import { GROUP_TYPE_OPTIONS } from "./_constants/group-type-options";
+import { TGroupType } from "./_types/group-type";
 import { TCourseBatch } from "./_types/course-batch-type";
 import { normalizeToUTCDateOnly } from "../../profile/_libs/normalize-to-utc-date";
 
@@ -63,9 +65,10 @@ const BatchFormUpdate = () => {
       quota: 50,
       batch_thumbnail: "",
       days: [],
+      group_types: [],
       course_type: "offline",
-      start_time: undefined,
-      end_time: undefined,
+      start_time: "",
+      end_time: "",
     },
   });
 
@@ -94,6 +97,7 @@ const BatchFormUpdate = () => {
         quota: batch.quota || 50,
         batch_thumbnail: batch.batch_thumbnail || "",
         days: batch.days.map((d) => d.day) || [],
+        group_types: batch.batch_groups.map((g) => g.group_type),
         course_type: batch.course_type || "offline",
         start_time: batch.start_time.slice(0, 5),
         end_time: batch.end_time.slice(0, 5),
@@ -165,7 +169,6 @@ const BatchFormUpdate = () => {
                 </FormItem>
               )}
             />
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -206,7 +209,6 @@ const BatchFormUpdate = () => {
                 )}
               />
             </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
@@ -245,7 +247,6 @@ const BatchFormUpdate = () => {
                 )}
               />
             </div>
-
             <FormField
               control={form.control}
               name="room"
@@ -259,7 +260,6 @@ const BatchFormUpdate = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="quota"
@@ -277,7 +277,6 @@ const BatchFormUpdate = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="days"
@@ -305,7 +304,35 @@ const BatchFormUpdate = () => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name="group_types"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Jenis Peserta</FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      placeholder="Pilih jenis peserta"
+                      emptyIndicator={
+                        <p className="text-center text-sm text-gray-500">
+                          Tidak ada opsi ditemukan.
+                        </p>
+                      }
+                      defaultOptions={GROUP_TYPE_OPTIONS}
+                      value={GROUP_TYPE_OPTIONS.filter((opt) =>
+                        (field.value as TGroupType[]).includes(
+                          opt.value as TGroupType
+                        )
+                      )}
+                      onChange={(selected) =>
+                        field.onChange(selected.map((item) => item.value))
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="course_type"
@@ -330,7 +357,6 @@ const BatchFormUpdate = () => {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
               name="batch_thumbnail"

@@ -28,7 +28,7 @@ export const CreateBatchSchema = z
       .array(z.string())
       .min(1, { message: "Minimal pilih 1 hari" })
       .refine((val) => val.every((v) => typeof v === "string")),
-    group_type: z
+    group_types: z
       .array(z.enum(["mahasiswa_gunadarma", "mahasiswa_non_gunadarma", "umum"]))
       .min(1, { message: "Minimal pilih 1 jenis peserta" }),
   })

@@ -20,7 +20,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-import { Trash2, MoreHorizontal } from "lucide-react";
+import { Trash2, MoreHorizontal, Blinds, FileSpreadsheet } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -56,16 +56,26 @@ export function BatchAction({ batchId, batchSlug }: Props) {
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/update`}
+            >
+              Ubah Data
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link
               href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan`}
             >
-              Lihat Pertemuan
+              <Blinds className="mr-2 h-4 w-4 text-purple-600" />
+              <span className="text-purple-600">Lihat Pertemuan</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link
-              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/update`}
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/absensi`}
             >
-              Ubah Data
+              <FileSpreadsheet className="mr-2 h-4 w-4 text-orange-600" />
+              <span className="text-orange-600">Lihat Absensi</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />

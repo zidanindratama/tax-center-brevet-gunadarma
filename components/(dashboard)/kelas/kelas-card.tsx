@@ -6,7 +6,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 import { Button } from "@/components/ui/button";
-import { TMyCourse } from "../kelas-saya/_types/my-course-type";
+import { TMyCourse } from "../program-saya/_types/my-course-type";
 
 const dayLabels: Record<string, string> = {
   monday: "Senin",

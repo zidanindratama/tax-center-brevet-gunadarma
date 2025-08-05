@@ -20,7 +20,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
-import { Trash2, MoreHorizontal } from "lucide-react";
+import {
+  Trash2,
+  MoreHorizontal,
+  BookOpenCheck,
+  ListChecks,
+} from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -51,6 +56,7 @@ export function MeetingAction({ meetingId }: Props) {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
           <DropdownMenuLabel>Aksi</DropdownMenuLabel>
+
           <DropdownMenuItem asChild>
             <Link
               href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}`}
@@ -58,6 +64,7 @@ export function MeetingAction({ meetingId }: Props) {
               Lihat Detail
             </Link>
           </DropdownMenuItem>
+
           <DropdownMenuItem asChild>
             <Link
               href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}/update`}
@@ -65,6 +72,27 @@ export function MeetingAction({ meetingId }: Props) {
               Ubah Data
             </Link>
           </DropdownMenuItem>
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuItem asChild>
+            <Link
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}/materi`}
+            >
+              <BookOpenCheck className="mr-2 h-4 w-4 text-purple-600" />
+              <span className="text-purple-600">Lihat Materi</span>
+            </Link>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
+            <Link
+              href={`/dashboard/kursus/${courseSlug}/gelombang/${batchSlug}/pertemuan/${meetingId}/tugas`}
+            >
+              <ListChecks className="mr-2 h-4 w-4 text-orange-600" />
+              <span className="text-orange-600">Lihat Tugas</span>
+            </Link>
+          </DropdownMenuItem>
+
           <DropdownMenuSeparator />
           <DialogTrigger asChild>
             <DropdownMenuItem>
@@ -74,6 +102,7 @@ export function MeetingAction({ meetingId }: Props) {
           </DialogTrigger>
         </DropdownMenuContent>
       </DropdownMenu>
+
       <DialogContent className="sm:max-w-[400px]">
         <DialogHeader>
           <DialogTitle>Konfirmasi Hapus</DialogTitle>

@@ -3,7 +3,6 @@
 import { useGetData } from "@/hooks/use-get-data";
 import { useDataTableQueryParams } from "@/hooks/use-data-table-query-params";
 import { TMyCourse } from "./_types/my-course-type";
-import { MyCourseCard } from "./kelas-card";
 import {
   Pagination,
   PaginationContent,
@@ -14,8 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProgramSayaCard } from "./program-card";
 
-const KelasSayaDatatable = () => {
+const ProgramSayaDatatable = () => {
   const { page, search, filters, updateQuery, resetFilters } =
     useDataTableQueryParams();
 
@@ -43,7 +43,7 @@ const KelasSayaDatatable = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold">Kelas Saya</h1>
+      <h1 className="text-xl font-bold">Program Saya</h1>
 
       <div className="flex flex-col md:flex-row gap-2">
         <Input
@@ -82,7 +82,7 @@ const KelasSayaDatatable = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {myCourses.map((course) => (
-              <MyCourseCard key={course.id} course={course} />
+              <ProgramSayaCard key={course.id} course={course} />
             ))}
           </div>
 
@@ -137,4 +137,4 @@ const KelasSayaDatatable = () => {
   );
 };
 
-export default KelasSayaDatatable;
+export default ProgramSayaDatatable;

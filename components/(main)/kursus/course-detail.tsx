@@ -18,6 +18,7 @@ import {
   MapPin,
   Users,
   AlertCircle,
+  UserCheck,
 } from "lucide-react";
 import { useGetData } from "@/hooks/use-get-data";
 import { useParams } from "next/navigation";
@@ -166,6 +167,32 @@ export default function CourseDetail() {
                   Kapasitas
                 </TableCell>
                 <TableCell>{batch.quota} Peserta</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground flex items-center gap-2 font-medium">
+                  <UserCheck className="h-4 w-4 text-orange-500" />
+                  Jenis Peserta
+                </TableCell>
+                <TableCell>
+                  <div className="flex flex-row gap-1">
+                    {batch.batch_groups.map((group) => {
+                      const label =
+                        group.group_type === "mahasiswa_gunadarma"
+                          ? "Mahasiswa Gunadarma"
+                          : group.group_type === "mahasiswa_non_gunadarma"
+                            ? "Mahasiswa Non-Gunadarma"
+                            : "Umum";
+                      return (
+                        <span
+                          key={group.id}
+                          className="px-2 py-0.5 rounded-full text-xs bg-orange-100 text-orange-700"
+                        >
+                          {label}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </TableCell>
               </TableRow>
             </TableBody>
           </Table>

@@ -23,7 +23,7 @@ type Props = {
   course: TMyCourse;
 };
 
-export function MyCourseCard({ course }: Props) {
+export function ProgramSayaCard({ course }: Props) {
   const mockProgress = 66;
 
   return (
@@ -77,7 +77,7 @@ export function MyCourseCard({ course }: Props) {
           />
         </div>
 
-        <Link href={`/dashboard/kelas-saya/${course.slug}`} className="mt-3">
+        <Link href={`/dashboard/program-saya/${course.slug}`} className="mt-3">
           <Button className="w-full text-xs" variant="orange">
             Lihat Detail
           </Button>
