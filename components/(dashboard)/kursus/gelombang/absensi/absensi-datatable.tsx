@@ -23,17 +23,7 @@ import { TMeeting } from "../pertemuan/_types/meeting-type";
 import Image from "next/image";
 import { TAttendance } from "./_types/absensi-type";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const absensiSchema = z.object({
-  data: z.array(
-    z.object({
-      id: z.string(),
-      pertemuan: z.array(z.boolean()),
-    })
-  ),
-});
-
-type AbsensiFormData = z.infer<typeof absensiSchema>;
+import { AbsensiFormData, absensiSchema } from "./_schemas/absensi-schema";
 
 type Props = {
   batchSlug: string;

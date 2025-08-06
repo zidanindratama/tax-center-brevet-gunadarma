@@ -32,22 +32,29 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
 
   const meetings: TBatchMeeting[] = data?.data.data ?? [];
 
+  const getBadgeClass = (ext: string) => {
+    if (ext === "pdf") return "bg-destructive/20 text-destructive";
+    if (["png", "jpg", "jpeg", "webp"].includes(ext))
+      return "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-300";
+    return "bg-muted text-muted-foreground";
+  };
+
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold">Pertemuan</h1>
+      <h1 className="text-xl font-bold text-foreground">Pertemuan</h1>
 
       {isLoading ? (
         <div className="space-y-4">
           {Array.from({ length: 3 }).map((_, i) => (
-            <Card key={i}>
+            <Card key={i} className="border border-border">
               <CardHeader className="pb-2 space-y-2">
-                <Skeleton className="h-4 w-2/3" />
-                <Skeleton className="h-3 w-1/2" />
+                <Skeleton className="h-4 w-2/3 bg-muted/50 dark:bg-muted/30" />
+                <Skeleton className="h-3 w-1/2 bg-muted/50 dark:bg-muted/30" />
               </CardHeader>
               <CardContent className="space-y-2">
-                <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-4 w-1/3" />
-                <Skeleton className="h-8 w-24 ml-auto" />
+                <Skeleton className="h-4 w-1/2 bg-muted/50 dark:bg-muted/30" />
+                <Skeleton className="h-4 w-1/3 bg-muted/50 dark:bg-muted/30" />
+                <Skeleton className="h-8 w-24 ml-auto bg-muted/50 dark:bg-muted/30" />
               </CardContent>
             </Card>
           ))}
@@ -64,30 +71,33 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
             const type = meeting.meeting_type;
             const label =
               type === "basic" ? "Biasa" : type === "exam" ? "Ujian" : type;
-            const colorVariant =
-              type === "basic"
-                ? "secondary"
-                : type === "exam"
-                  ? "destructive"
-                  : "outline";
-            const bgColor =
-              type === "basic"
-                ? "bg-gray-50"
-                : type === "exam"
-                  ? "bg-red-50"
-                  : "bg-white";
+
+            const cardBg =
+              type === "exam"
+                ? "bg-destructive/10 dark:bg-destructive/20"
+                : "bg-muted";
 
             return (
               <Card
                 key={meeting.id}
-                className={`transition-all duration-300 hover:shadow-lg hover:border-primary ${bgColor}`}
+                className={`transition-all duration-300 hover:shadow-lg border border-border hover:border-primary ${cardBg}`}
               >
                 <CardHeader className="pb-2">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-base font-semibold">
+                    <CardTitle className="text-base font-semibold text-foreground">
                       {meeting.title}
                     </CardTitle>
-                    <Badge variant={colorVariant}>{label}</Badge>
+                    <Badge
+                      variant={
+                        type === "basic"
+                          ? "secondary"
+                          : type === "exam"
+                            ? "destructive"
+                            : "outline"
+                      }
+                    >
+                      {label}
+                    </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground md:max-w-2xl">
                     {meeting.description}
@@ -96,7 +106,7 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
 
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium flex items-center gap-2">
+                    <h4 className="text-sm font-medium flex items-center gap-2 text-foreground">
                       <BookCheck className="h-4 w-4 text-orange-500" />
                       Materi
                     </h4>
@@ -110,10 +120,10 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                           return (
                             <li
                               key={material.id}
-                              className="p-3 border rounded-md bg-muted/30 flex flex-col sm:flex-row sm:items-center sm:justify-between"
+                              className="p-3 border border-border rounded-md bg-muted flex flex-col sm:flex-row sm:items-center sm:justify-between"
                             >
                               <div>
-                                <p className="text-sm font-medium">
+                                <p className="text-sm font-medium text-foreground">
                                   {material.title}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
@@ -124,7 +134,7 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                                 href={material.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="mt-2 sm:mt-0 text-sm text-blue-600 hover:underline"
+                                className="mt-2 sm:mt-0 text-sm text-primary hover:underline"
                               >
                                 materi-{index + 1}.{fileExt.toUpperCase()}
                               </Link>
@@ -140,7 +150,7 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                   </div>
 
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium flex items-center gap-2">
+                    <h4 className="text-sm font-medium flex items-center gap-2 text-foreground">
                       <ListChecks className="h-4 w-4 text-orange-500" />
                       Daftar Tugas
                     </h4>
@@ -156,11 +166,11 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                           return (
                             <li
                               key={assignment.id}
-                              className="p-4 border rounded-xl bg-muted/30 space-y-3"
+                              className="p-4 border border-border rounded-xl bg-muted space-y-3"
                             >
                               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                                 <div>
-                                  <p className="text-sm font-semibold">
+                                  <p className="text-sm font-semibold text-foreground">
                                     {assignment.title}
                                   </p>
                                   <p className="text-xs text-muted-foreground">
@@ -188,34 +198,22 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                                           .pop()
                                           ?.toLowerCase() ?? "file";
                                       const fileName = `tugas-${index + 1}.${fileExt}`;
-                                      const isImage = [
-                                        "png",
-                                        "jpg",
-                                        "jpeg",
-                                        "webp",
-                                      ].includes(fileExt);
-                                      const isPDF = fileExt === "pdf";
-
                                       return (
                                         <Link
                                           key={file.id}
                                           href={file.file_url}
                                           target="_blank"
                                           rel="noopener noreferrer"
-                                          className="flex items-center gap-2 text-sm bg-white border rounded-full px-3 py-1 hover:bg-blue-50 transition"
+                                          className="flex items-center gap-2 text-sm bg-background border border-border rounded-full px-3 py-1 hover:bg-muted transition"
                                         >
                                           <span
-                                            className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                                              isPDF
-                                                ? "bg-red-100 text-red-600"
-                                                : isImage
-                                                  ? "bg-green-100 text-green-600"
-                                                  : "bg-gray-100 text-gray-600"
-                                            }`}
+                                            className={`text-xs font-medium px-2 py-0.5 rounded-full ${getBadgeClass(
+                                              fileExt
+                                            )}`}
                                           >
                                             {fileExt.toUpperCase()}
                                           </span>
-                                          <span className="text-blue-600 hover:underline">
+                                          <span className="text-primary hover:underline">
                                             {fileName}
                                           </span>
                                         </Link>
@@ -236,7 +234,7 @@ const KelasPertemuan = ({ batchSlug }: Props) => {
                                       ) : (
                                         <Button
                                           size="sm"
-                                          variant="purple"
+                                          variant="default"
                                           asChild
                                           className="w-full sm:w-fit"
                                         >
