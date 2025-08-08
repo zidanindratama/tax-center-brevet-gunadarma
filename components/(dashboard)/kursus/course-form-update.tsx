@@ -42,6 +42,8 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
   const [initialUrls, setInitialUrls] = useState<string[]>([]);
   const { uploadFile } = useFileUploader();
 
+  console.log(initialUrls);
+
   const { data, isLoading: isFetching } = useGetData({
     queryKey: ["courses", courseSlug],
     dataProtected: `courses/${courseSlug}`,
@@ -58,7 +60,7 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
       description: "",
       learning_outcomes: "",
       achievements: "",
-      course_files: [],
+      course_images: [],
     },
   });
 
@@ -69,48 +71,72 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
     backUrl: "/dashboard/kursus",
   });
 
-  const onSubmit = async (values: UpdateCourseFormData) => {
-    const newUrls: string[] = [];
-    const existingUrls: string[] = [];
+  const handleRemoveInitial = (index: number) => {
+    setInitialUrls((prev) => {
+      const updatedUrls = prev.filter((_, i) => i !== index);
+      const updatedImages = form
+        .getValues("course_images")
+        .filter((img) => updatedUrls.includes(img.image_url));
+      form.setValue("course_images", updatedImages, { shouldDirty: true });
+      return updatedUrls;
+    });
+  };
 
-    for (const file of values.course_files) {
-      if (typeof file === "string") {
-        existingUrls.push(file);
-      } else if (file instanceof File) {
-        const url = await uploadFile(file, "images");
-        if (url) newUrls.push(url);
+  const onSubmit = async (values: UpdateCourseFormData) => {
+    const currentImages = form.getValues("course_images");
+    for (const img of currentImages) {
+      if (!img.image_url.startsWith("http")) {
+        console.warn("URL tidak valid:", img);
       }
     }
 
     const payload = {
       ...values,
-      course_images: [
-        ...existingUrls.map((url) => ({ image_url: url })),
-        ...newUrls.map((url) => ({ image_url: url })),
-      ],
+      course_images: values.course_images,
     };
+
+    console.log("✅ Payload final:", payload);
     updateCourse(payload);
   };
 
-  const handleRemoveInitial = (index: number) => {
-    setInitialUrls((prev) => prev.filter((_, i) => i !== index));
+  const handleUploadFiles = async (files: File[]) => {
+    const uploadedUrls: string[] = [];
+
+    for (const file of files) {
+      if (file.type.startsWith("image/")) {
+        const url = await uploadFile(file, "images");
+        if (url) uploadedUrls.push(url);
+      }
+    }
+
+    const currentImages = form.getValues("course_images");
+    const newImages = uploadedUrls.map((url) => ({ image_url: url }));
+
+    const existingUrls = currentImages.map((img) => img.image_url);
+    const filteredNewImages = newImages.filter(
+      (img) => !existingUrls.includes(img.image_url)
+    );
+    form.setValue("course_images", [...currentImages, ...filteredNewImages], {
+      shouldDirty: true,
+    });
   };
 
   useEffect(() => {
     if (data?.data?.data && !form.formState.isDirty) {
       const course = data.data.data;
-
-      const oldUrls =
+      const imageUrls =
         course.course_images?.map((img: TCourseImage) => img.image_url) || [];
+
       form.reset({
         title: course.title || "",
         short_description: course.short_description || "",
         description: course.description || "",
         learning_outcomes: course.learning_outcomes || "",
         achievements: course.achievements || "",
-        course_files: oldUrls,
+        course_images: imageUrls.map((url: string) => ({ image_url: url })),
       });
-      setInitialUrls(oldUrls);
+
+      setInitialUrls(imageUrls);
       setIsReady(true);
     }
   }, [data, form]);
@@ -194,7 +220,7 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
               name="learning_outcomes"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Hasil Pembelajaran (Learning Outcomes)</FormLabel>
+                  <FormLabel>Hasil Pembelajaran</FormLabel>
                   <FormControl>
                     <MinimalTiptapEditor
                       key={`lo-${courseSlug}`}
@@ -218,7 +244,7 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
               name="achievements"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Pencapaian (Achievements)</FormLabel>
+                  <FormLabel>Pencapaian</FormLabel>
                   <FormControl>
                     <MinimalTiptapEditor
                       key={`ach-${courseSlug}`}
@@ -239,18 +265,17 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
 
             <FormField
               control={form.control}
-              name="course_files"
-              render={({ field }) => (
+              name="course_images"
+              render={() => (
                 <FormItem>
                   <FormLabel>Gambar Kursus</FormLabel>
                   <FormControl>
                     <FileInput
-                      onFilesChange={field.onChange}
+                      onFilesChange={handleUploadFiles}
                       initialUrls={initialUrls}
                       onRemoveInitial={handleRemoveInitial}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />

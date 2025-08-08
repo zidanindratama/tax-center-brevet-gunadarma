@@ -41,7 +41,7 @@ const CourseFormCreate = () => {
       description: "",
       learning_outcomes: "",
       achievements: "",
-      course_files: [],
+      course_images: [],
     },
   });
 
@@ -53,27 +53,21 @@ const CourseFormCreate = () => {
   });
 
   const onSubmit = async (values: CreateCourseFormData) => {
-    const newUrls: string[] = [];
-    const existingUrls: string[] = [];
+    const newImages: { image_url: string }[] = [];
 
-    for (const file of values.course_files) {
-      if (typeof file === "string") {
-        existingUrls.push(file);
-      } else if (file instanceof File) {
-        const url = await uploadFile(file, "images");
-        if (url) newUrls.push(url);
+    for (const item of values.course_images) {
+      if (typeof item === "string") {
+        newImages.push({ image_url: item });
+      } else if (item instanceof File) {
+        const url = await uploadFile(item, "images");
+        if (url) newImages.push({ image_url: url });
       }
     }
 
-    const payload = {
+    submitCourse({
       ...values,
-      course_images: [
-        ...existingUrls.map((url) => ({ image_url: url })),
-        ...newUrls.map((url) => ({ image_url: url })),
-      ],
-    };
-
-    submitCourse(payload);
+      course_images: newImages,
+    });
   };
 
   return (
@@ -190,7 +184,7 @@ const CourseFormCreate = () => {
 
             <FormField
               control={form.control}
-              name="course_files"
+              name="course_images"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Gambar Kursus</FormLabel>

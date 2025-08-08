@@ -258,12 +258,28 @@ const TugasFormUpdate = ({
             <FormField
               control={form.control}
               name="assignment_files"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
                   <FormLabel>File Tugas</FormLabel>
                   <FormControl>
                     <FileInput
-                      onFilesChange={field.onChange}
+                      onFilesChange={(newFiles) => {
+                        const currentFiles = form.getValues(
+                          "assignment_files"
+                        ) as (string | File)[];
+                        const currentFileUrls = currentFiles.filter(
+                          (file) => typeof file === "string"
+                        ) as string[];
+
+                        const remainingInitialUrls = initialUrls.filter((url) =>
+                          currentFileUrls.includes(url)
+                        );
+
+                        form.setValue("assignment_files", [
+                          ...remainingInitialUrls,
+                          ...newFiles,
+                        ]);
+                      }}
                       initialUrls={initialUrls}
                       onRemoveInitial={handleRemoveInitial}
                     />

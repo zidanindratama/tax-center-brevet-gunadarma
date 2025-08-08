@@ -6,8 +6,12 @@ export const CreateCourseSchema = z.object({
   description: z.string().min(1, "Deskripsi lengkap wajib diisi"),
   learning_outcomes: z.string().min(1, "Learning outcomes wajib diisi"),
   achievements: z.string().min(1, "Achievements wajib diisi"),
-  course_files: z
-    .array(z.union([z.instanceof(File), z.string()]))
+  course_images: z
+    .array(
+      z.object({
+        image_url: z.string().url("URL gambar tidak valid"),
+      })
+    )
     .min(1, "Minimal upload 1 gambar kursus")
     .max(10, "Maksimal 10 gambar diperbolehkan"),
 });
