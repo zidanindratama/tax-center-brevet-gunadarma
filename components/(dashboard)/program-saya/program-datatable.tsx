@@ -43,11 +43,11 @@ const ProgramSayaDatatable = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-xl font-bold">Program Saya</h1>
+      <h1 className="text-xl font-bold">Kursus Saya</h1>
 
       <div className="flex flex-col md:flex-row gap-2">
         <Input
-          placeholder="Cari Nama Kelas"
+          placeholder="Cari Nama Kursus"
           value={search}
           onChange={(e) => updateQuery("search", e.target.value)}
           className="w-full text-sm"

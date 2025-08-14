@@ -30,7 +30,7 @@ export default function DashboardNewsage() {
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Program Saya</BreadcrumbPage>
+                <BreadcrumbPage>Kursus Saya</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

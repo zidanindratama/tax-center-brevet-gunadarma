@@ -1,6 +1,6 @@
 "use client";
 
-import KelasPertemuan from "@/components/(dashboard)/kelas/kelas-pertemuan";
+import PengumpulanJawaban from "@/components/(dashboard)/program-saya/tugas/pengumpulan-jawaban";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -16,6 +16,7 @@ import { useParams } from "next/navigation";
 const DashboardDetailKursusPage = () => {
   const params = useParams();
   const batchSlug = params.batchSlug as string;
+  const assignmentId = params.assignmentId as string;
 
   return (
     <section>
@@ -38,15 +39,21 @@ const DashboardDetailKursusPage = () => {
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
+              <BreadcrumbItem className="hidden md:block">
+                <BreadcrumbLink href={`/dashboard/program-saya/${batchSlug}`}>
+                  Pertemuan
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator className="hidden md:block" />
               <BreadcrumbItem>
-                <BreadcrumbPage>Pertemuan</BreadcrumbPage>
+                <BreadcrumbPage>Tugas</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <KelasPertemuan batchSlug={batchSlug} />
+        <PengumpulanJawaban batchSlug={batchSlug} assignmentId={assignmentId} />
       </div>
     </section>
   );

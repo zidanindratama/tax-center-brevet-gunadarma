@@ -1,14 +1,12 @@
 "use client";
 
-import { TMyCourse } from "./_types/my-course-type";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
-import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { useGetData } from "@/hooks/use-get-data";
+import { TMyCourse } from "../program-saya/_types/my-course-type";
 
 const dayLabels: Record<string, string> = {
   monday: "Senin",
@@ -24,16 +22,7 @@ type Props = {
   course: TMyCourse;
 };
 
-export function ProgramSayaCard({ course }: Props) {
-  const { data, isLoading } = useGetData({
-    queryKey: ["progress-kelas-saya", course.id],
-    dataProtected: `me/batches/${course.id}/progress`,
-  });
-
-  const progress = !isLoading
-    ? Math.round(data?.data.data?.progress_percent ?? 0)
-    : 0;
-
+export function KelaswSayaCard({ course }: Props) {
   return (
     <div className="group transition-all duration-300 border border-muted rounded-xl shadow-md hover:shadow-lg bg-background overflow-hidden">
       <div className="relative w-full h-40 bg-muted/50">
@@ -74,18 +63,7 @@ export function ProgramSayaCard({ course }: Props) {
           </Badge>
         </div>
 
-        <div className="mt-2 space-y-1">
-          <div className="flex justify-between text-[11px] text-muted-foreground">
-            <span>Progress</span>
-            <span>{isLoading ? "..." : `${progress}%`}</span>
-          </div>
-          <Progress
-            value={progress}
-            className="h-2 rounded-md [&>div]:bg-orange-500"
-          />
-        </div>
-
-        <Link href={`/dashboard/program-saya/${course.slug}`} className="mt-3">
+        <Link href={`/dashboard/kelas/${course.slug}`} className="mt-3">
           <Button className="w-full text-xs" variant="orange">
             Lihat Detail
           </Button>

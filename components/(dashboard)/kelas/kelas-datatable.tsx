@@ -12,8 +12,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { TMyCourse } from "../program-saya/_types/my-course-type";
-import { MyCourseCard } from "./kelas-card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { KelaswSayaCard } from "./kelas-saya-card";
 
 const KelasSayaDatatable = () => {
   const { page, search, filters, updateQuery, resetFilters } =
@@ -82,7 +82,7 @@ const KelasSayaDatatable = () => {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {myCourses.map((course) => (
-              <MyCourseCard key={course.id} course={course} />
+              <KelaswSayaCard key={course.id} course={course} />
             ))}
           </div>
 
