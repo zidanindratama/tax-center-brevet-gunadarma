@@ -56,7 +56,6 @@ export default function CourseDetailPage({ courseSlug }: Props) {
               <Skeleton className="h-10 w-full rounded" />
             </div>
 
-            {/* Kanan: Tabs Skeleton */}
             <div className="space-y-4">
               <div className="flex gap-4 border-b">
                 {[...Array(3)].map((_, i) => (

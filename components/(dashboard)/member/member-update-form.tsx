@@ -258,7 +258,6 @@ const MemberUpdateForm = ({ memberId }: Props) => {
               )}
             />
 
-            {/* NIM & Bukti NIM */}
             {showNimAndProof && (
               <>
                 <FormField
@@ -312,7 +311,6 @@ const MemberUpdateForm = ({ memberId }: Props) => {
               </>
             )}
 
-            {/* NIK */}
             {showNik && (
               <FormField
                 control={form.control}

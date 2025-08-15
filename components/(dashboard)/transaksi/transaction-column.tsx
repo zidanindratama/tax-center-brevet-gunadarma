@@ -82,7 +82,7 @@ export const transactionColumns: ColumnDef<TTransaction>[] = [
   },
   {
     accessorKey: "created_at",
-    header: "Tanggal Beli",
+    header: "Tanggal Transaksi",
     cell: ({ row }) => <span>{formatDateIndo(row.original.created_at)}</span>,
   },
   {

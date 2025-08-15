@@ -266,7 +266,7 @@ export default function KelasCard({ meeting, batchSlug, currentUser }: Props) {
                             disabled={notStarted}
                           >
                             <Link
-                              href={`/dashboard/program-saya/${batchSlug}/tugas/${assignment.id}/kerjakan`}
+                              href={`/dashboard/program-saya/${batchSlug}/tugas/${assignment.id}`}
                               aria-label={`Kerjakan tugas ${assignment.title}`}
                             >
                               {notStarted ? "Belum Dibuka" : "Kerjakan Tugas"}

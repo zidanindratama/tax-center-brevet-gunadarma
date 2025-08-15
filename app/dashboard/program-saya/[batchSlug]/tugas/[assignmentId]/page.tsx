@@ -1,6 +1,6 @@
 "use client";
 
-import PengumpulanJawaban from "@/components/(dashboard)/program-saya/tugas/pengumpulan-jawaban";
+import PengumpulanKonfirmasi from "@/components/(dashboard)/program-saya/tugas/pengumpulan-konfirmasi";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -53,7 +53,10 @@ const DashboardKerjakanTugasPage = () => {
         </div>
       </header>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-        <PengumpulanJawaban batchSlug={batchSlug} assignmentId={assignmentId} />
+        <PengumpulanKonfirmasi
+          batchSlug={batchSlug}
+          assignmentId={assignmentId}
+        />
       </div>
     </section>
   );
