@@ -82,7 +82,7 @@ const PengumpulanKonfirmasi = ({ batchSlug, assignmentId }: Props) => {
 
   if (assignmentLoading || subsLoading) {
     return (
-      <div className="-mx-4 sm:-mx-6 lg:-mx-8 p-6">
+      <div>
         <Card className="w-full rounded-xl border shadow-sm overflow-hidden">
           <div className="h-1.5 w-full bg-primary" />
           <CardHeader className="p-5 md:p-6 border-b">
@@ -161,179 +161,175 @@ const PengumpulanKonfirmasi = ({ batchSlug, assignmentId }: Props) => {
   const goBackHref = `/dashboard/program-saya/${batchSlug}`;
 
   return (
-    <div className="">
-      <Card className="w-full rounded-xl border shadow-sm overflow-hidden">
-        <div className="h-1.5 w-full bg-primary" />
-        <CardHeader className="p-5 md:p-6 border-b">
-          <div className="flex items-start justify-between gap-3">
-            <div className="space-y-0.5">
-              <CardTitle className="text-lg md:text-xl font-semibold tracking-tight">
-                {assignment.title}
-              </CardTitle>
-              {assignment.description && (
-                <CardDescription className="text-sm leading-relaxed">
-                  {assignment.description}
-                </CardDescription>
-              )}
-            </div>
-            <span
-              className={
-                notStarted
-                  ? pill("notStarted")
-                  : open
-                    ? pill("open")
-                    : pill("closed")
-              }
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-current/70" />
-              {notStarted
-                ? "Belum Dibuka"
+    <Card className="w-full rounded-xl border shadow-sm overflow-hidden">
+      <div className="h-1.5 w-full bg-primary" />
+      <CardHeader className="p-5 md:p-6 border-b">
+        <div className="flex items-start justify-between gap-3">
+          <div className="space-y-0.5">
+            <CardTitle className="text-lg md:text-xl font-semibold tracking-tight">
+              {assignment.title}
+            </CardTitle>
+            {assignment.description && (
+              <CardDescription className="text-sm leading-relaxed">
+                {assignment.description}
+              </CardDescription>
+            )}
+          </div>
+          <span
+            className={
+              notStarted
+                ? pill("notStarted")
                 : open
-                  ? "Sedang Berjalan"
-                  : "Tertutup"}
+                  ? pill("open")
+                  : pill("closed")
+            }
+          >
+            <span className="h-1.5 w-1.5 rounded-full bg-current/70" />
+            {notStarted
+              ? "Belum Dibuka"
+              : open
+                ? "Sedang Berjalan"
+                : "Tertutup"}
+          </span>
+        </div>
+      </CardHeader>
+
+      <CardContent className="p-5 md:p-6 grid gap-5">
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <div className={chip}>
+            <Clock4 className="h-4 w-4 text-orange-500" />
+            <div className="truncate">
+              <span className="font-medium text-foreground">Mulai: </span>
+              {format(startAt, "dd MMM yyyy, HH:mm", {
+                locale: localeID,
+              })}{" "}
+              WIB
+            </div>
+          </div>
+          <div className={chip}>
+            <Clock4 className="h-4 w-4 text-orange-500" />
+            <div className="truncate">
+              <span className="font-medium text-foreground">Deadline: </span>
+              {format(endAt, "dd MMM yyyy, HH:mm", { locale: localeID })} WIB
+            </div>
+          </div>
+          <div className={`${chip} sm:col-span-2 lg:col-span-1`}>
+            <Clock4 className="h-4 w-4 text-orange-500" />
+            <div className="text-foreground/80">{timeInfo}</div>
+          </div>
+        </div>
+
+        <div className="space-y-1">
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <span>Waktu pengerjaan</span>
+            <span>{Math.round(pct)}%</span>
+          </div>
+          <div className="h-1.5 w-full rounded-full bg-muted">
+            <div
+              className="h-1.5 rounded-full bg-orange-500 transition-[width] duration-500"
+              style={{ width: `${pct}%` }}
+            />
+          </div>
+        </div>
+
+        {/* Stats */}
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          <div className={chip}>
+            <Info className="h-4 w-4 text-orange-500" />
+            <span>
+              Attempts allowed:{" "}
+              <span className="font-semibold text-foreground">
+                {attemptsAllowed}
+              </span>
             </span>
           </div>
-        </CardHeader>
-
-        <CardContent className="p-5 md:p-6 grid gap-5">
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            <div className={chip}>
-              <Clock4 className="h-4 w-4 text-orange-500" />
-              <div className="truncate">
-                <span className="font-medium text-foreground">Mulai: </span>
-                {format(startAt, "dd MMM yyyy, HH:mm", {
-                  locale: localeID,
-                })}{" "}
-                WIB
-              </div>
-            </div>
-            <div className={chip}>
-              <Clock4 className="h-4 w-4 text-orange-500" />
-              <div className="truncate">
-                <span className="font-medium text-foreground">Deadline: </span>
-                {format(endAt, "dd MMM yyyy, HH:mm", { locale: localeID })} WIB
-              </div>
-            </div>
-            <div className={`${chip} sm:col-span-2 lg:col-span-1`}>
-              <Clock4 className="h-4 w-4 text-orange-500" />
-              <div className="text-foreground/80">{timeInfo}</div>
-            </div>
+          <div className={chip}>
+            <Repeat2 className="h-4 w-4 text-orange-500" />
+            <span>
+              Attempts used:{" "}
+              <span className="font-semibold text-foreground">
+                {attemptsUsed}
+              </span>
+            </span>
           </div>
-
-          <div className="space-y-1">
-            <div className="flex items-center justify-between text-sm text-muted-foreground">
-              <span>Waktu pengerjaan</span>
-              <span>{Math.round(pct)}%</span>
-            </div>
-            <div className="h-1.5 w-full rounded-full bg-muted">
-              <div
-                className="h-1.5 rounded-full bg-orange-500 transition-[width] duration-500"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
+          <div className={chip}>
+            <CheckCircle2 className="h-4 w-4 text-orange-500" />
+            <span>
+              Grade ({gradingMethod === "latest" ? "Latest" : "Highest"}):{" "}
+              <span className="font-semibold text-foreground">
+                {bestScoreDisplay}
+              </span>
+            </span>
           </div>
-
-          {/* Stats */}
-          <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {typeof assignment.time_limit_minutes === "number" && (
             <div className={chip}>
-              <Info className="h-4 w-4 text-orange-500" />
+              <Clock4 className="h-4 w-4 text-orange-500" />
               <span>
-                Attempts allowed:{" "}
+                Time limit:{" "}
                 <span className="font-semibold text-foreground">
-                  {attemptsAllowed}
+                  {assignment.time_limit_minutes} menit
                 </span>
               </span>
             </div>
-            <div className={chip}>
-              <Repeat2 className="h-4 w-4 text-orange-500" />
-              <span>
-                Attempts used:{" "}
-                <span className="font-semibold text-foreground">
-                  {attemptsUsed}
-                </span>
-              </span>
-            </div>
-            <div className={chip}>
-              <CheckCircle2 className="h-4 w-4 text-orange-500" />
-              <span>
-                Grade ({gradingMethod === "latest" ? "Latest" : "Highest"}):{" "}
-                <span className="font-semibold text-foreground">
-                  {bestScoreDisplay}
-                </span>
-              </span>
-            </div>
-            {typeof assignment.time_limit_minutes === "number" && (
-              <div className={chip}>
-                <Clock4 className="h-4 w-4 text-orange-500" />
-                <span>
-                  Time limit:{" "}
-                  <span className="font-semibold text-foreground">
-                    {assignment.time_limit_minutes} menit
-                  </span>
-                </span>
-              </div>
-            )}
-          </div>
-
-          {/* Attempts */}
-          {mySubmissions.length > 0 && (
-            <>
-              <div className="h-px w-full bg-border" />
-              <div>
-                <p className="text-sm font-medium text-foreground mb-2">
-                  Riwayat Attempt
-                </p>
-                <ul className="space-y-1.5">
-                  {mySubmissions
-                    .slice()
-                    .sort(
-                      (a, b) =>
-                        new Date(a.created_at).getTime() -
-                        new Date(b.created_at).getTime()
-                    )
-                    .map((s, idx) => (
-                      <li
-                        key={s.id}
-                        className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-1.5 text-sm"
-                      >
-                        <span className="text-foreground">
-                          Attempt {s.attempt_no ?? idx + 1} •{" "}
-                          {format(
-                            new Date(s.created_at),
-                            "dd MMM yyyy, HH:mm",
-                            { locale: localeID }
-                          )}{" "}
-                          WIB
-                        </span>
-                        <span className="text-muted-foreground">
-                          {typeof s.score === "number"
-                            ? `Skor: ${s.score}`
-                            : (s.status ?? "-")}
-                        </span>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-            </>
           )}
+        </div>
 
-          {/* CTA */}
-          <div className="flex flex-col sm:flex-row gap-2 pt-1">
-            {showDoBtn ? (
-              <Button variant="orange" asChild>
-                <Link href={actionHref}>
-                  {!hasAnyAttempt ? "Kerjakan" : "Kerjakan Ulang"}
-                </Link>
-              </Button>
-            ) : (
-              <Button variant="outline" asChild>
-                <Link href={goBackHref}>Kembali ke Kursus</Link>
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+        {/* Attempts */}
+        {mySubmissions.length > 0 && (
+          <>
+            <div className="h-px w-full bg-border" />
+            <div>
+              <p className="text-sm font-medium text-foreground mb-2">
+                Riwayat Attempt
+              </p>
+              <ul className="space-y-1.5">
+                {mySubmissions
+                  .slice()
+                  .sort(
+                    (a, b) =>
+                      new Date(a.created_at).getTime() -
+                      new Date(b.created_at).getTime()
+                  )
+                  .map((s, idx) => (
+                    <li
+                      key={s.id}
+                      className="flex items-center justify-between rounded-md border bg-muted/30 px-3 py-1.5 text-sm"
+                    >
+                      <span className="text-foreground">
+                        Attempt {s.attempt_no ?? idx + 1} •{" "}
+                        {format(new Date(s.created_at), "dd MMM yyyy, HH:mm", {
+                          locale: localeID,
+                        })}{" "}
+                        WIB
+                      </span>
+                      <span className="text-muted-foreground">
+                        {typeof s.score === "number"
+                          ? `Skor: ${s.score}`
+                          : (s.status ?? "-")}
+                      </span>
+                    </li>
+                  ))}
+              </ul>
+            </div>
+          </>
+        )}
+
+        {/* CTA */}
+        <div className="flex flex-col sm:flex-row gap-2 pt-1">
+          {showDoBtn ? (
+            <Button variant="orange" asChild>
+              <Link href={actionHref}>
+                {!hasAnyAttempt ? "Kerjakan" : "Kerjakan Ulang"}
+              </Link>
+            </Button>
+          ) : (
+            <Button variant="outline" asChild>
+              <Link href={goBackHref}>Kembali ke Kursus</Link>
+            </Button>
+          )}
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
