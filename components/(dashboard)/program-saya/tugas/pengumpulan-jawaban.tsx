@@ -5,6 +5,7 @@ import React from "react";
 import { TAssignment } from "../../kelas/tugas/_types/tugas-type";
 import PengumpulanEssay from "./pengumpulan-essay";
 import PengumpulanFile from "./pengumpulan-file";
+import { Skeleton } from "@/components/ui/skeleton";
 
 type Props = {
   batchSlug: string;
@@ -12,14 +13,40 @@ type Props = {
 };
 
 const PengumpulanJawaban = ({ batchSlug, assignmentId }: Props) => {
-  const { data, isLoading } = useGetData({
+  const { data, isLoading, isError } = useGetData({
     queryKey: ["tugas", assignmentId],
     dataProtected: `assignments/${assignmentId}`,
   });
 
-  const tugas: TAssignment | undefined = data?.data?.data;
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <div className="space-y-3">
+          <Skeleton className="h-6 w-[40%] max-w-[320px]" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[85%]" />
+            <Skeleton className="h-4 w-[70%]" />
+          </div>
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-10 w-full" />
+          <Skeleton className="h-28 w-full" />
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-28" />
+            <Skeleton className="h-9 w-28" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-  if (isLoading) return <div>Memuat data tugas…</div>;
+  if (isError) {
+    return (
+      <div className="text-sm text-destructive">Gagal memuat data tugas.</div>
+    );
+  }
+
+  const tugas: TAssignment | undefined = data?.data?.data;
   if (!tugas) return <div>Data tugas tidak ditemukan.</div>;
 
   return (
