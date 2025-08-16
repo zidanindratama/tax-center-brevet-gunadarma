@@ -52,7 +52,7 @@ const Help = () => {
         </h2>
         <p className="mt-3 text-base sm:text-lg">
           Silakan isi formulir di bawah ini atau kirimkan email kepada kami
-          apabila Anda memiliki pertanyaan terkait program atau layanan yang
+          apabila Kamu memiliki pertanyaan terkait program atau layanan yang
           tersedia.
         </p>
         <div className="mt-24 grid lg:grid-cols-2 gap-16 md:gap-10">
@@ -79,7 +79,7 @@ const Help = () => {
               </div>
               <h3 className="mt-6 font-semibold text-xl">WhatsApp</h3>
               <p className="my-2.5 text-muted-foreground">
-                Admin selalu siap menjawab pesan Anda.
+                Admin selalu siap menjawab pesan Kamu.
               </p>
               <Link
                 className="font-medium text-primary"
@@ -179,7 +179,7 @@ const Help = () => {
                           <FormControl>
                             <Textarea
                               rows={6}
-                              placeholder="Tulis pesan Anda..."
+                              placeholder="Tulis pesan Kamu..."
                               {...field}
                             />
                           </FormControl>

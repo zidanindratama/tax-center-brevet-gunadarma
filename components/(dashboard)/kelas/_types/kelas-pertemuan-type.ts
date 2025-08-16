@@ -20,7 +20,7 @@ export type TBatchMeeting = {
     teacher_id: string;
     title: string;
     description: string;
-    type: "file" | string;
+    type: "essay" | "file";
     start_at: string;
     end_at: string;
     created_at: string;
@@ -31,6 +31,10 @@ export type TBatchMeeting = {
       file_url: string;
       created_at: string;
       updated_at: string;
+    }[];
+    assignment_submissions: {
+      id: string;
+      assignment_id: string;
     }[];
   }[];
   materials: {

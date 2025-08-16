@@ -114,7 +114,7 @@ export function SignupForm({
       console.log("✅ Register sukses:", response.data);
 
       toast("Pendaftaran Berhasil!", {
-        description: "Silahkan verifikasi email Anda.",
+        description: "Silahkan verifikasi email Kamu.",
       });
 
       form.reset();

@@ -38,7 +38,7 @@ export function AbsensiDatatable({ batchSlug }: Props) {
 
   const { data: studentsData, isLoading: isLoadingStudent } = useGetData({
     queryKey: ["students"],
-    dataProtected: `batches/${batchSlug}/students?limit=200`,
+    dataProtected: `batches/${batchSlug}/students?limit=200&sort=name&order=asc`,
   });
 
   const { data: meetingsData, isLoading: isLoadingMeeting } = useGetData({

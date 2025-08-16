@@ -7,7 +7,7 @@ const stripHtml = (html: string) =>
     .trim();
 
 export const EssayAnswerSchema = z.object({
-  content_html: z
+  essay_text: z
     .string()
     .min(1, { message: "Jawaban tidak boleh kosong." })
     .refine((v) => stripHtml(v).length >= 20, {

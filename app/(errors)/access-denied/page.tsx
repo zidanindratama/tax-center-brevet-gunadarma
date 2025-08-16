@@ -19,11 +19,11 @@ const AccessDeniedPage = () => {
         <div className="flex flex-col gap-2">
           <h1 className="font-bold text-5xl">Akses Ditolak</h1>
           <h3 className="font-semibold text-2xl">
-            Anda tidak memiliki izin untuk mengakses halaman ini.
+            Kamu tidak memiliki izin untuk mengakses halaman ini.
           </h3>
           <h5 className="md:max-w-xl text-center mx-auto">
-            Anda tidak memiliki hak akses untuk membuka halaman ini. Silakan
-            kembali ke halaman utama atau periksa kembali kredensial Anda.
+            Kamu tidak memiliki hak akses untuk membuka halaman ini. Silakan
+            kembali ke halaman utama atau periksa kembali kredensial Kamu.
           </h5>
         </div>
         <Button className="w-fit" variant={"orange"} asChild>

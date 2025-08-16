@@ -93,7 +93,7 @@ export default function CourseScheduleTable() {
             </strong>{" "}
             Jadwal dapat berubah tergantung pada jumlah peserta yang mendaftar
             pada gelombang ini. Silakan daftar lebih awal untuk mengamankan
-            tempat Anda.
+            tempat Kamu.
           </p>
         </div>
 

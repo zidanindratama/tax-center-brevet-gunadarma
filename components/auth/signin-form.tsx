@@ -70,7 +70,7 @@ export function SignInForm({
         className={cn("flex flex-col gap-6", className)}
       >
         <div className="flex flex-col items-center gap-2 text-center">
-          <h1 className="text-2xl font-bold">Masuk ke Akun Anda</h1>
+          <h1 className="text-2xl font-bold">Masuk ke Akun Kamu</h1>
           <p className="text-sm text-muted-foreground">
             Gunakan email dan password untuk masuk
           </p>

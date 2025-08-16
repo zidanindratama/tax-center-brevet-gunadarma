@@ -1,6 +1,5 @@
 "use client";
 
-import MateriDatatable from "@/components/(dashboard)/kelas/materi/materi-datatable";
 import NilaiDatatable from "@/components/(dashboard)/kelas/nilai/nilai-datatable";
 import {
   Breadcrumb,

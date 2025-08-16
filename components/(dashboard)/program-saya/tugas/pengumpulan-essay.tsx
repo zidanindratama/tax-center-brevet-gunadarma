@@ -70,7 +70,7 @@ const PengumpulanEssay = ({ batchSlug, assignment }: Props) => {
 
   const form = useForm<EssayAnswerFormData>({
     resolver: zodResolver(EssayAnswerSchema),
-    defaultValues: { content_html: "" },
+    defaultValues: { essay_text: "" },
   });
 
   const { mutate: submitAnswer, isPending } = usePostData({
@@ -81,18 +81,7 @@ const PengumpulanEssay = ({ batchSlug, assignment }: Props) => {
   });
 
   const onSubmit = (values: EssayAnswerFormData) => {
-    submitAnswer({ content_html: values.content_html });
-
-    // MOCK
-    const mockPayload = {
-      note: values.content_html,
-      submission_files: [
-        { file_url: "https://storage.example.com/files/tugas1.pdf" },
-        { file_url: "https://storage.example.com/files/tugas2.pdf" },
-      ],
-    };
-    console.log(mockPayload);
-    submitAnswer(mockPayload);
+    submitAnswer({ essay_text: values.essay_text });
   };
 
   return (
@@ -176,7 +165,7 @@ const PengumpulanEssay = ({ batchSlug, assignment }: Props) => {
           <CardContent className="grid grid-cols-1 gap-6">
             <FormField
               control={form.control}
-              name="content_html"
+              name="essay_text"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Jawaban Esai</FormLabel>

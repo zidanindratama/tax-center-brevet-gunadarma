@@ -116,6 +116,7 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
     const filteredNewImages = newImages.filter(
       (img) => !existingUrls.includes(img.image_url)
     );
+
     form.setValue("course_images", [...currentImages, ...filteredNewImages], {
       shouldDirty: true,
     });
@@ -271,9 +272,17 @@ const CourseFormUpdate = ({ courseSlug }: Props) => {
                   <FormLabel>Gambar Kursus</FormLabel>
                   <FormControl>
                     <FileInput
-                      onFilesChange={handleUploadFiles}
                       initialUrls={initialUrls}
                       onRemoveInitial={handleRemoveInitial}
+                      onFilesChange={(incoming) => {
+                        const arr = incoming as (string | File)[];
+                        const onlyFiles = arr.filter(
+                          (it): it is File => it instanceof File
+                        );
+                        if (onlyFiles.length) {
+                          void handleUploadFiles(onlyFiles);
+                        }
+                      }}
                     />
                   </FormControl>
                 </FormItem>

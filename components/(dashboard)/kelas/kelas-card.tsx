@@ -188,7 +188,7 @@ export default function KelasCard({ meeting, batchSlug, currentUser }: Props) {
                           {assignment.title}
                         </p>
 
-                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-[11px] text-muted-foreground">
+                        <div className="mt-0.5 flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground">
                           <span>
                             <span className="font-medium text-foreground/80">
                               Mulai:
@@ -200,7 +200,7 @@ export default function KelasCard({ meeting, batchSlug, currentUser }: Props) {
                           </span>
                           <span>
                             <span className="font-medium text-foreground/80">
-                              Deadline:
+                              Berakhir:
                             </span>{" "}
                             {format(endDate, "dd MMM yyyy, HH:mm", {
                               locale: localeID,

@@ -80,7 +80,7 @@ const PengumpulanFile = ({ batchSlug, assignment }: Props) => {
 
   const { mutate: submitAnswer, isPending } = usePostData({
     queryKey: `assignment-${assignment.id}-answer`,
-    dataProtected: `/assignments/${assignment.id}/submissions`,
+    dataProtected: `assignments/${assignment.id}/submissions`,
     successMessage: "Jawaban berhasil dikirim!",
     backUrl: `/dashboard/program-saya/${batchSlug}`,
   });
@@ -98,7 +98,11 @@ const PengumpulanFile = ({ batchSlug, assignment }: Props) => {
       if (url) uploadedUrls.push(url);
     }
 
-    submitAnswer({ file_urls: uploadedUrls });
+    const payload = {
+      submission_files: uploadedUrls.map((url) => ({ file_url: url })),
+    };
+
+    submitAnswer(payload);
   };
 
   return (

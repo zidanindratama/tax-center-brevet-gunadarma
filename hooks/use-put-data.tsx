@@ -3,9 +3,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
+type QueryKeyType = string | Array<string | number>;
+
 type fetchProps = {
-  queryKey: string;
-  dataProtected: string;
+  queryKey: QueryKeyType;
+  dataProtected?: string;
   backUrl?: string;
   multipart?: boolean;
   successMessage?: string;

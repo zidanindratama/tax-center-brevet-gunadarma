@@ -152,7 +152,7 @@ const MyProfileForm = () => {
           <CardHeader>
             <CardTitle>Perbarui Profil</CardTitle>
             <CardDescription>
-              Silakan ubah data profil Anda di bawah ini.
+              Silakan ubah data profil Kamu di bawah ini.
             </CardDescription>
             <CardAction />
           </CardHeader>

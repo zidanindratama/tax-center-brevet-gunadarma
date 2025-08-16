@@ -111,8 +111,8 @@ export default function Purchase({ batchSlug }: Props) {
           </div>
 
           <div className="border rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-900 dark:text-blue-100 border-blue-300 dark:border-blue-700 p-5 text-sm">
-            Dengan menekan tombol <strong>Bayar</strong>, Anda akan otomatis
-            terdaftar pada gelombang ini. Pastikan data Anda benar dan aktif.
+            Dengan menekan tombol <strong>Bayar</strong>, Kamu akan otomatis
+            terdaftar pada gelombang ini. Pastikan data Kamu benar dan aktif.
           </div>
         </div>
 
