@@ -75,13 +75,24 @@ const PengumpulanEssay = ({ batchSlug, assignment }: Props) => {
 
   const { mutate: submitAnswer, isPending } = usePostData({
     queryKey: `assignment-${assignment.id}-answer`,
-    dataProtected: `/assignments/${assignment.id}/submissions`,
+    dataProtected: `assignments/${assignment.id}/submissions`,
     successMessage: "Jawaban berhasil dikirim!",
     backUrl: `/dashboard/program-saya/${batchSlug}`,
   });
 
   const onSubmit = (values: EssayAnswerFormData) => {
     submitAnswer({ content_html: values.content_html });
+
+    // MOCK
+    const mockPayload = {
+      note: values.content_html,
+      submission_files: [
+        { file_url: "https://storage.example.com/files/tugas1.pdf" },
+        { file_url: "https://storage.example.com/files/tugas2.pdf" },
+      ],
+    };
+    console.log(mockPayload);
+    submitAnswer(mockPayload);
   };
 
   return (

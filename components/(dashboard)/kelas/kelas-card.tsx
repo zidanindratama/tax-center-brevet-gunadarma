@@ -12,6 +12,7 @@ import {
   ClipboardList,
   FileText,
   Clock4,
+  ChartBarIncreasing,
 } from "lucide-react";
 import { format, formatDistanceToNowStrict, isAfter, isBefore } from "date-fns";
 import { id as localeID } from "date-fns/locale";
@@ -298,6 +299,12 @@ export default function KelasCard({ meeting, batchSlug, currentUser }: Props) {
               <Link href={`/dashboard/kelas/${batchSlug}/tugas?${meeting.id}`}>
                 <BookOpen className="mr-2 h-4 w-4" />
                 Kelola Tugas
+              </Link>
+            </Button>
+            <Button size="sm" variant="orange" asChild>
+              <Link href={`/dashboard/kelas/${batchSlug}/nilai?${meeting.id}`}>
+                <ChartBarIncreasing className="mr-2 h-4 w-4" />
+                Kelola Nilai
               </Link>
             </Button>
           </div>
