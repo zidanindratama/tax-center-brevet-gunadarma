@@ -47,9 +47,21 @@ type GradeFormData = { data: GradeRow[] };
 
 function extractGrade(sub?: TAssignmentSubmission): number | "" {
   if (!sub) return "";
-  const raw = sub.assignment_grade;
-  if (raw === null || raw === undefined) return "";
-  return Number.isFinite(raw) ? raw : "";
+
+  const ag: unknown = sub.assignment_grade;
+
+  if (ag == null) return "";
+
+  if (typeof ag === "object" && ag !== null && "grade" in ag) {
+    const g = (ag as { grade: unknown }).grade;
+    if (g == null || g === "") return "";
+    const num = typeof g === "number" ? g : Number(String(g).replace(",", "."));
+    return Number.isFinite(num) ? num : "";
+  }
+
+  if (typeof ag === "number") return Number.isFinite(ag) ? ag : "";
+  const num = Number(String(ag).replace(",", "."));
+  return Number.isFinite(num) ? num : "";
 }
 
 export default function NilaiDatatable({ batchSlug, meetingId }: Props) {
